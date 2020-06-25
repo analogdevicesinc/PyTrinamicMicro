@@ -1,0 +1,4 @@
+[submodule "PyTrinamic"]
+        path = PyTrinamic
+        url = git@github.com:trinamic/PyTrinamic.git
+        branch = master
