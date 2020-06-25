@@ -5,9 +5,10 @@ Created on 25.06.2020
 '''
 
 from PyTrinamicMicro.Connection.TMCL import TMCL_Connection
+from PyTrinamic.connections.tmcl_interface import tmcl_interface
 from pyb import UART
 
-class UART_Connection(TMCL_Connection):
+class uart_tmcl_interface(tmcl_interface):
     def __init__(self, baudrate=9600, hostID=2, moduleID=1, debug=False):
         super().__init__(hostID, moduleID, debug)
 
