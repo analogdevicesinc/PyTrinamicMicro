@@ -4,7 +4,6 @@ Created on 25.06.2020
 @author: LK
 '''
 
-from PyTrinamicMicro.Connection.TMCL import TMCL_Connection
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
 from pyb import UART
 
