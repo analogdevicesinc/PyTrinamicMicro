@@ -31,6 +31,9 @@ class can_tmcl_interface(tmcl_interface):
         CAN.initfilterbanks(14)
 
         self.__can = CAN(2, CAN.NORMAL)
+        # PCLK1 = 42 MHz, Module_Bitrate = 1000 kBit/s
+        # With prescaler = 3, bs1 = 11, bs2 = 2
+        # Sample point at 85.7 %, accuracy = 100 %
         self.__can.init(CAN.NORMAL, prescaler=3, bs1=11, bs2=2, auto_restart=True)
         self.__can.setfilter(0, CAN.LIST16, 0, (hostID, moduleID, hostID, hostID))
 
