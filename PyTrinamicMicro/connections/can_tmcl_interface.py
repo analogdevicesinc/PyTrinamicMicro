@@ -35,7 +35,7 @@ class can_tmcl_interface(tmcl_interface):
         # With prescaler = 3, bs1 = 11, bs2 = 2
         # Sample point at 85.7 %, accuracy = 100 %
         self.__can.init(CAN.NORMAL, prescaler=3, bs1=11, bs2=2, auto_restart=True)
-        self.__can.setfilter(0, CAN.LIST16, 0, (hostID, moduleID, hostID, hostID))
+        self.__can.setfilter(0, CAN.LIST16, 0, (hostID, hostID, hostID, hostID))
 
     def __enter__(self):
         return self
@@ -81,7 +81,7 @@ class can_tmcl_interface(tmcl_interface):
         elif(isinstance(self.__mode, CanModeSilent)):
             self.__silent.high()
         elif(isinstance(self.__mode, CanModeOff)):
-            pass # Not supported
+            pass # Not supported by TJA1051T/3
 
     def get_can(self):
         return self.__can
