@@ -2,3 +2,7 @@
 	path = PyTrinamic
 	url = git@github.com:trinamic/PyTrinamic.git
         branch = master
+[submodule "micropython"]
+	path = micropython
+	url = git@github.com:Lionheart1810/micropython.git
+	branch = master
