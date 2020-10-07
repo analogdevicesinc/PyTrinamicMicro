@@ -5,13 +5,15 @@ Created on 06.10.2020
 '''
 
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
+from pyb import USB_VCP
 
 class usb_vcp_tmcl_interface(tmcl_interface):
-    def __init__(self, id=3, baudrate=9600, hostID=2, moduleID=1, debug=False):
+    def __init__(self, id=0, hostID=2, moduleID=1, debug=False):
         super().__init__(hostID, moduleID, debug)
 
-        self.__uart = UART(id, baudrate)
-        self.__uart.init(baudrate=baudrate, bits=8, parity=None, stop=1, timeout=10000, timeout_char=10000)
+        self.__vcp = USB_VCP(id)
+        self.__vcp.init()
+        self.__vcp.setinterrupt(-1)
 
     def __enter__(self):
         return self
@@ -21,18 +23,22 @@ class usb_vcp_tmcl_interface(tmcl_interface):
         self.close()
 
     def close(self):
-        self.__uart.deinit()
-        return 0;
+        self.__vcp.close()
+        return 0
 
     def _send(self, hostID, moduleID, data):
         del hostID, moduleID
 
-        self.__uart.write(data)
+        self.__vcp.write(data)
 
     def _recv(self, hostID, moduleID):
         del hostID, moduleID
 
-        read = self.__uart.read(9)
+        read = bytearray(0)
+        while(len(read) < 9):
+            read = self.__vcp.read(9)
+            if(not(read)):
+                read = bytearray(0)
 
         return read
 

@@ -12,6 +12,10 @@ from PyTrinamicMicro.connections.uart_tmcl_interface import uart_tmcl_interface
 from PyTrinamicMicro.TMCL_Bridge import TMCL_Bridge
 from PyTrinamic.TMCL import TMCL_Command
 
+# When using a CAN module, host address correction is neccessary.
+# Normally, CAN will use arbitration id as module id and dont care about host id field.
+# This needs to be corrected here for host id 2.
+
 request_command = 0
 
 def request_callback(request):
