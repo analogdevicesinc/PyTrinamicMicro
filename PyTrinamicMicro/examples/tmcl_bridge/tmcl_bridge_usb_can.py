@@ -1,5 +1,5 @@
 '''
-Bridge from UART host to CAN module.
+Bridge from USB host to CAN module.
 
 Created on 07.10.2020
 
@@ -8,7 +8,7 @@ Created on 07.10.2020
 
 from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from PyTrinamicMicro.connections.can_tmcl_interface import can_tmcl_interface
-from PyTrinamicMicro.connections.uart_tmcl_interface import uart_tmcl_interface
+from PyTrinamicMicro.connections.usb_vcp_tmcl_interface import usb_vcp_tmcl_interface
 from PyTrinamicMicro.TMCL_Bridge import TMCL_Bridge
 from PyTrinamic.TMCL import TMCL_Command
 
@@ -29,7 +29,7 @@ def reply_callback(reply):
         reply.calculate_checksum()
     return reply
 
-bridge = TMCL_Bridge(tmcl_host_interface(uart_tmcl_interface()), can_tmcl_interface())
+bridge = TMCL_Bridge(tmcl_host_interface(usb_vcp_tmcl_interface()), can_tmcl_interface())
 
 while(True):
     bridge.process(request_callback=request_callback, reply_callback=reply_callback)
