@@ -7,11 +7,11 @@ Created on 07.10.2020
 from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from PyTrinamic.TMCL import TMCL_Reply
 
-class TMCL_Forwarder(object):
+class TMCL_Bridge(object):
     def __init__(self, host_connection, module_connection):
         self.__host = host_connection
         self.__module = module_connection
-    def forward(self):
+    def process(self):
         '''
         1. Receive request from host
         2. Send request to module

@@ -1,5 +1,5 @@
 '''
-Forward from UART host to RS232 module.
+Bridge from UART host to RS232 module.
 
 Created on 07.10.2020
 
@@ -9,9 +9,9 @@ Created on 07.10.2020
 from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from PyTrinamicMicro.connections.rs232_tmcl_interface import rs232_tmcl_interface
 from PyTrinamicMicro.connections.uart_tmcl_interface import uart_tmcl_interface
-from PyTrinamicMicro.TMCL_Forwarder import TMCL_Forwarder
+from PyTrinamicMicro.TMCL_Bridge import TMCL_Bridge
 
-forwarder = TMCL_Forwarder(tmcl_host_interface(uart_tmcl_interface()), rs232_tmcl_interface())
+bridge = TMCL_Bridge(tmcl_host_interface(uart_tmcl_interface()), rs232_tmcl_interface())
 
 while(True):
-    forwarder.forward()
+    bridge.process()
