@@ -47,6 +47,10 @@ class can_tmcl_interface(tmcl_interface):
     def close(self):
         pass
 
+    def data_available(self, hostID, moduleID):
+        del hostID, moduleID
+        return self.__can.any(0)
+
     def send(self, hostID, moduleID, data):
         del hostID
 

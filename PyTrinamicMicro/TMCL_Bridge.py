@@ -5,12 +5,23 @@ Created on 07.10.2020
 '''
 
 from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
+from PyTrinamicMicro.TMCL_Slave import TMCL_Slave
 from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply
 
 class TMCL_Bridge(object):
-    def __init__(self, host_connection, module_connection):
+    '''
+    Initialize the TMCL bridge.
+
+    Parameters:
+        host_connection: tmcl_interface to the main host.
+        module_connection: tmcl_interface to the module.
+        module_id: module ID to be used in control mode.
+        host_id: host ID to be used in control mode.
+    '''
+    def __init__(self, host_connection, module_connection, module_id=3, host_id=2):
         self.__host = host_connection
         self.__module = module_connection
+        self.__slave = TMCL_Slave(module_id, host_id)
     def process(self, request_callback=None, reply_callback=None):
         '''
         1. Receive request from host
@@ -18,14 +29,19 @@ class TMCL_Bridge(object):
         3. Receive reply from module
         4. Send reply to host
         '''
-        request = self.receive_request()
-        if(request_callback):
-            request = request_callback(request)
-        self.send_request(request)
-        reply = self.receive_reply()
-        if(reply_callback):
-            reply = reply_callback(reply)
-        self.send_reply(reply)
+        if(self.__host.request_available()):
+            request = self.receive_request()
+            if(self.__slave.filter(request)): # Control request
+                reply = self.__slave.handle_request(request)
+                self.__host.send_reply(reply)
+            else: # Passthrough request
+                if(request_callback):
+                    request = request_callback(request)
+                self.send_request(request)
+                reply = self.receive_reply()
+                if(reply_callback):
+                    reply = reply_callback(reply)
+                self.send_reply(reply)
     def receive_request(self):
         return self.__host.receive_request()
     def send_request(self, request):

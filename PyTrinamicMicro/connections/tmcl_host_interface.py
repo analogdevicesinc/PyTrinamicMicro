@@ -18,6 +18,13 @@ class tmcl_host_interface(object):
         self.__module_id = module_id
         self.__debug = debug
 
+    def request_available(self, host_id=None, module_id=None):
+        if(not host_id):
+            host_id = self.__host_id
+        if(not module_id):
+            module_id = self.__module_id
+        return self.__interface.data_available(host_id, module_id)
+
     def receive_request(self, host_id=None, module_id=None):
         if(not host_id):
             host_id = self.__host_id

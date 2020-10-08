@@ -26,6 +26,10 @@ class usb_vcp_tmcl_interface(tmcl_interface):
         self.__vcp.close()
         return 0
 
+    def data_available(self, hostID, moduleID):
+        del hostID, moduleID
+        return self.__vcp.any()
+
     def send(self, hostID, moduleID, data):
         del hostID, moduleID
 
