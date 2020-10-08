@@ -25,12 +25,12 @@ class uart_tmcl_interface(tmcl_interface):
         self.__uart.deinit()
         return 0;
 
-    def _send(self, hostID, moduleID, data):
+    def send(self, hostID, moduleID, data):
         del hostID, moduleID
 
         self.__uart.write(data)
 
-    def _recv(self, hostID, moduleID):
+    def receive(self, hostID, moduleID):
         del hostID, moduleID
 
         read = self.__uart.read(9)

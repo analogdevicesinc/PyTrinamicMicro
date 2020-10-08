@@ -23,7 +23,7 @@ class tmcl_host_interface(object):
             host_id = self.__host_id
         if(not module_id):
             module_id = self.__module_id
-        request = TMCL_Request(request_data=self.__interface._recv(module_id, host_id))
+        request = TMCL_Request(request_data=self.__interface.receive(module_id, host_id))
         if(self.__debug):
             request.dump()
         return request
@@ -35,4 +35,4 @@ class tmcl_host_interface(object):
             module_id = self.__module_id
         if(self.__debug):
             reply.dump()
-        self.__interface._send(module_id, host_id, reply.toBuffer())
+        self.__interface.send(module_id, host_id, reply.toBuffer())

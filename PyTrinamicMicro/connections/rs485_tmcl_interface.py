@@ -14,16 +14,16 @@ class rs485_tmcl_interface(uart_tmcl_interface):
 
         self.__dir = Pin(Pin.cpu.B1, Pin.OUT_PP)
 
-    def _send(self, hostID, moduleID, data):
+    def send(self, hostID, moduleID, data):
         buf = self.__dir.value()
         self.__dir.high()
-        super()._send(hostID, moduleID, data)
+        super().send(hostID, moduleID, data)
         self.__dir.value(buf)
 
-    def _recv(self, hostID, moduleID):
+    def receive(self, hostID, moduleID):
         buf = self.__dir.value()
         self.__dir.low()
-        read = super()._recv(hostID, moduleID)
+        read = super().receive(hostID, moduleID)
         self.__dir.value(buf)
 
         return read

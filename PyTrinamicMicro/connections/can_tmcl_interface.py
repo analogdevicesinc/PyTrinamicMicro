@@ -47,7 +47,7 @@ class can_tmcl_interface(tmcl_interface):
     def close(self):
         pass
 
-    def _send(self, hostID, moduleID, data):
+    def send(self, hostID, moduleID, data):
         del hostID
 
         if(data[0] != moduleID):
@@ -55,7 +55,7 @@ class can_tmcl_interface(tmcl_interface):
 
         self.__can.send(data[1:], moduleID, timeout=50)
 
-    def _recv(self, hostID, moduleID):
+    def receive(self, hostID, moduleID):
         del hostID
 
         read = struct.pack("I", moduleID)[0:1] + self.__can.recv(0, timeout=5000)[3]
