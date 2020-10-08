@@ -23,6 +23,7 @@ class usb_vcp_tmcl_interface(tmcl_interface):
         self.close()
 
     def close(self):
+        self.__vcp.setinterrupt(3)
         self.__vcp.close()
         return 0
 
@@ -40,7 +41,7 @@ class usb_vcp_tmcl_interface(tmcl_interface):
 
         read = bytearray(0)
         while(len(read) < 9):
-            read = self.__vcp.read(9)
+            read += self.__vcp.read(9)
             if(not(read)):
                 read = bytearray(0)
 
