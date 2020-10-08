@@ -13,6 +13,13 @@ class TMCL_Slave_Status(object):
         self.stop = False
 
 class TMCL_Slave(object):
+    class APs(object):
+        pass
+    class ENUMs(object):
+        pass
+    class GPs(object):
+        controlHost = 0
+        controlModule = 1
     def __init__(self, module_address=1, host_address=2, version_string="0021V100", build_version=0):
         self.__module_address = module_address
         self.__host_address = host_address
@@ -25,7 +32,8 @@ class TMCL_Slave(object):
         return {
             TMCL_Command.GET_FIRMWARE_VERSION: self.get_version,
             TMCL_Command.SGP: self.set_global_parameter,
-            TMCL_Command.GGP: self.get_global_parameter
+            TMCL_Command.GGP: self.get_global_parameter,
+            TMCL_Command.TMCL_UF0: self.stop
         }
     def get_status(self):
         return self._status
@@ -72,37 +80,29 @@ class TMCL_Slave(object):
         reply.value = self.__build_version
         return reply
     def set_global_parameter(self, request, reply):
-        if(request.commandType == 0):
+        if(request.commandType == self.GPs.controlHost):
             reply.value = self.__host_address = request.value
-        elif(request.commandType == 1):
+        elif(request.commandType == self.GPs.controlModule):
             reply.value = self.__module_address = request.value
         else:
             reply.status = TMCL_Status.WRONG_TYPE
         return reply
     def get_global_parameter(self, request, reply):
-        if(request.commandType == 0):
+        if(request.commandType == self.GPs.controlHost):
             reply.value = self.__host_address
-        elif(request.commandType == 1):
+        elif(request.commandType == self.GPs.controlModule):
             reply.value = self.__module_address
         else:
             reply.status = TMCL_Status.WRONG_TYPE
         return reply
-
-class TMCL_Slave_Bridge(TMCL_Slave):
-    class _APs(object):
-        pass
-    class _ENUMs(object):
-        pass
-    class _GPs(object):
-        controlHost = 0
-        controlModule = 1
-    def _get_command_func(self):
-        command_func = {}
-        command_func.update(super()._get_command_func())
-        command_func.update({
-            TMCL_Command.TMCL_UF0: self.stop
-        })
-        return command_func
     def stop(self, request, reply):
         self._status.stop = True
         return reply
+
+class TMCL_Slave_Main(TMCL_Slave):
+    def __init__(self, module_address=1, host_address=2, version_string="0021V100", build_version=0):
+        super().__init__(module_address, host_address, version_string, build_version)
+
+class TMCL_Slave_Bridge(TMCL_Slave):
+    def __init__(self, module_address=3, host_address=2, version_string="0022V100", build_version=0):
+        super().__init__(module_address, host_address, version_string, build_version)

@@ -11,7 +11,12 @@ from PyTrinamicMicro.connections.rs232_tmcl_interface import rs232_tmcl_interfac
 from PyTrinamicMicro.connections.uart_tmcl_interface import uart_tmcl_interface
 from PyTrinamicMicro.TMCL_Bridge import TMCL_Bridge
 
-bridge = TMCL_Bridge(tmcl_host_interface(uart_tmcl_interface()), rs232_tmcl_interface())
+host = uart_tmcl_interface()
+module = rs232_tmcl_interface()
+bridge = TMCL_Bridge(tmcl_host_interface(host), module)
 
-while(True):
-    bridge.process()
+while(bridge.process()):
+    pass
+
+host.close()
+module.close()
