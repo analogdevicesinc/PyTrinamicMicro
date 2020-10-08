@@ -29,7 +29,14 @@ def reply_callback(reply):
         reply.calculate_checksum()
     return reply
 
-bridge = TMCL_Bridge(tmcl_host_interface(usb_vcp_tmcl_interface()), can_tmcl_interface())
+host = usb_vcp_tmcl_interface()
+module = can_tmcl_interface()
+bridge = TMCL_Bridge(tmcl_host_interface(host), module)
 
-while(True):
-    bridge.process(request_callback=request_callback, reply_callback=reply_callback)
+while(not(bridge.process(request_callback=request_callback, reply_callback=reply_callback))):
+    pass
+
+host.close()
+module.close()
+
+print("Bridge stopped.")

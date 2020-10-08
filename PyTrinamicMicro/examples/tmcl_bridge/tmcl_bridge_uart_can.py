@@ -31,5 +31,7 @@ def reply_callback(reply):
 
 bridge = TMCL_Bridge(tmcl_host_interface(uart_tmcl_interface()), can_tmcl_interface())
 
-while(True):
-    bridge.process(request_callback=request_callback, reply_callback=reply_callback)
+while(not(bridge.process(request_callback=request_callback, reply_callback=reply_callback))):
+    pass
+
+print("Bridge stopped.")

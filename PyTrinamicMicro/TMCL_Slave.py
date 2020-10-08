@@ -8,28 +8,38 @@ Created on 07.10.2020
 from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply, TMCL_Status, TMCL_Command, TMCL_Version_Format
 import struct
 
+class TMCL_Slave_Status(object):
+    def __init__(self):
+        self.stop = False
+
 class TMCL_Slave(object):
-    def __init__(self, module_address=1, host_address=2, version_string="0012V308", build_version=0):
+    def __init__(self, module_address=1, host_address=2, version_string="0021V100", build_version=0):
         self.__module_address = module_address
         self.__host_address = host_address
         self.__version_string = version_string
         self.__build_version = build_version
+        self._status = TMCL_Slave_Status()
     def filter(self, request):
         return (request.moduleAddress == self.__module_address)
+    def _get_command_func(self):
+        return {
+            TMCL_Command.GET_FIRMWARE_VERSION: self.get_version,
+            TMCL_Command.SGP: self.set_global_parameter,
+            TMCL_Command.GGP: self.get_global_parameter
+        }
+    def get_status(self):
+        return self._status
     def handle_request(self, request):
         reply = TMCL_Reply(reply_address=self.__host_address, module_address=self.__module_address, status=TMCL_Status.SUCCESS, command=request.command)
 
-        # Switch command
-        command_func = {
-            TMCL_Command.GET_FIRMWARE_VERSION: self.get_version
-        }.get(request.command)
+        command_func = self._get_command_func().get(request.command)
         if(command_func):
             reply = command_func(request, reply)
         else:
             reply.status = TMCL_Status.INVALID_COMMAND
 
         if(not(reply.special)):
-            reply.reply_address = self.__host_address
+            #reply.reply_address = self.__host_address
             reply.calculate_checksum()
 
         return reply
@@ -60,4 +70,39 @@ class TMCL_Slave(object):
         return reply
     def get_version_build(self, request, reply):
         reply.value = self.__build_version
+        return reply
+    def set_global_parameter(self, request, reply):
+        if(request.commandType == 0):
+            reply.value = self.__host_address = request.value
+        elif(request.commandType == 1):
+            reply.value = self.__module_address = request.value
+        else:
+            reply.status = TMCL_Status.WRONG_TYPE
+        return reply
+    def get_global_parameter(self, request, reply):
+        if(request.commandType == 0):
+            reply.value = self.__host_address
+        elif(request.commandType == 1):
+            reply.value = self.__module_address
+        else:
+            reply.status = TMCL_Status.WRONG_TYPE
+        return reply
+
+class TMCL_Slave_Bridge(TMCL_Slave):
+    class _APs(object):
+        pass
+    class _ENUMs(object):
+        pass
+    class _GPs(object):
+        controlHost = 0
+        controlModule = 1
+    def _get_command_func(self):
+        command_func = {}
+        command_func.update(super()._get_command_func())
+        command_func.update({
+            TMCL_Command.TMCL_UF0: self.stop
+        })
+        return command_func
+    def stop(self, request, reply):
+        self._status.stop = True
         return reply
