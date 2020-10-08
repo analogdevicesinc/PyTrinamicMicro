@@ -15,7 +15,7 @@ host = uart_tmcl_interface()
 module = rs232_tmcl_interface()
 bridge = TMCL_Bridge(tmcl_host_interface(host), module)
 
-while(bridge.process()):
+while(not(bridge.process())):
     pass
 
 host.close()
