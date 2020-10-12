@@ -37,8 +37,7 @@ class TMCL_Bridge(object):
             else: # Passthrough request
                 if(request_callback):
                     request = request_callback(request)
-                self.send_request(request)
-                reply = self.receive_reply()
+                reply = self.send_request(request)
                 if(reply_callback):
                     reply = reply_callback(reply)
                 self.send_reply(reply)
@@ -46,8 +45,6 @@ class TMCL_Bridge(object):
     def receive_request(self):
         return self.__host.receive_request()
     def send_request(self, request):
-        self.__module.send(self.__module._HOST_ID, self.__module._MODULE_ID, request.toBuffer())
-    def receive_reply(self):
-        return TMCL_Reply(reply_data=self.__module.receive(self.__module._HOST_ID, self.__module._MODULE_ID))
+        self.__module.send_request(request)
     def send_reply(self, reply):
         self.__host.send_reply(reply)

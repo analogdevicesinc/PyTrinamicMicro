@@ -31,12 +31,12 @@ class usb_vcp_tmcl_interface(tmcl_interface):
         del hostID, moduleID
         return self.__vcp.any()
 
-    def send(self, hostID, moduleID, data):
+    def _send(self, hostID, moduleID, data):
         del hostID, moduleID
 
         self.__vcp.write(data)
 
-    def receive(self, hostID, moduleID):
+    def _recv(self, hostID, moduleID):
         del hostID, moduleID
 
         read = bytearray(0)

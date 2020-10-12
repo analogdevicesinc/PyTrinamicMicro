@@ -5,6 +5,7 @@ Created on 05.10.2020
 '''
 
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
+from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from pyb import CAN
 from pyb import Pin
 import struct
@@ -19,7 +20,7 @@ class CanModeSilent(CanMode):
 class CanModeOff(CanMode):
     pass
 
-class can_tmcl_interface(tmcl_interface):
+class can_tmcl_interface(tmcl_interface, tmcl_host_interface):
     def __init__(self, can_mode=CanModeNormal(), hostID=2, moduleID=1, debug=False):
         super().__init__(hostID, moduleID, debug)
 
@@ -51,7 +52,7 @@ class can_tmcl_interface(tmcl_interface):
         del hostID, moduleID
         return self.__can.any(0)
 
-    def send(self, hostID, moduleID, data):
+    def _send(self, hostID, moduleID, data):
         del hostID
 
         if(data[0] != moduleID):
@@ -59,7 +60,7 @@ class can_tmcl_interface(tmcl_interface):
 
         self.__can.send(data[1:], moduleID, timeout=50)
 
-    def receive(self, hostID, moduleID):
+    def _recv(self, hostID, moduleID):
         del hostID
 
         read = struct.pack("I", moduleID)[0:1] + self.__can.recv(0, timeout=5000)[3]

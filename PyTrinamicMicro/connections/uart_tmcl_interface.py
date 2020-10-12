@@ -7,7 +7,7 @@ Created on 25.06.2020
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
 from pyb import UART
 
-class uart_tmcl_interface(tmcl_interface):
+class uart_tmcl_interface(tmcl_interface, tmcl_host_interface):
     def __init__(self, id=3, baudrate=9600, hostID=2, moduleID=1, debug=False):
         super().__init__(hostID, moduleID, debug)
 
@@ -29,12 +29,12 @@ class uart_tmcl_interface(tmcl_interface):
         del hostID, moduleID
         return self.__uart.any()
 
-    def send(self, hostID, moduleID, data):
+    def _send(self, hostID, moduleID, data):
         del hostID, moduleID
 
         self.__uart.write(data)
 
-    def receive(self, hostID, moduleID):
+    def _recv(self, hostID, moduleID):
         del hostID, moduleID
 
         read = self.__uart.read(9)
