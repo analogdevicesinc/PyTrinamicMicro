@@ -31,7 +31,7 @@ class tmcl_host_interface(object):
             host_id = self.__host_id
         if(not module_id):
             module_id = self.__module_id
-        return self.__interface.data_available(host_id, module_id)
+        return self.data_available(host_id, module_id)
 
     def receive_request(self, host_id=None, module_id=None):
         if(not host_id):

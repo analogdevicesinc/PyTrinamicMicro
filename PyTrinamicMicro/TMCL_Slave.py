@@ -5,7 +5,7 @@ Created on 07.10.2020
 '''
 
 # Imports
-from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply, TMCL_Status, TMCL_Command, TMCL_Version_Format
+from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply, TMCL_Status, TMCL_Command
 from PyTrinamic.modules.TMCM_Python.TMCM_Python import TMCM_Python
 import struct
 
@@ -34,7 +34,7 @@ class TMCL_Slave(object):
     def get_status(self):
         return self._status
     def handle_request(self, request):
-        reply = TMCL_Reply(reply_address=self.__host_address, module_address=self.__module_address, status=TMCL_Status.SUCCESS, command=request.command)
+        reply = TMCL_Reply(reply_address=self.__host_address, module_address=self.__module_address, status=TMCL_Status.SUCCESS, value=0, command=request.command)
 
         command_func = self._get_command_func().get(request.command)
         if(command_func):
@@ -62,7 +62,7 @@ class TMCL_Slave(object):
     def get_version_ascii(self, request, reply):
         reply_data = bytearray(1) + self.__version_string.encode("ascii")
         reply_data[0] = self.__host_address
-        reply = TMCL_Reply(reply_data=reply_data)
+        reply = TMCL_Reply.from_buffer(reply_data)
         reply.special = True
         return reply
     def get_version_binary(self, request, reply):

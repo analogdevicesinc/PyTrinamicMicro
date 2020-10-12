@@ -22,10 +22,12 @@ class CanModeOff(CanMode):
 
 class can_tmcl_interface(tmcl_interface, tmcl_host_interface):
     def __init__(self, can_mode=CanModeNormal(), hostID=2, moduleID=1, debug=False):
-        super().__init__(hostID, moduleID, debug)
+        tmcl_interface.__init__(self, hostID, moduleID, debug)
+        tmcl_host_interface.__init__(self, hostID, moduleID, debug)
 
         self.__silent = Pin(Pin.cpu.B14, Pin.OUT_PP)
         self.__mode = can_mode
+        self.__flag_recv = False
 
         self.__set_mode()
 
@@ -37,6 +39,7 @@ class can_tmcl_interface(tmcl_interface, tmcl_host_interface):
         # Sample point at 85.7 %, accuracy = 100 %
         self.__can.init(CAN.NORMAL, prescaler=3, bs1=11, bs2=2, auto_restart=True)
         self.__can.setfilter(0, CAN.LIST16, 0, (hostID, hostID, hostID, hostID))
+        self.__can.rxcallback(0, self.__callback_recv)
 
     def __enter__(self):
         return self
@@ -53,17 +56,23 @@ class can_tmcl_interface(tmcl_interface, tmcl_host_interface):
         return self.__can.any(0)
 
     def _send(self, hostID, moduleID, data):
-        del hostID
+        del hostID, moduleID
 
-        if(data[0] != moduleID):
-            raise ValueError("Datagram bit 0 must be equal to moduleID. (data[0] = {}, moduleID = {})".format(data[0], moduleID))
+        self.__can.send(data[1:], data[0])
 
-        self.__can.send(data[1:], moduleID, timeout=50)
+    def __callback_recv(self, bus, reason):
+        if(reason != 0):
+            pass
+        self.__flag_recv = True
 
     def _recv(self, hostID, moduleID):
-        del hostID
+        del hostID, moduleID
 
-        read = struct.pack("I", moduleID)[0:1] + self.__can.recv(0, timeout=5000)[3]
+        while(not(self.__flag_recv)):
+            pass
+        self.__flag_recv = False
+        received = self.__can.recv(0, timeout=1000)
+        read = struct.pack("B", received[0]) + received[3]
 
         return read
 

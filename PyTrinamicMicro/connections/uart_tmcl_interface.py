@@ -5,11 +5,13 @@ Created on 25.06.2020
 '''
 
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
+from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from pyb import UART
 
 class uart_tmcl_interface(tmcl_interface, tmcl_host_interface):
     def __init__(self, id=3, baudrate=9600, hostID=2, moduleID=1, debug=False):
-        super().__init__(hostID, moduleID, debug)
+        tmcl_interface.__init__(self, hostID, moduleID, debug)
+        tmcl_host_interface.__init__(self, hostID, moduleID, debug)
 
         self.__uart = UART(id, baudrate)
         self.__uart.init(baudrate=baudrate, bits=8, parity=None, stop=1, timeout=10000, timeout_char=10000)

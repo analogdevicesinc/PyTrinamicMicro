@@ -31,7 +31,7 @@ def reply_callback(reply):
 
 host = uart_tmcl_interface()
 module = can_tmcl_interface()
-bridge = TMCL_Bridge(tmcl_host_interface(host), module)
+bridge = TMCL_Bridge(host, module)
 
 while(not(bridge.process(request_callback=request_callback, reply_callback=reply_callback))):
     pass
