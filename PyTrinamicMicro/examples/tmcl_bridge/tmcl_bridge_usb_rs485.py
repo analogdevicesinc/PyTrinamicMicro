@@ -14,7 +14,7 @@ from PyTrinamic.TMCL import TMCL_Command
 
 host = usb_vcp_tmcl_interface()
 module = rs485_tmcl_interface()
-bridge = TMCL_Bridge(tmcl_host_interface(host), module)
+bridge = TMCL_Bridge(host, module)
 
 while(not(bridge.process())):
     pass
