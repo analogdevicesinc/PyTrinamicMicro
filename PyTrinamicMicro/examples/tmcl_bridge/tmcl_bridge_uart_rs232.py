@@ -20,3 +20,5 @@ while(not(bridge.process())):
 
 host.close()
 module.close()
+
+print("Bridge stopped.")
