@@ -6,3 +6,6 @@
 	path = micropython
 	url = git@github.com:Lionheart1810/micropython.git
 	branch = master
+[submodule "pycopy-lib"]
+	path = pycopy-lib
+	url = git@github.com:Lionheart1810/pycopy-lib.git
