@@ -7,6 +7,7 @@ Created on 07.10.2020
 from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from PyTrinamicMicro.TMCL_Slave import TMCL_Slave_Bridge
 from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply
+import logging
 
 class TMCL_Bridge(object):
     '''
@@ -22,6 +23,7 @@ class TMCL_Bridge(object):
         self.__host = host_connection
         self.__module = module_connection
         self.__slave = TMCL_Slave_Bridge(module_id, host_id)
+        self.__logger = logging.getLogger(self.__module__)
     def process(self, request_callback=None, reply_callback=None):
         '''
         1. Receive request from host
@@ -31,13 +33,18 @@ class TMCL_Bridge(object):
         '''
         if(self.__host.request_available()):
             request = self.receive_request()
+            self.__logger.debug("Processing request ({}).".format(str(request)))
             if(self.__slave.filter(request)): # Control request
+                self.__logger.debug("Request is a control request.")
                 reply = self.__slave.handle_request(request)
+                self.__logger.debug("Control reply ({}).".format(str(reply)))
                 self.send_reply(reply)
             else: # Passthrough request
+                self.__logger.debug("Request is not a control request. Passing through.")
                 if(request_callback):
                     request = request_callback(request)
                 reply = self.send_request(request)
+                self.__logger.debug("Passthrough reply ({}).".format(str(reply)))
                 if(reply_callback):
                     reply = reply_callback(reply)
                 self.send_reply(reply)
