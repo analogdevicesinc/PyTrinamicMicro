@@ -10,11 +10,16 @@ import logging
 
 class PyTrinamicMicro(object):
 
+    # Public constants
     LOGGING_VERBOSITY = logging.DEBUG
     LOGGING_CONSOLE = False
     LOGGING_FILE = True
     LOGGING_FILE_NAME = "{}.log".format(__module__)
 
+    # Public variables
+    logging_enabled = True
+
+    # Private variables
     __logger = None
     __logging_handlers = []
 
@@ -26,13 +31,15 @@ class PyTrinamicMicro(object):
 
     @staticmethod
     def enable_logging():
-        for handler in PyTrinamicMicro.__logging_handlers:
-            PyTrinamicMicro.__logger.addHandler(handler)
+        if(not(logging_enabled)):
+            for handler in PyTrinamicMicro.__logging_handlers:
+                PyTrinamicMicro.__logger.addHandler(handler)
 
     @staticmethod
     def disable_logging():
-        for handler in PyTrinamicMicro.__logging_handlers:
-            PyTrinamicMicro.__logger.removeHandler(handler)
+        if(logging_enabled):
+            for handler in PyTrinamicMicro.__logging_handlers:
+                PyTrinamicMicro.__logger.removeHandler(handler)
 
     @staticmethod
     def set_logging_enabled(enabled):
@@ -40,6 +47,7 @@ class PyTrinamicMicro(object):
             PyTrinamicMicro.enable_logging()
         else:
             PyTrinamicMicro.disable_logging()
+        PyTrinamicMicro.logging_enabled = enabled
 
     @staticmethod
     def __init_logger():

@@ -7,6 +7,7 @@ Created on 07.10.2020
 # Imports
 from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply, TMCL_Status, TMCL_Command
 from PyTrinamic.modules.TMCM_Python.TMCM_Python import TMCM_Python
+from PyTrinamicMicro import PyTrinamicMicro
 import struct
 import logging
 
@@ -87,6 +88,9 @@ class TMCL_Slave(object):
             reply.value = self.__host_address = request.value
         elif(request.commandType == self.GPs.controlModule):
             reply.value = self.__module_address = request.value
+        elif(request.commandType == self.GPs.loggingEnabled):
+            PyTrinamicMicro.set_logging_enabled(not(request.value == 0))
+            reply.value = 1 if PyTrinamicMicro.logging_enabled else 0
         else:
             reply.status = TMCL_Status.WRONG_TYPE
         return reply
@@ -96,6 +100,8 @@ class TMCL_Slave(object):
             reply.value = self.__host_address
         elif(request.commandType == self.GPs.controlModule):
             reply.value = self.__module_address
+        elif(request.commandType == self.GPs.loggingEnabled):
+            reply.value = 1 if PyTrinamicMicro.logging_enabled else 0
         else:
             reply.status = TMCL_Status.WRONG_TYPE
         return reply
