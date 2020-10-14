@@ -8,10 +8,10 @@ Created on 12.10.2020
 '''
 
 # Imports
-from PyTrinamicMicro import PyTrinamicMicro
+from PyTrinamicMicro import PyTrinamicMicro as PTM
 
 # Initialize main configuration
-PyTrinamicMicro.init()
+PTM.init()
 
 # Execute example script
-exec(open("PyTrinamicMicro/examples/null.py").read())
+exec(PTM.script("null"))

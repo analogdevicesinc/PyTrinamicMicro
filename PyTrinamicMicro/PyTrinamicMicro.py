@@ -23,6 +23,7 @@ class PyTrinamicMicro(object):
 
     # Private constants
     __MAP_SCRIPT = {
+        "null": "PyTrinamicMicro/examples/null.py",
         "blinky": "PyTrinamicMicro/examples/io/blinky.py",
         "buttons_leds": "PyTrinamicMicro/examples/io/buttons_leds.py",
         "tmcm1161_rs232_rotate": "PyTrinamicMicro/examples/modules/TMCM1161/TMCM1161_RS232_rotate.py",
@@ -51,11 +52,8 @@ class PyTrinamicMicro(object):
         PyTrinamicMicro.__logger.debug("PyTrinamicMicro initialized.")
 
     @staticmethod
-    def execute_script(identifier):
-        path = PyTrinamicMicro.__MAP_SCRIPT.get(identifier)
-        PyTrinamicMicro.__logger.debug("Executing script {} ({}) ...".format(identifier, path))
-        exec(open(path).read())
-        PyTrinamicMicro.__logger.debug("Script {} executed.".format(identifier))
+    def script(identifier):
+        return compile(open(PyTrinamicMicro.__MAP_SCRIPT.get(identifier)).read(), "<string>", "exec")
 
     @staticmethod
     def set_logging_console_enabled(enabled):
