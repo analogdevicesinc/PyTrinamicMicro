@@ -57,7 +57,6 @@ class PyTrinamicMicro(object):
         PyTrinamicMicro.__logger.setLevel(PyTrinamicMicro.LOGGING_VERBOSITY)
         if(PyTrinamicMicro.LOGGING_CONSOLE):
             consoleHandler = logging.StreamHandler()
-            consoleHandler.setLevel(PyTrinamicMicro.LOGGING_VERBOSITY)
             consoleHandler.setFormatter(formatter)
             PyTrinamicMicro.__logger.addHandler(consoleHandler)
             PyTrinamicMicro.__logging_handlers.append(consoleHandler)
