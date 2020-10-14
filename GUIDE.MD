@@ -43,7 +43,7 @@ This might be `COMX` for Windows (determine *X* in the Device Manager), or `/dev
 (determine *X* in the mounted devices in `/dev`) for Linux.
 7. Now, being in the Python shell, any MicroPython compatible statement can be interpreted.
 The PyTrinamicMicro package can be used. 
-Examples can be executed by e.g. `exec(open("PyTrinamicMicro/examples/modules/TMCM1270/TMCM1270_rotate.py").read())`.
+Examples can be executed by e.g. `exec(PTM.script("blinky"))`.
 
 ## Remarks
 
