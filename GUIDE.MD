@@ -5,6 +5,20 @@ For a MicroPython specific guide, please refer to [docs.micropython.org](https:/
 
 ## Getting started
 
+### TMCL-Master-Python preparation
+
+This is on how to prepare the TMCL-Master-Python reference board.  
+If you are not using this, refer to the preparation guide of your system and skip the
+following steps.
+
+1. Build the PYBv11 STM32 firmware. For that, refer to the [build guide](micropython/ports/stm32/README.md).  
+*TL;DR*: `cd micropython && make -C mpy-cross PYTHON=python && cd ports/stm32 && make submodules PYTHON=python && make BOARD=PYBV11 PYTHON=python`,
+assuming `python` is the linked Python binary.
+2. Flash the `micropython/ports/stm32/build/firmware.hex` file using your favorite SWD interface.
+3. Restart the board to reload the Python workspace.
+
+### General
+
 1. Prepare the target system to run MicroPython. If there is already a MicroPython port available for the
 target system, there might be a guide for that in the official MicroPython docs.
 Make sure to also install the Serial Port Drivers for USB communication to work.
