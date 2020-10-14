@@ -1,6 +1,11 @@
 '''
 Bridge from USB host to RS232 module.
 
+Pitfall:
+stdout redirection is impossible in micropython at the moment.
+By default, stdout-writing functions will write to VCP and interfere with connection.
+Therefore, do not use stdout-writing functions (print, ...) here or turn them off while using VCP.
+
 Created on 08.10.2020
 
 @author: LK
