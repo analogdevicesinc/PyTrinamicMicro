@@ -15,24 +15,45 @@ class PyTrinamicMicro(object):
     LOGGING_FILE = True
     LOGGING_FILE_NAME = "{}.log".format(__module__)
 
+    __logger = None
+    __logging_handlers = []
+
     @staticmethod
     def init():
-        logger = PyTrinamicMicro.__init_logger()
-        logger.debug("Root logger initialized.")
-        logger.debug("PyTrinamicMicro initialized.")
+        PyTrinamicMicro.__init_logger()
+        PyTrinamicMicro.__logger.debug("Root logger initialized.")
+        PyTrinamicMicro.__logger.debug("PyTrinamicMicro initialized.")
+
+    @staticmethod
+    def enable_logging():
+        for handler in PyTrinamicMicro.__logging_handlers:
+            PyTrinamicMicro.__logger.addHandler(handler)
+
+    @staticmethod
+    def disable_logging():
+        for handler in PyTrinamicMicro.__logging_handlers:
+            PyTrinamicMicro.__logger.removeHandler(handler)
+
+    @staticmethod
+    def set_logging_enabled(enabled):
+        if(enabled):
+            PyTrinamicMicro.enable_logging()
+        else:
+            PyTrinamicMicro.disable_logging()
 
     @staticmethod
     def __init_logger():
-        logger = logging.getLogger()
+        PyTrinamicMicro.__logger = logging.getLogger()
         formatter = logging.Formatter("[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s")
-        logger.setLevel(PyTrinamicMicro.LOGGING_VERBOSITY)
+        PyTrinamicMicro.__logger.setLevel(PyTrinamicMicro.LOGGING_VERBOSITY)
         if(PyTrinamicMicro.LOGGING_CONSOLE):
             consoleHandler = logging.StreamHandler()
             consoleHandler.setLevel(PyTrinamicMicro.LOGGING_VERBOSITY)
             consoleHandler.setFormatter(formatter)
-            logger.addHandler(consoleHandler)
+            PyTrinamicMicro.__logger.addHandler(consoleHandler)
+            PyTrinamicMicro.__logging_handlers.append(consoleHandler)
         if(PyTrinamicMicro.LOGGING_FILE):
             fileHandler = logging.FileHandler(PyTrinamicMicro.LOGGING_FILE_NAME)
             fileHandler.setFormatter(formatter)
-            logger.addHandler(fileHandler)
-        return logger
+            PyTrinamicMicro.__logger.addHandler(fileHandler)
+            PyTrinamicMicro.__logging_handlers.append(fileHandler)
