@@ -9,6 +9,7 @@ from PyTrinamicMicro.TMCL_Slave import TMCL_Slave_Bridge
 from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply
 import logging
 
+
 class TMCL_Bridge(object):
     '''
     Initialize the TMCL bridge.
@@ -19,11 +20,13 @@ class TMCL_Bridge(object):
         module_id: module ID to be used in control mode.
         host_id: host ID to be used in control mode.
     '''
+
     def __init__(self, host_connection, module_connection, module_id=3, host_id=2):
         self.__host = host_connection
         self.__module = module_connection
         self.__slave = TMCL_Slave_Bridge(module_id, host_id)
         self.__logger = logging.getLogger(self.__module__)
+
     def process(self, request_callback=None, reply_callback=None):
         '''
         1. Receive request from host
@@ -49,9 +52,12 @@ class TMCL_Bridge(object):
                     reply = reply_callback(reply)
                 self.send_reply(reply)
         return self.__slave.get_status().stop
+
     def receive_request(self):
         return self.__host.receive_request()
+
     def send_request(self, request):
         return self.__module.send_request(request)
+        
     def send_reply(self, reply):
         self.__host.send_reply(reply)

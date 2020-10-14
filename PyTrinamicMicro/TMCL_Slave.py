@@ -11,11 +11,15 @@ from PyTrinamicMicro import PyTrinamicMicro
 import struct
 import logging
 
+
 class TMCL_Slave_Status(object):
+
     def __init__(self):
         self.stop = False
 
+
 class TMCL_Slave(TMCM_Python):
+
     def __init__(self, module_address=1, host_address=2, version_string="0021V100", build_version=0):
         self.__module_address = module_address
         self.__host_address = host_address
@@ -24,8 +28,10 @@ class TMCL_Slave(TMCM_Python):
         self._status = TMCL_Slave_Status()
         self.__subscript = ""
         self.__logger = logging.getLogger(self.__module__)
+
     def filter(self, request):
         return (request.moduleAddress == self.__module_address)
+
     def _get_command_func(self):
         return {
             TMCL_Command.GET_FIRMWARE_VERSION: self.get_version,
@@ -34,8 +40,10 @@ class TMCL_Slave(TMCM_Python):
             TMCL_Command.TMCL_UF0: self.stop,
             TMCL_Command.TMCL_UF1: self.subscript
         }
+
     def get_status(self):
         return self._status
+
     def handle_request(self, request):
         reply = TMCL_Reply(reply_address=self.__host_address, module_address=self.__module_address, status=TMCL_Status.SUCCESS, value=0, command=request.command)
 
@@ -50,6 +58,7 @@ class TMCL_Slave(TMCM_Python):
             reply.calculate_checksum()
 
         return reply
+
     def get_version(self, request, reply):
         self.__logger.debug("get_version")
         func = {
@@ -63,6 +72,7 @@ class TMCL_Slave(TMCM_Python):
         else:
             reply.status = TMCL_Status.WRONG_TYPE
         return reply
+
     def get_version_ascii(self, request, reply):
         self.__logger.debug("get_version_ascii")
         reply_data = bytearray(1) + self.__version_string.encode("ascii")
@@ -70,6 +80,7 @@ class TMCL_Slave(TMCM_Python):
         reply = TMCL_Reply.from_buffer(reply_data)
         reply.special = True
         return reply
+
     def get_version_binary(self, request, reply):
         self.__logger.debug("get_version_binary")
         version_module_high = int(self.__version_string[0:2])
@@ -78,10 +89,12 @@ class TMCL_Slave(TMCM_Python):
         version_fw_low = int(self.__version_string[6:8])
         reply.value = struct.unpack(">I", struct.pack("BBBB", version_module_high, version_module_low, version_fw_high, version_fw_low))[0]
         return reply
+
     def get_version_build(self, request, reply):
         self.__logger.debug("get_version_build")
         reply.value = self.__build_version
         return reply
+
     def set_global_parameter(self, request, reply):
         self.__logger.debug("set_global_parameter")
         if(request.commandType == self.GPs.controlHost):
@@ -94,6 +107,7 @@ class TMCL_Slave(TMCM_Python):
         else:
             reply.status = TMCL_Status.WRONG_TYPE
         return reply
+
     def get_global_parameter(self, request, reply):
         self.__logger.debug("get_global_parameter")
         if(request.commandType == self.GPs.controlHost):
@@ -105,10 +119,12 @@ class TMCL_Slave(TMCM_Python):
         else:
             reply.status = TMCL_Status.WRONG_TYPE
         return reply
+
     def stop(self, request, reply):
         self.__logger.debug("stop")
         self._status.stop = True
         return reply
+
     def subscript(self, request, reply):
         self.__logger.debug("subscript")
         func = {
@@ -122,24 +138,31 @@ class TMCL_Slave(TMCM_Python):
         else:
             reply.status = TMCL_Status.WRONG_TYPE
         return reply
+
     def subscript_execute(self, request, reply):
         self.__logger.debug("subscript_execute")
         exec(open(self.__subscript).read())
         return reply
+
     def subscript_append(self, request, reply):
         self.__logger.debug("subscript_append")
         self.__subscript += struct.pack(">I", request.value).decode("ascii")
         self.__logger.debug("Subscript: {}".format(self.__subscript))
         return reply
+
     def subscript_clear(self, request, reply):
         self.__logger.debug("subscript_clear")
         self.__subscript = ""
         return reply
 
+
 class TMCL_Slave_Main(TMCL_Slave):
+
     def __init__(self, module_address=1, host_address=2, version_string="0021V100", build_version=0):
         super().__init__(module_address, host_address, version_string, build_version)
 
+
 class TMCL_Slave_Bridge(TMCL_Slave):
+
     def __init__(self, module_address=3, host_address=2, version_string="0022V100", build_version=0):
         super().__init__(module_address, host_address, version_string, build_version)

@@ -8,6 +8,7 @@ Created on 13.10.2020
 
 import logging
 
+
 class PyTrinamicMicro(object):
 
     # Public constants
