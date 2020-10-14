@@ -14,7 +14,7 @@ import logging
 logger = logging.getLogger(__name__)
 logger.info("Blinky for all LEDs on board")
 
-# Define LED dict for all LEDs on board
+# Define LED list for all LEDs on board
 leds = [
     ("LEDG1", Pin(Pin.cpu.A13, Pin.OUT_PP), True),
     ("LEDR1", Pin(Pin.cpu.A14, Pin.OUT_PP), False),
