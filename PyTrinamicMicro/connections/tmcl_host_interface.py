@@ -7,9 +7,12 @@ Created on 06.10.2020
 @author: LK
 '''
 
+
 from PyTrinamic.TMCL import TMCL, TMCL_Request, TMCL_Reply
 
+
 class tmcl_host_interface(object):
+
     def __init__(self, host_id=2, module_id=1, debug=False):
         TMCL.validate_host_id(host_id)
         TMCL.validate_module_id(module_id)

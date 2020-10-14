@@ -4,11 +4,13 @@ Created on 05.10.2020
 @author: LK
 '''
 
+
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
 from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from pyb import CAN
 from pyb import Pin
 import struct
+
 
 # CAN transceiver modes
 class CanMode(object):
@@ -20,7 +22,9 @@ class CanModeSilent(CanMode):
 class CanModeOff(CanMode):
     pass
 
+
 class can_tmcl_interface(tmcl_interface, tmcl_host_interface):
+
     def __init__(self, can_mode=CanModeNormal(), hostID=2, moduleID=1, debug=False):
         tmcl_interface.__init__(self, hostID, moduleID, debug)
         tmcl_host_interface.__init__(self, hostID, moduleID, debug)

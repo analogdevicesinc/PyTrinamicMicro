@@ -4,11 +4,14 @@ Created on 06.10.2020
 @author: LK
 '''
 
+
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
 from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from pyb import USB_VCP
 
+
 class usb_vcp_tmcl_interface(tmcl_interface, tmcl_host_interface):
+
     def __init__(self, id=0, hostID=2, moduleID=1, debug=False):
         tmcl_interface.__init__(self, hostID, moduleID, debug)
         tmcl_host_interface.__init__(self, hostID, moduleID, debug)
