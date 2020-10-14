@@ -15,7 +15,14 @@ following steps.
 *TL;DR*: `cd micropython && make -C mpy-cross PYTHON=python && cd ports/stm32 && make submodules PYTHON=python && make BOARD=PYBV11 PYTHON=python`,
 assuming `python` is the linked Python binary.
 2. Flash the `micropython/ports/stm32/build/firmware.hex` file using your favorite SWD interface.
-3. Restart the board to reload the Python workspace.
+3. Reset the board with a `low` signal on the `NRST` pin, or power cycle.
+
+If you are developing on windows:  
+
+4. (Re-)attach the board to the PC, without the SD card inserted in it.
+5. The boards internal flash should be mounted as mass storage device directly.
+Install the Serial Port Drivers from the root of the attached storage to your system.
+6. Insert the SD card in the board and reattach it.
 
 ### General
 
@@ -30,7 +37,7 @@ It should already get detected as mass storage device, with the SD card mounted 
 4. Invoke the installation script `install.py`. For full installation, run the command `python install.py D:\`,
 assuming `python` is properly linked to your python binary and `D:\` is the installation directory.
 5. Soft-Reset MicroPython by restarting it, or, if it is a microcontroller, hard-reset the microcontroller
-with a `low` signal on the `NRST` pin.
+with a `low` signal on the `NRST` pin, or power cycle.
 6. If the target system is a microcontroller, connect to the corresponding serial port via terminal.
 This might be `COMX` for Windows (determine *X* in the Device Manager), or `/dev/ttyACMX`
 (determine *X* in the mounted devices in `/dev`) for Linux.
