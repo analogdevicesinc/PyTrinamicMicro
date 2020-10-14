@@ -15,7 +15,7 @@ class TMCL_Slave_Status(object):
     def __init__(self):
         self.stop = False
 
-class TMCL_Slave(object):
+class TMCL_Slave(TMCM_Python):
     def __init__(self, module_address=1, host_address=2, version_string="0021V100", build_version=0):
         self.__module_address = module_address
         self.__host_address = host_address
@@ -84,11 +84,11 @@ class TMCL_Slave(object):
         return reply
     def set_global_parameter(self, request, reply):
         self.__logger.debug("set_global_parameter")
-        if(request.commandType == TMCM_Python.GPs.controlHost):
+        if(request.commandType == self.GPs.controlHost):
             reply.value = self.__host_address = request.value
-        elif(request.commandType == TMCM_Python.GPs.controlModule):
+        elif(request.commandType == self.GPs.controlModule):
             reply.value = self.__module_address = request.value
-        elif(request.commandType == TMCM_Python.GPs.loggingEnabled):
+        elif(request.commandType == self.GPs.loggingEnabled):
             PyTrinamicMicro.set_logging_enabled(not(request.value == 0))
             reply.value = 1 if PyTrinamicMicro.logging_enabled else 0
         else:
@@ -96,11 +96,11 @@ class TMCL_Slave(object):
         return reply
     def get_global_parameter(self, request, reply):
         self.__logger.debug("get_global_parameter")
-        if(request.commandType == TMCM_Python.GPs.controlHost):
+        if(request.commandType == self.GPs.controlHost):
             reply.value = self.__host_address
-        elif(request.commandType == TMCM_Python.GPs.controlModule):
+        elif(request.commandType == self.GPs.controlModule):
             reply.value = self.__module_address
-        elif(request.commandType == TMCM_Python.GPs.loggingEnabled):
+        elif(request.commandType == self.GPs.loggingEnabled):
             reply.value = 1 if PyTrinamicMicro.logging_enabled else 0
         else:
             reply.status = TMCL_Status.WRONG_TYPE
