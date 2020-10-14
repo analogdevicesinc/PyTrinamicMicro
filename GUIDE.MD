@@ -8,7 +8,7 @@ For a MicroPython specific guide, please refer to [docs.micropython.org](https:/
 ### TMCL-Master-Python preparation
 
 This is on how to prepare the TMCL-Master-Python reference board.  
-If you are not using this, refer to the preparation guide of your system and skip the
+If you are not using this, refer to the preparation guide of your target system and skip the
 following steps.
 
 1. Build the PYBv11 STM32 firmware. For that, refer to the [build guide](micropython/ports/stm32/README.md).  
@@ -21,7 +21,7 @@ If you are developing on windows:
 
 4. (Re-)attach the board to the PC, without the SD card inserted in it.
 5. The boards internal flash should be mounted as mass storage device directly.
-Install the Serial Port Drivers from the root of the attached storage to your system.
+Install the Serial Port Drivers `pybcdc.inf` from the root of the attached storage to your system.
 6. Insert the SD card in the board and reattach it.
 
 ### General
