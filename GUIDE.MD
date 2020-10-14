@@ -44,3 +44,21 @@ This might be `COMX` for Windows (determine *X* in the Device Manager), or `/dev
 7. Now, being in the Python shell, any MicroPython compatible statement can be interpreted.
 The PyTrinamicMicro package can be used. 
 Examples can be executed by e.g. `exec(open("PyTrinamicMicro/examples/modules/TMCM1270/TMCM1270_rotate.py").read())`.
+
+## Remarks
+
+In the default environment the class `PTM` (short for *PyTrinamicMicro*) is defined.  
+All of its members can be accessed statically and globally, especially from the Python shell.  
+All global configuration is intended to be done in this class and its methods.
+So make sure to use that whenever possible.
+
+## Execute example scripts
+
+Example scripts can be executed from the Python shell directly using the `PTM` class, i.e.
+
+```Python
+exec(PTM.script("blinky"))
+```
+
+The script identifier (e.g. "blinky") is mapped internally to a corresponding script.
+For the complete map, refer to [documentation](DOC.MD#PyTrinamicMicro).
