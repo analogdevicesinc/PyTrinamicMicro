@@ -14,7 +14,7 @@ class PyTrinamicMicro(object):
     # Public constants
     LOGGING_VERBOSITY = logging.DEBUG
     LOGGING_FILE_NAME = "{}.log".format(__module__)
-    LOGGING_CONSOLE_ENABLED = False
+    LOGGING_CONSOLE_ENABLED = True
     LOGGING_FILE_ENABLED = True
 
     # Public variables
@@ -33,52 +33,19 @@ class PyTrinamicMicro(object):
         PyTrinamicMicro.__logger.debug("PyTrinamicMicro initialized.")
 
     @staticmethod
-    def enable_logging_console():
-        if(not(PyTrinamicMicro.logging_console_enabled)):
-            PyTrinamicMicro.__logger.addHandler(PyTrinamicMicro.__console_handler)
-        PyTrinamicMicro.logging_console_enabled = True
-
-    @staticmethod
-    def disable_logging_console():
-        if(PyTrinamicMicro.logging_console_enabled):
-            PyTrinamicMicro.__logger.removeHandler(PyTrinamicMicro.__console_handler)
-        PyTrinamicMicro.logging_console_enabled = False
-
-    @staticmethod
     def set_logging_console_enabled(enabled):
-        if(enabled):
-            PyTrinamicMicro.enable_logging_console()
-        else:
-            PyTrinamicMicro.disable_logging_console()
-
-    @staticmethod
-    def enable_logging_file():
-        if(not(PyTrinamicMicro.logging_file_enabled)):
-            PyTrinamicMicro.__logger.addHandler(PyTrinamicMicro.__file_handler)
-        PyTrinamicMicro.logging_file_enabled = True
-
-    @staticmethod
-    def disable_logging_file():
-        if(PyTrinamicMicro.logging_file_enabled):
-            PyTrinamicMicro.__logger.removeHandler(PyTrinamicMicro.__file_handler)
-        PyTrinamicMicro.logging_file_enabled = False
+        if(enabled and not(PyTrinamicMicro.logging_console_enabled)):
+            PyTrinamicMicro.__logger.addHandler(PyTrinamicMicro.__console_handler)
+        elif(not(enabled) and PyTrinamicMicro.logging_console_enabled):
+            PyTrinamicMicro.__logger.removeHandler(PyTrinamicMicro.__console_handler)
+        PyTrinamicMicro.logging_console_enabled = enabled
 
     @staticmethod
     def set_logging_file_enabled(enabled):
-        if(enabled):
-            PyTrinamicMicro.enable_logging_file()
-        else:
-            PyTrinamicMicro.disable_logging_file()
-
-    @staticmethod
-    def enable_logging():
-        PyTrinamicMicro.enable_logging_console()
-        PyTrinamicMicro.enable_logging_file()
-
-    @staticmethod
-    def disable_logging():
-        PyTrinamicMicro.disable_logging_console()
-        PyTrinamicMicro.disable_logging_file()
+        if(enabled and not(PyTrinamicMicro.logging_file_enabled)):
+            PyTrinamicMicro.__logger.addHandler(PyTrinamicMicro.__file_handler)
+        elif(not(enabled) and PyTrinamicMicro.logging_file_enabled):
+            PyTrinamicMicro.__logger.removeHandler(PyTrinamicMicro.__file_handler)
 
     @staticmethod
     def set_logging_enabled(enabled):

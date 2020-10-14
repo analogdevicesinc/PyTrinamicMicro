@@ -19,6 +19,7 @@ from PyTrinamic.TMCL import TMCL_Command
 import logging
 
 # Prepare Logger
+PyTrinamicMicro.set_logging_console_enabled(False)
 logger = logging.getLogger(__name__)
 logger.info("TMCL Bridge from USB to RS232")
 

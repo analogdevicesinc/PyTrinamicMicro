@@ -11,6 +11,7 @@ Created on 07.10.2020
 @author: LK
 '''
 
+from PyTrinamicMicro import PyTrinamicMicro
 from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from PyTrinamicMicro.connections.can_tmcl_interface import can_tmcl_interface
 from PyTrinamicMicro.connections.usb_vcp_tmcl_interface import usb_vcp_tmcl_interface
@@ -19,6 +20,7 @@ from PyTrinamic.TMCL import TMCL_Command
 import logging
 
 # Prepare Logger
+PyTrinamicMicro.set_logging_console_enabled(False)
 logger = logging.getLogger(__name__)
 logger.info("TMCL Bridge from USB to CAN")
 
