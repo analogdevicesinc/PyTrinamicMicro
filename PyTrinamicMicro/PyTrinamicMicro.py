@@ -69,6 +69,7 @@ class PyTrinamicMicro(object):
             PyTrinamicMicro.__logger.addHandler(PyTrinamicMicro.__file_handler)
         elif(not(enabled) and PyTrinamicMicro.logging_file_enabled):
             PyTrinamicMicro.__logger.removeHandler(PyTrinamicMicro.__file_handler)
+        PyTrinamicMicro.logging_file_enabled = enabled
 
     @staticmethod
     def set_logging_enabled(enabled):
