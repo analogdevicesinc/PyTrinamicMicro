@@ -15,7 +15,7 @@ class PyTrinamicMicro(object):
     LOGGING_VERBOSITY = logging.DEBUG
     LOGGING_FILE_NAME = "{}.log".format(__module__)
     LOGGING_CONSOLE_ENABLED = True
-    LOGGING_FILE_ENABLED = True
+    LOGGING_FILE_ENABLED = False
 
     # Public variables
     logging_console_enabled = LOGGING_CONSOLE_ENABLED
@@ -84,10 +84,10 @@ class PyTrinamicMicro(object):
 
         PyTrinamicMicro.__console_handler = logging.StreamHandler()
         PyTrinamicMicro.__console_handler.setFormatter(formatter)
-        PyTrinamicMicro.logging_console_enabled = not(PyTrinamicMicro.logging_console_enabled)
-        PyTrinamicMicro.set_logging_console_enabled(not(PyTrinamicMicro.logging_console_enabled))
+        if(PyTrinamicMicro.logging_console_enabled):
+            PyTrinamicMicro.__logger.addHandler(PyTrinamicMicro.__console_handler)
 
         PyTrinamicMicro.__file_handler = logging.FileHandler(PyTrinamicMicro.LOGGING_FILE_NAME)
         PyTrinamicMicro.__file_handler.setFormatter(formatter)
-        PyTrinamicMicro.logging_file_enabled = not(PyTrinamicMicro.logging_file_enabled)
-        PyTrinamicMicro.set_logging_file_enabled(not(PyTrinamicMicro.logging_file_enabled))
+        if(PyTrinamicMicro.logging_file_enabled):
+            PyTrinamicMicro.__logger.addHandler(PyTrinamicMicro.__file_handler)
