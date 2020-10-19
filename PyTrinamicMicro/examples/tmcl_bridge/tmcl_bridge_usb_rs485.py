@@ -11,6 +11,7 @@ Created on 08.10.2020
 @author: LK
 '''
 
+from PyTrinamicMicro import PyTrinamicMicro
 from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from PyTrinamicMicro.connections.rs485_tmcl_interface import rs485_tmcl_interface
 from PyTrinamicMicro.connections.usb_vcp_tmcl_interface import usb_vcp_tmcl_interface
