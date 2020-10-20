@@ -293,9 +293,9 @@ class tmcl_bootloader(object):
 
         self.__logger.info("Finalizing upload ...")
         # Write firmware length
-        self.__interface.send(TMCL_Command.BOOT_WRITE_LENGTH, 0, 0, hex_file.length)
+        self.write_length(hex_file.length)
         # Write firmware checksum
-        self.__interface.send(TMCL_Command.BOOT_WRITE_LENGTH, 1, 0, checksum)
+        self.write_checksum(checksum)
         self.__logger.info("Upload finalized.")
 
         self.__logger.info("Firmware updated.")
@@ -331,6 +331,16 @@ class tmcl_bootloader(object):
         if(not(type(address) == int)):
             raise ValueError("address is expected to be integer.")
         return self.__interface.send(TMCL_Command.BOOT_GET_CHECKSUM, 0, 0, address).value
+
+    def write_length(self, length):
+        if(not(type(length) == int)):
+            raise ValueError("length is expected to be integer.")
+        self.__interface.send(TMCL_Command.BOOT_WRITE_LENGTH, 0, 0, length)
+
+    def write_checksum(self, checksum):
+        if(not(type(checksum) == int)):
+            raise ValueError("checksum is expected to be integer.")
+        self.__interface.send(TMCL_Command.BOOT_WRITE_LENGTH, 1, 0, checksum)
 
     def start_application(self):
         # Request without reply
