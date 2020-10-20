@@ -54,7 +54,7 @@ class PyTrinamicMicro(object):
 
     @staticmethod
     def script(identifier):
-        return compile(open(PyTrinamicMicro.__MAP_SCRIPT.get(identifier)).read(), "<string>", "exec")
+        return compile(open(PyTrinamicMicro.__MAP_SCRIPT.get(identifier.lower())).read(), "<string>", "exec")
 
     @staticmethod
     def set_logging_console_enabled(enabled):
