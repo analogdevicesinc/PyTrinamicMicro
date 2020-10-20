@@ -27,7 +27,7 @@ class ihex(object):
         self.relative = 0
         self.__logger = logging.getLogger(self.__module__)
 
-    def parse(self):
+    def parse(self, verify=True):
         extendedAddress = 0
         segmentAddress  = 0
         for lineNumber, line in enumerate(self.__file, 1):
@@ -38,15 +38,16 @@ class ihex(object):
                 self.__logger.debug("Line {}: No record, continuing.".format(lineNumber))
                 continue
 
-            # CHKSUM validation
-            # All Bytes summed together modulo 256 have to be 0
-            self.__logger.debug("Verifying checksum ...")
-            checksum = 0
-            for i in range(1, len(line)-1, 2):
-                checksum = checksum + int(line[i:i+2], 16)
-            if checksum % 256 != 0:
-                raise ValueError("Line {}: Invalid Checksum.".format(lineNumber))
-            self.__logger.debug("Line {}: Checksum OK.".format(lineNumber))
+            if(verify):
+                # CHKSUM validation
+                # All Bytes summed together modulo 256 have to be 0
+                self.__logger.debug("Verifying checksum ...")
+                checksum = 0
+                for i in range(1, len(line)-1, 2):
+                    checksum = checksum + int(line[i:i+2], 16)
+                if checksum % 256 != 0:
+                    raise ValueError("Line {}: Invalid Checksum.".format(lineNumber))
+                self.__logger.debug("Line {}: Checksum OK.".format(lineNumber))
 
             # Read the fields of the entry
             rec_len      = int(line[1:3], 16)
@@ -57,19 +58,20 @@ class ihex(object):
                 rec_len, rec_address, rec_type, rec_data
             ))
 
-            self.__logger.debug("Line {}: Verifying RECLEN ...".format(lineNumber))
-            # RECLEN validation
-            # Total characters:
-            #     1: RECORD MARK
-            #     2: RECLEN
-            #     4: LOAD OFFSET
-            #     2: RECTYPE
-            #     RECLEN*2: DATA / INFO
-            #     2: CHKSUM
-            #     1: \n
-            if 1 + 2 + 4 + 2 + (rec_len*2) + 2 + 1 != len(line):
-                raise ValueError("Line {}: Invalid record length. (rec_len = {}, len = {})".format(lineNumber, rec_len, len(line)))
-            self.__logger.debug("Line {}: RECLEN OK.".format(lineNumber))
+            if(verify):
+                self.__logger.debug("Line {}: Verifying RECLEN ...".format(lineNumber))
+                # RECLEN validation
+                # Total characters:
+                #     1: RECORD MARK
+                #     2: RECLEN
+                #     4: LOAD OFFSET
+                #     2: RECTYPE
+                #     RECLEN*2: DATA / INFO
+                #     2: CHKSUM
+                #     1: \n
+                if 1 + 2 + 4 + 2 + (rec_len*2) + 2 + 1 != len(line):
+                    raise ValueError("Line {}: Invalid record length. (rec_len = {}, len = {})".format(lineNumber, rec_len, len(line)))
+                self.__logger.debug("Line {}: RECLEN OK.".format(lineNumber))
 
             ### Record type distinction
             self.__logger.debug("Line {}: Distinguish RECTYPE ...".format(lineNumber))
@@ -207,15 +209,18 @@ class tmcl_bootloader(object):
 
         self.__logger.info("Memory addressing verified.")
 
-    def update_firmware(self, file, start=False, checksum_error=True):
+    def update_firmware(self, file, start=False, checksum_error=True, verify_hex=True, verify_bootloader=True):
         self.__logger.info("Updating firmware ...")
 
         hex_file = ihex(file)
-        hex_file.parse()
+        self.__logger.info("Parsing hex file ...")
+        hex_file.parse(verify=verify_hex)
+        self.__logger.info("Hex file parsed.")
 
-        self.__logger.info("Verifying firmware ...")
-        self.verify(hex_file)
-        self.__logger.info("Firmware verified.")
+        if(verify_bootloader):
+            self.__logger.info("Verifying firmware ...")
+            self.verify(hex_file)
+            self.__logger.info("Firmware verified.")
 
         self.__logger.info("Getting memory parameters ...")
         mem_page_size = self.get_page_size()
