@@ -122,8 +122,8 @@ class ihex(object):
         self.seek(0)
         self.__logger.info("Parsed {} lines.".format(lineNumber))
 
-        self.__logger.info("Start address: relative 0x{0:08X}, absolute 0x{1:08X}.".format(self.start_address - self.relative, self.start_address))
-        self.__logger.info("End address: relative 0x{0:08X}, absolute 0x{1:08X}.".format(self.end_address - self.relative, self.end_address))
+        self.__logger.info("Start address: relative 0x{:08X}, absolute 0x{:08X}.".format(self.start_address - self.relative, self.start_address))
+        self.__logger.info("End address: relative 0x{:08X}, absolute 0x{:08X}.".format(self.end_address - self.relative, self.end_address))
         self.__logger.info("Length: 0x{0:08X}.".format(self.length))
         self.__logger.info("Checksum: 0x{0:08X}.".format(self.checksum))
 
@@ -162,17 +162,18 @@ class tmcl_bootloader(object):
         found = re.search("\d\d\d\dB\d\d\d", bootloader_version)
         if found:
             pattern = found.group(0)[0:4] + "V\d\d\d"
-            self.__logger.debug("Bootloader pattern: {}.".format(pattern))
+            self.__logger.debug("Firmware version pattern: {}.".format(pattern))
         else:
             found = re.search("\d\d\dB\d\.\d\d", bootloader_version)
             if found:
                 pattern = found.group(0)[0:3] + "V\d\.\d\d"
-                self.__logger.debug("Bootloader pattern: {}.".format(pattern))
+                self.__logger.debug("Firmware version pattern: {}.".format(pattern))
             else:
                 self.__logger.warning("get_version returned invalid answer for bootloader version: {}.".format(bootloader_version))
                 skip_version_scan = True
 
         if(not(skip_version_scan)):
+            self.__logger.info("Scanning for firmware version pattern {} ...".format(pattern))
             # Read 2 records, since firmware version string can be overlapping between 2 records
             record = [hex_file.read_record(), hex_file.read_record()]
             while((record[0] is not None) and (record[1] is not None)):
@@ -201,11 +202,11 @@ class tmcl_bootloader(object):
 
         # Check if the page size is a power of two
         if not(((self.__mem_page_size & (self.__mem_page_size - 1)) == 0) and self.__mem_page_size != 0):
-            raise ValueError("Page size of module is not a power of two. Page size: {0:X}.".format(self.__mem_page_size))
+            raise ValueError("Page size of module is not a power of two. Page size: {:X}.".format(self.__mem_page_size))
 
         # Check if the start addresses match
         if hex_file.start_address != self.__mem_start_address:
-            raise ValueError("Start address of firmware (0x{0:08X}) does not match start address of bootloader (0x{1:08X}).".format(hex_file.start_address, self.__mem_start_address))
+            raise ValueError("Start address of firmware (0x{:08X}) does not match start address of bootloader (0x{:08X}).".format(hex_file.start_address, self.__mem_start_address))
 
         self.__logger.info("Memory addressing verified.")
 
@@ -243,9 +244,9 @@ class tmcl_bootloader(object):
                         page = math.floor(address / self.__mem_page_size) * self.__mem_page_size
                         offset = address + i - page
                         if page != current_page:
-                            self.__logger.info("Writing page {0:08X} ...".format(current_page))
+                            self.__logger.info("Writing page 0x{:08X} ...".format(current_page))
                             self.__interface.send(TMCL_Command.BOOT_WRITE_PAGE, 0, 0, current_page)
-                            self.__logger.info("Page {0:08X} written.".format(current_page))
+                            self.__logger.info("Page 0x{:08X} written.".format(current_page))
                             current_page = page
                             current_page_dirty = False
                         self.__interface.send(TMCL_Command.BOOT_WRITE_BUFFER, (offset >> 2) % 256, ((offset >> 2) >> 8) % 256, struct.unpack("<I", bytearray(record[(i+3):(i+7)]))[0])
@@ -259,14 +260,14 @@ class tmcl_bootloader(object):
             record = hex_file.read_record()
         # If the last page didn't get written yet, write it
         if current_page_dirty:
-            self.__logger.info("Writing page {0:08X} ...".format(current_page))
+            self.__logger.info("Writing page 0x{:08X} ...".format(current_page))
             self.__interface.send(TMCL_Command.BOOT_WRITE_PAGE, 0, 0, current_page)
-            self.__logger.info("Page {0:08X} written.".format(current_page))
+            self.__logger.info("Page 0x{:08X} written.".format(current_page))
         self.__logger.info("Firmware flashed.")
 
         self.__logger.info("Comparing checksums ...")
         # Checksum verification
-        self.__logger.debug("Read checksum at address {0:08X} ...".format(self.__mem_start_address + hex_file.length - 1))
+        self.__logger.debug("Read checksum at address 0x{:08X} ...".format(self.__mem_start_address + hex_file.length - 1))
         checksum = 0
         for i in range(0, 3):
             reply = self.__interface.send(TMCL_Command.BOOT_GET_CHECKSUM, 0, 0, self.__mem_start_address + hex_file.length - 1)
@@ -275,7 +276,7 @@ class tmcl_bootloader(object):
                 checksum = hex_file.checksum
                 break
             else:
-                self.__logger.warning("Checksums do not match. Retrying. (Hex file: 0x{0:08X}, Firmware: 0x{1:08X})".format(hex_file.checksum, reply.value))
+                self.__logger.warning("Checksums do not match. Retrying. (Hex file: 0x{:08X}, Firmware: 0x{:08X})".format(hex_file.checksum, reply.value))
                 checksum = reply.value
                 time.sleep(1.0)
         else:
