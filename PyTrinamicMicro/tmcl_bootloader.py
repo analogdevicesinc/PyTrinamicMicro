@@ -209,7 +209,7 @@ class tmcl_bootloader(object):
 
         self.__logger.info("Memory addressing verified.")
 
-    def update_firmware(self, file, start=False):
+    def update_firmware(self, file, start=False, checksum_error=True):
         self.__logger.info("Updating firmware ...")
 
         hex_file = ihex(file)
@@ -220,13 +220,13 @@ class tmcl_bootloader(object):
         self.__logger.info("Firmware verified.")
 
         self.__logger.info("Erasing old firmware ...")
-        reply = self.__interface.send(TMCL_Command.BOOT_ERASE_ALL, 0, 0, 0)
+        self.__interface.send_request(TMCL_Request(self.__module_id, TMCL_Command.BOOT_ERASE_ALL, 0, 0, 0))
+        time.sleep(5.0)
         self.__logger.info("Old firmware erased.")
 
         self.__logger.info("Flashing new firmware ...")
         # Calculate the starting page
         current_page = math.floor(hex_file.start_address / self.__mem_page_size) * self.__mem_page_size
-        self.__logger.info("Writing page {0:08X} ...".format(current_page))
         # Store the internal page buffer state
         current_page_dirty  = False
         record = hex_file.read_record()
@@ -242,14 +242,14 @@ class tmcl_bootloader(object):
                     for i in range(0, record[0], 4):
                         page = math.floor(address / self.__mem_page_size) * self.__mem_page_size
                         offset = address + i - page
-                        self.__interface.send(TMCL_Command.BOOT_WRITE_BUFFER, math.floor(offset/4) % 256, math.floor(math.floor(offset/4) / 256), struct.unpack("<I", bytearray(record[(i+3):(i+7)]))[0])
-                        current_page_dirty = True
                         if page != current_page:
                             self.__logger.info("Writing page {0:08X} ...".format(current_page))
                             self.__interface.send(TMCL_Command.BOOT_WRITE_PAGE, 0, 0, current_page)
                             self.__logger.info("Page {0:08X} written.".format(current_page))
                             current_page = page
                             current_page_dirty = False
+                        self.__interface.send(TMCL_Command.BOOT_WRITE_BUFFER, (offset >> 2) % 256, ((offset >> 2) >> 8) % 256, struct.unpack("<I", bytearray(record[(i+3):(i+7)]))[0])
+                        current_page_dirty = True
             if record[2] == 2:
                 # Type: Extended Segment Address Record
                 segmentAddress = struct.unpack(">H", bytearray(record[3:-1]))[0] * 0x10
@@ -275,9 +275,14 @@ class tmcl_bootloader(object):
                 checksum = hex_file.checksum
                 break
             else:
-                self.__logger.error("Checksums do not match. Retrying. (Hex file: 0x{0:08X}, Firmware: 0x{1:08X})".format(hex_file.checksum, reply.value))
+                self.__logger.warning("Checksums do not match. Retrying. (Hex file: 0x{0:08X}, Firmware: 0x{1:08X})".format(hex_file.checksum, reply.value))
                 checksum = reply.value
                 time.sleep(1.0)
+        else:
+            if(checksum_error):
+                raise ValueError("Checksums did not match after 3 trials. Aborting firmware update.")
+            else:
+                self.__logger.warning("Checksums did not match after 3 trials. Writing received checksum 0x{0:08X}.".format(checksum))
         self.__logger.info("Checksums compared.")
 
         self.__logger.info("Finalizing upload ...")

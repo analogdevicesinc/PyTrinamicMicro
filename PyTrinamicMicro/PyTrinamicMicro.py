@@ -37,7 +37,8 @@ class PyTrinamicMicro(object):
         "tmcl_bridge_usb_rs485": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_bridge_usb_rs485.py",
         "tmcl_bridge_usb_uart": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_bridge_usb_uart.py",
         "tmcl_slave_uart": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_slave_uart.py",
-        "tmcl_slave_usb": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_slave_usb.py"
+        "tmcl_slave_usb": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_slave_usb.py",
+        "fw_update_can": "PyTrinamicMicro/examples/firmware_update/fw_update_can.py"
     }
 
     # Private variables
