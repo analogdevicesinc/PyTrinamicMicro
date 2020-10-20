@@ -147,9 +147,6 @@ class tmcl_bootloader(object):
     def __init__(self, interface, module_id=None):
         self.__interface = interface
         self.__module_id = module_id
-        self.__mem_page_size = 0
-        self.__mem_start_address = 0
-        self.__mem_size = 0
         self.__logger = logging.getLogger(self.__module__)
 
     def verify(self, hex_file):
@@ -193,20 +190,20 @@ class tmcl_bootloader(object):
         self.__logger.info("Verifying memory addressing ...")
 
         # Get the memory parameters
-        reply = self.__interface.send(TMCL_Command.BOOT_GET_INFO, 0, 0, 0)
-        self.__mem_page_size = reply.value
-        reply = self.__interface.send(TMCL_Command.BOOT_GET_INFO, 1, 0, 0)
-        self.__mem_start_address = reply.value
-        reply = self.__interface.send(TMCL_Command.BOOT_GET_INFO, 2, 0, 0)
-        self.__mem_size = reply.value
+        mem_page_size = self.get_page_size()
+        mem_start_address = self.get_start_address()
+        mem_size = self.get_memory_size()
+        self.__logger.debug("Page size: 0x{:X}.".format(mem_page_size))
+        self.__logger.debug("Start address: 0x{:X}.".format(mem_start_address))
+        self.__logger.debug("Memory size: 0x{:X}.".format(mem_size))
 
         # Check if the page size is a power of two
-        if not(((self.__mem_page_size & (self.__mem_page_size - 1)) == 0) and self.__mem_page_size != 0):
-            raise ValueError("Page size of module is not a power of two. Page size: {:X}.".format(self.__mem_page_size))
+        if not(((mem_page_size & (mem_page_size - 1)) == 0) and mem_page_size != 0):
+            raise ValueError("Page size of module is not a power of two. Page size: {:X}.".format(mem_page_size))
 
-        # Check if the start addresses match
-        if hex_file.start_address != self.__mem_start_address:
-            raise ValueError("Start address of firmware (0x{:08X}) does not match start address of bootloader (0x{:08X}).".format(hex_file.start_address, self.__mem_start_address))
+        # Check if the start addresses matchs
+        if hex_file.start_address != mem_start_address:
+            raise ValueError("Start address of firmware (0x{:08X}) does not match start address of bootloader (0x{:08X}).".format(hex_file.start_address, mem_start_address))
 
         self.__logger.info("Memory addressing verified.")
 
@@ -220,14 +217,22 @@ class tmcl_bootloader(object):
         self.verify(hex_file)
         self.__logger.info("Firmware verified.")
 
+        self.__logger.info("Getting memory parameters ...")
+        mem_page_size = self.get_page_size()
+        mem_start_address = self.get_start_address()
+        mem_size = self.get_memory_size()
+        self.__logger.info("Page size: 0x{:X}.".format(mem_page_size))
+        self.__logger.info("Start address: 0x{:X}.".format(mem_start_address))
+        self.__logger.info("Memory size: 0x{:X}.".format(mem_size))
+        self.__logger.info("Got memory parameters.")
+
         self.__logger.info("Erasing old firmware ...")
-        self.__interface.send_request(TMCL_Request(self.__module_id, TMCL_Command.BOOT_ERASE_ALL, 0, 0, 0))
-        time.sleep(5.0)
+        self.erase_firmware()
         self.__logger.info("Old firmware erased.")
 
         self.__logger.info("Flashing new firmware ...")
         # Calculate the starting page
-        current_page = math.floor(hex_file.start_address / self.__mem_page_size) * self.__mem_page_size
+        current_page = math.floor(hex_file.start_address / mem_page_size) * mem_page_size
         # Store the internal page buffer state
         current_page_dirty  = False
         record = hex_file.read_record()
@@ -241,15 +246,15 @@ class tmcl_bootloader(object):
                     address = extendedAddress + segmentAddress + record[1]
                     address -= hex_file.relative
                     for i in range(0, record[0], 4):
-                        page = math.floor(address / self.__mem_page_size) * self.__mem_page_size
+                        page = math.floor(address / mem_page_size) * mem_page_size
                         offset = address + i - page
                         if page != current_page:
                             self.__logger.info("Writing page 0x{:08X} ...".format(current_page))
-                            self.__interface.send(TMCL_Command.BOOT_WRITE_PAGE, 0, 0, current_page)
+                            self.write_page(current_page)
                             self.__logger.info("Page 0x{:08X} written.".format(current_page))
                             current_page = page
                             current_page_dirty = False
-                        self.__interface.send(TMCL_Command.BOOT_WRITE_BUFFER, (offset >> 2) % 256, ((offset >> 2) >> 8) % 256, struct.unpack("<I", bytearray(record[(i+3):(i+7)]))[0])
+                        self.write_buffer(offset, struct.unpack("<I", bytearray(record[(i+3):(i+7)]))[0])
                         current_page_dirty = True
             if record[2] == 2:
                 # Type: Extended Segment Address Record
@@ -261,23 +266,23 @@ class tmcl_bootloader(object):
         # If the last page didn't get written yet, write it
         if current_page_dirty:
             self.__logger.info("Writing page 0x{:08X} ...".format(current_page))
-            self.__interface.send(TMCL_Command.BOOT_WRITE_PAGE, 0, 0, current_page)
+            self.write_page(current_page)
             self.__logger.info("Page 0x{:08X} written.".format(current_page))
         self.__logger.info("Firmware flashed.")
 
         self.__logger.info("Comparing checksums ...")
         # Checksum verification
-        self.__logger.debug("Read checksum at address 0x{:08X} ...".format(self.__mem_start_address + hex_file.length - 1))
+        self.__logger.debug("Read checksum at address 0x{:08X} ...".format(mem_start_address + hex_file.length - 1))
         checksum = 0
         for i in range(0, 3):
-            reply = self.__interface.send(TMCL_Command.BOOT_GET_CHECKSUM, 0, 0, self.__mem_start_address + hex_file.length - 1)
-            if(reply.value == hex_file.checksum):
+            value = self.read_checksum(mem_start_address + hex_file.length - 1)
+            if(value == hex_file.checksum):
                 self.__logger.info("Checksums match.")
                 checksum = hex_file.checksum
                 break
             else:
-                self.__logger.warning("Checksums do not match. Retrying. (Hex file: 0x{:08X}, Firmware: 0x{:08X})".format(hex_file.checksum, reply.value))
-                checksum = reply.value
+                self.__logger.warning("Checksums do not match. Retrying. (Hex file: 0x{:08X}, Firmware: 0x{:08X})".format(hex_file.checksum, value))
+                checksum = value
                 time.sleep(1.0)
         else:
             if(checksum_error):
@@ -299,5 +304,34 @@ class tmcl_bootloader(object):
             self.__logger.info("Starting application ...")
             self.start_application()
 
+    def erase_firmware(self, delay=5.0):
+        self.__interface.send_request(TMCL_Request(self.__module_id, TMCL_Command.BOOT_ERASE_ALL, 0, 0, 0))
+        time.sleep(delay)
+
+    def get_page_size(self):
+        return self.__interface.send(TMCL_Command.BOOT_GET_INFO, 0, 0, 0).value
+
+    def get_start_address(self):
+        return self.__interface.send(TMCL_Command.BOOT_GET_INFO, 1, 0, 0).value
+
+    def get_memory_size(self):
+        return self.__interface.send(TMCL_Command.BOOT_GET_INFO, 2, 0, 0).value
+
+    def write_buffer(self, offset, data):
+        if(not(type(offset) == type(data) == int)):
+            raise ValueError("offset, data are expected to be integers.")
+        self.__interface.send(TMCL_Command.BOOT_WRITE_BUFFER, (offset >> 2) % 256, ((offset >> 2) >> 8) % 256, data)
+
+    def write_page(self, page):
+        if(not(type(page) == int)):
+            raise ValueError("page is expected to be integer.")
+        self.__interface.send(TMCL_Command.BOOT_WRITE_PAGE, 0, 0, page)
+
+    def read_checksum(self, address):
+        if(not(type(address) == int)):
+            raise ValueError("address is expected to be integer.")
+        return self.__interface.send(TMCL_Command.BOOT_GET_CHECKSUM, 0, 0, address).value
+
     def start_application(self):
+        # Request without reply
         self.__interface.send_request(TMCL_Request(self.__module_id, TMCL_Command.BOOT_START_APPL, 0, 0, 0))
