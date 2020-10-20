@@ -27,10 +27,13 @@ def clean_pytrinamicmicro():
 def clean_lib():
     logger.info("Cleaning libraries ...")
 
-    # Currently only logging is used
     logger.info("Cleaning logging ...")
     shutil.rmtree(os.path.join(args.path[0], "logging"), ignore_errors=True)
     logger.info("logging cleaned.")
+
+    logger.info("Cleaning argparse ...")
+    shutil.rmtree(os.path.join(args.path[0], "argparse"), ignore_errors=True)
+    logger.info("argparse cleaned.")
 
     logger.info("Libraries cleaned.")
 
@@ -61,10 +64,13 @@ def install_lib():
 
     logger.info("Installing libraries ...")
 
-    # Currently only logging is used
     logger.info("Installing logging ...")
     shutil.copytree("pycopy-lib/logging/logging", os.path.join(args.path[0], "logging"))
     logger.info("logging installed.")
+
+    logger.info("Installing argparse ...")
+    shutil.copytree("pycopy-lib/argparse/argparse", os.path.join(args.path[0], "argparse"))
+    logger.info("argparse installed.")
 
     logger.info("Libraries installed.")
 

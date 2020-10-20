@@ -12,11 +12,11 @@ from pyb import UART
 
 class uart_tmcl_interface(tmcl_interface, tmcl_host_interface):
 
-    def __init__(self, id=3, baudrate=9600, hostID=2, moduleID=1, debug=False):
+    def __init__(self, port=3, baudrate=9600, hostID=2, moduleID=1, debug=False):
         tmcl_interface.__init__(self, hostID, moduleID, debug)
         tmcl_host_interface.__init__(self, hostID, moduleID, debug)
 
-        self.__uart = UART(id, baudrate)
+        self.__uart = UART(port, baudrate)
         self.__uart.init(baudrate=baudrate, bits=8, parity=None, stop=1, timeout=10000, timeout_char=10000)
 
     def __enter__(self):
@@ -62,4 +62,4 @@ class uart_tmcl_interface(tmcl_interface, tmcl_host_interface):
 
     @staticmethod
     def list():
-        return []
+        return [2, 3, 4]

@@ -25,7 +25,8 @@ class CanModeOff(CanMode):
 
 class can_tmcl_interface(tmcl_interface, tmcl_host_interface):
 
-    def __init__(self, can_mode=CanModeNormal(), hostID=2, moduleID=1, debug=False):
+    def __init__(self, port=2, data_rate=None, hostID=2, moduleID=1, debug=False, can_mode=CanModeNormal()):
+        del data_rate
         tmcl_interface.__init__(self, hostID, moduleID, debug)
         tmcl_host_interface.__init__(self, hostID, moduleID, debug)
 
@@ -37,7 +38,7 @@ class can_tmcl_interface(tmcl_interface, tmcl_host_interface):
 
         CAN.initfilterbanks(14)
 
-        self.__can = CAN(2, CAN.NORMAL)
+        self.__can = CAN(port, CAN.NORMAL)
         # PCLK1 = 42 MHz, Module_Bitrate = 1000 kBit/s
         # With prescaler = 3, bs1 = 11, bs2 = 2
         # Sample point at 85.7 %, accuracy = 100 %
@@ -114,4 +115,4 @@ class can_tmcl_interface(tmcl_interface, tmcl_host_interface):
 
     @staticmethod
     def list():
-        return []
+        return [2]

@@ -12,8 +12,8 @@ from pyb import Pin
 
 class rs485_tmcl_interface(uart_tmcl_interface):
 
-    def __init__(self, baudrate=9600, hostID=2, moduleID=1, debug=False):
-        super().__init__(4, baudrate, hostID, moduleID, debug)
+    def __init__(self, port=4, baudrate=9600, hostID=2, moduleID=1, debug=False):
+        super().__init__(port, baudrate, hostID, moduleID, debug)
 
         self.__dir = Pin(Pin.cpu.B1, Pin.OUT_PP)
 
@@ -30,3 +30,7 @@ class rs485_tmcl_interface(uart_tmcl_interface):
         self.__dir.value(buf)
 
         return read
+
+    @staticmethod
+    def list():
+        return [4]

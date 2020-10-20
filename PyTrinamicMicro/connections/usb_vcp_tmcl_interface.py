@@ -12,11 +12,12 @@ from pyb import USB_VCP
 
 class usb_vcp_tmcl_interface(tmcl_interface, tmcl_host_interface):
 
-    def __init__(self, id=0, hostID=2, moduleID=1, debug=False):
+    def __init__(self, port=0, data_rate=None, hostID=2, moduleID=1, debug=False):
+        del data_rate
         tmcl_interface.__init__(self, hostID, moduleID, debug)
         tmcl_host_interface.__init__(self, hostID, moduleID, debug)
 
-        self.__vcp = USB_VCP(id)
+        self.__vcp = USB_VCP(port)
         self.__vcp.init()
         self.__vcp.setinterrupt(-1)
 
@@ -68,4 +69,4 @@ class usb_vcp_tmcl_interface(tmcl_interface, tmcl_host_interface):
 
     @staticmethod
     def list():
-        return []
+        return [0]
