@@ -209,7 +209,7 @@ class tmcl_bootloader(object):
 
         self.__logger.info("Memory addressing verified.")
 
-    def update_firmware(self, file, start=False, checksum_error=True, verify_hex=True, verify_bootloader=True):
+    def update_firmware(self, file, start=False, limit_extended_address=0x1FFF0000, checksum_error=True, verify_hex=True, verify_bootloader=True):
         self.__logger.info("Updating firmware ...")
 
         hex_file = ihex(file)
@@ -247,7 +247,7 @@ class tmcl_bootloader(object):
             ### Record type distinction
             if record[2] == 0:
                 # Type: Data Record
-                if(extendedAddress < 1048576):
+                if(extendedAddress < limit_extended_address):
                     address = extendedAddress + segmentAddress + record[1]
                     address -= hex_file.relative
                     for i in range(0, record[0], 4):
