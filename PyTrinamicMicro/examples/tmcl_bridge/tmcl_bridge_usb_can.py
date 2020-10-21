@@ -50,6 +50,7 @@ while(not(bridge.process(request_callback=request_callback, reply_callback=reply
 
 logger.info("Closing interfaces ...")
 host.close()
+module.close()
 logger.info("Interfaces closed.")
 
 logger.info("Bridge stopped.")

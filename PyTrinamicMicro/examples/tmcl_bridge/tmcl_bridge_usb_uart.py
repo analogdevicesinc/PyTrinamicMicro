@@ -31,7 +31,6 @@ bridge = TMCL_Bridge(host, module)
 logger.info("Interfaces initialized.")
 
 while(not(bridge.process())):
-    #logger.debug("Processed request.")
     pass
 
 logger.info("Closing interfaces ...")
