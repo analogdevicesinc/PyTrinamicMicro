@@ -28,6 +28,8 @@ class PyTrinamicMicro(object):
         "buttons_leds": "PyTrinamicMicro/examples/io/buttons_leds.py",
         "tmcm1161_rs232_rotate": "PyTrinamicMicro/examples/modules/TMCM1161/TMCM1161_RS232_rotate.py",
         "tmcm1161_rs485_rotate": "PyTrinamicMicro/examples/modules/TMCM1161/TMCM1161_RS485_rotate.py",
+        "tmcm1240_can_rotate": "PyTrinamicMicro/examples/modules/TMCM1240/TMCM1240_CAN_rotate.py",
+        "tmcm1240_rs485_rotate": "PyTrinamicMicro/examples/modules/TMCM1240/TMCM1240_RS485_rotate.py",
         "tmcm1270_rotate": "PyTrinamicMicro/examples/modules/TMCM1270/TMCM1270_rotate.py",
         "tmcl_bridge_uart_can": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_bridge_uart_can.py",
         "tmcl_bridge_uart_rs232": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_bridge_uart_rs232.py",
