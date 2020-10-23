@@ -25,10 +25,10 @@ class CanModeOff(CanMode):
 
 class can_tmcl_interface(tmcl_interface, tmcl_host_interface):
 
-    def __init__(self, port=2, data_rate=None, hostID=2, moduleID=1, debug=False, can_mode=CanModeNormal()):
+    def __init__(self, port=2, data_rate=None, host_id=2, module_id=1, debug=False, can_mode=CanModeNormal()):
         del data_rate
-        tmcl_interface.__init__(self, hostID, moduleID, debug)
-        tmcl_host_interface.__init__(self, hostID, moduleID, debug)
+        tmcl_interface.__init__(self, host_id, module_id, debug)
+        tmcl_host_interface.__init__(self, host_id, module_id, debug)
 
         self.__silent = Pin(Pin.cpu.B14, Pin.OUT_PP)
         self.__mode = can_mode
@@ -43,7 +43,7 @@ class can_tmcl_interface(tmcl_interface, tmcl_host_interface):
         # With prescaler = 3, bs1 = 11, bs2 = 2
         # Sample point at 85.7 %, accuracy = 100 %
         self.__can.init(CAN.NORMAL, prescaler=3, bs1=11, bs2=2, auto_restart=True)
-        self.__can.setfilter(0, CAN.LIST16, 0, (hostID, hostID, hostID, hostID))
+        self.__can.setfilter(0, CAN.LIST16, 0, (host_id, host_id, host_id, host_id))
         self.__can.rxcallback(0, self.__callback_recv)
 
     def __enter__(self):
