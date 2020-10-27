@@ -18,7 +18,7 @@ class ConnectionManagerMicro(ConnectionManager):
         return ConnectionManager.from_args(ConnectionManagerMicro, args)
 
     @staticmethod
-    def get_available_interfaces(self):
+    def get_available_interfaces():
         return {
             "can_tmcl": can_tmcl_interface,
             "rs232_tmcl": rs232_tmcl_interface,

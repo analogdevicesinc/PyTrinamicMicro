@@ -114,5 +114,5 @@ class can_tmcl_interface(tmcl_interface, tmcl_host_interface):
         return False
 
     @staticmethod
-    def list():
-        return [2]
+    def available_ports():
+        return set([2])

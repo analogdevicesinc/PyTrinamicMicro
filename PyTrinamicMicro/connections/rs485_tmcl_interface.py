@@ -32,5 +32,5 @@ class rs485_tmcl_interface(uart_tmcl_interface):
         return read
 
     @staticmethod
-    def list():
-        return [4]
+    def available_ports():
+        return set([4])

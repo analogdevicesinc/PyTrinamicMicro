@@ -14,5 +14,5 @@ class rs232_tmcl_interface(uart_tmcl_interface):
         super().__init__(port, data_rate, host_id, module_id, debug)
 
     @staticmethod
-    def list():
-        return [2]
+    def available_ports():
+        return set([2])

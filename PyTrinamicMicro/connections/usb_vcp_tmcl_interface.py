@@ -68,5 +68,5 @@ class usb_vcp_tmcl_interface(tmcl_interface, tmcl_host_interface):
         return False
 
     @staticmethod
-    def list():
-        return [0]
+    def available_ports():
+        return set([0])

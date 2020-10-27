@@ -16,8 +16,8 @@ class uart_tmcl_interface(tmcl_interface, tmcl_host_interface):
         tmcl_interface.__init__(self, host_id, module_id, debug)
         tmcl_host_interface.__init__(self, host_id, module_id, debug)
 
-        self.__uart = UART(port, baudrate)
-        self.__uart.init(baudrate=baudrate, bits=8, parity=None, stop=1, timeout=10000, timeout_char=10000)
+        self.__uart = UART(port, data_rate)
+        self.__uart.init(baudrate=data_rate, bits=8, parity=None, stop=1, timeout=10000, timeout_char=10000)
 
     def __enter__(self):
         return self
@@ -61,5 +61,5 @@ class uart_tmcl_interface(tmcl_interface, tmcl_host_interface):
         return False
 
     @staticmethod
-    def list():
-        return [2, 3, 4]
+    def available_ports():
+        return set([2, 3, 4])
