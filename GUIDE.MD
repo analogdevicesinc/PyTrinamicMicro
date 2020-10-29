@@ -36,6 +36,8 @@ Refer to the MicroPython docs on how to do this.
 It should already get detected as mass storage device, with the SD card mounted directly to the root. 
 4. Invoke the installation script `install.py`. For full installation, run the command `python install.py D:\`,
 assuming `python` is properly linked to your python binary and `D:\` is the installation directory.
+As installing incrementally is not supported atm, invoke `python install.py D:\ -c` if you have already an installation
+in that target directory.
 5. Soft-Reset MicroPython by restarting it, or, if it is a microcontroller, hard-reset the microcontroller
 with a `low` signal on the `NRST` pin, or power cycle.
 6. If the target system is a microcontroller, connect to the corresponding serial port via terminal.
