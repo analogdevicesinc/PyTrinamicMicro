@@ -11,11 +11,11 @@ from PyTrinamicMicro.platforms.motionpy.connections.rs485_tmcl_interface import 
 from PyTrinamicMicro.platforms.motionpy.connections.uart_tmcl_interface import uart_tmcl_interface
 from PyTrinamicMicro.platforms.motionpy.connections.usb_vcp_tmcl_interface import usb_vcp_tmcl_interface
 
-class ConnectionManagerMicro(ConnectionManager):
+class ConnectionManagerMP(ConnectionManager):
 
     @staticmethod
     def from_args(args=None):
-        return ConnectionManager.from_args(ConnectionManagerMicro, args)
+        return ConnectionManager.from_args(ConnectionManagerMP, args)
 
     @staticmethod
     def get_available_interfaces():
