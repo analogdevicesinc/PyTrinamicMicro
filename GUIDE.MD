@@ -5,9 +5,9 @@ For a MicroPython specific guide, please refer to [docs.micropython.org](https:/
 
 ## Getting started
 
-### TMCL-Master-Python preparation
+### TMCM-0960-MotionPy preparation
 
-This is on how to prepare the TMCL-Master-Python reference board.  
+This is on how to prepare the TMCM-0960-MotionPy reference board.  
 If you are not using this, refer to the preparation guide of your target system and skip the
 following steps.
 
