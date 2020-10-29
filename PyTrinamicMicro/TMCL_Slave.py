@@ -20,7 +20,7 @@ class TMCL_Slave_Status(object):
 
 class TMCL_Slave(TMCM_Python):
 
-    def __init__(self, module_address=1, host_address=2, version_string="0021V100", build_version=0):
+    def __init__(self, module_address=1, host_address=2, version_string="0960V100", build_version=0):
         self.__module_address = module_address
         self.__host_address = host_address
         self.__version_string = version_string
@@ -158,11 +158,11 @@ class TMCL_Slave(TMCM_Python):
 
 class TMCL_Slave_Main(TMCL_Slave):
 
-    def __init__(self, module_address=1, host_address=2, version_string="0021V100", build_version=0):
+    def __init__(self, module_address=1, host_address=2, version_string="0960V100", build_version=0):
         super().__init__(module_address, host_address, version_string, build_version)
 
 
 class TMCL_Slave_Bridge(TMCL_Slave):
 
-    def __init__(self, module_address=3, host_address=2, version_string="0022V100", build_version=0):
+    def __init__(self, module_address=3, host_address=2, version_string="0960V100", build_version=0):
         super().__init__(module_address, host_address, version_string, build_version)
