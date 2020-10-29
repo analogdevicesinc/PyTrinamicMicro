@@ -79,6 +79,18 @@ def install_pytrinamic(path, clean):
     shutil.copytree(os.path.join("PyTrinamic", "PyTrinamic"), os.path.join(path, "PyTrinamic"))
     logger.info("PyTrinamic installed.")
 
+def install_motionpy_boot(path, clean):
+    del clean
+    logger.info("Installing MotionPy boot ...")
+    shutil.copy(os.path.join("PyTrinamicMicro", "platforms", "motionpy", "boot.py"), path)
+    logger.info("MotionPy boot installed.")
+
+def install_motionpy_main(path, clean):
+    del clean
+    logger.info("Installing MotionPy main ...")
+    shutil.copy(os.path.join("PyTrinamicMicro", "platforms", "motionpy", "main.py"), path)
+    logger.info("MotionPy main installed.")
+
 def install_motionpy(path, clean):
     if(clean):
         clean_motionpy(path)
@@ -136,6 +148,8 @@ SELECTION_MAP = {
     "pytrinamicmicro-full": install_pytrinamicmicro,
     "pytrinamicmicro-api": install_pytrinamicmicro_api,
     "motionpy": install_motionpy,
+    "motionpy-boot": install_motionpy_boot,
+    "motionpy-main": install_motionpy_main,
     "lib": install_lib
 }
 
@@ -145,7 +159,7 @@ parser = argparse.ArgumentParser(description='Install the required files in corr
 parser.add_argument('path', metavar="path", type=str, nargs=1, default=".",
     help='Path to the root of the SD card (default: %(default)s).')
 parser.add_argument('-s', "--selection", dest='selection', action='store', nargs="*", type=str.lower,
-    choices=['full', 'pytrinamic', 'pytrinamicmicro', 'pytrinamicmicro-full', "pytrinamicmicro-api", "motionpy", 'lib'],
+    choices=SELECTION_MAP.keys(),
     default=['full'], help='Install selection (default: %(default)s).')
 parser.add_argument('-c', "--clean", dest='clean', action='store_true', help='Clean module target directory before installing it there (default: %(default)s).')
 
