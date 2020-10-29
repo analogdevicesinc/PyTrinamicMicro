@@ -1,5 +1,10 @@
 '''
-Act as TMCL slave over UART.
+Act as TMCL slave over USB.
+
+Pitfall:
+stdout redirection is impossible in micropython at the moment.
+By default, stdout-writing functions will write to VCP and interfere with connection.
+Therefore, do not use stdout-writing functions (print, ...) here or turn them off while using VCP.
 
 Created on 06.10.2020
 
@@ -7,7 +12,7 @@ Created on 06.10.2020
 '''
 
 # Imports
-from PyTrinamicMicro.connections.uart_tmcl_interface import uart_tmcl_interface
+from PyTrinamicMicro.platforms.motionpy.connections.usb_vcp_tmcl_interface import usb_vcp_tmcl_interface
 from PyTrinamicMicro.TMCL_Slave import TMCL_Slave_Main
 import struct
 import logging
@@ -21,12 +26,12 @@ BUILD_VERSION = 0
 
 # Prepare Logger
 logger = logging.getLogger(__name__)
-logger.info("TMCL Slave on UART interface")
+logger.info("TMCL Slave on USB_VCP interface")
 
 # Main program
 
 logger.info("Initializing interface ...")
-con = uart_tmcl_interface()
+con = usb_vcp_tmcl_interface()
 slave = TMCL_Slave_Main(MODULE_ADDRESS, HOST_ADDRESS, VERSION_STRING, BUILD_VERSION)
 logger.info("Interface initialized.")
 

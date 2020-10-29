@@ -7,8 +7,8 @@ Created on 14.10.2020
 '''
 
 from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
-from PyTrinamicMicro.connections.rs485_tmcl_interface import rs485_tmcl_interface
-from PyTrinamicMicro.connections.uart_tmcl_interface import uart_tmcl_interface
+from PyTrinamicMicro.platforms.motionpy.connections.rs485_tmcl_interface import rs485_tmcl_interface
+from PyTrinamicMicro.platforms.motionpy.connections.uart_tmcl_interface import uart_tmcl_interface
 from PyTrinamicMicro.TMCL_Bridge import TMCL_Bridge
 import logging
 

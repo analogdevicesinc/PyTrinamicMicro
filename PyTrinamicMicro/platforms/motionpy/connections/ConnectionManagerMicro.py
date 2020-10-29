@@ -5,11 +5,11 @@ Created on 20.10.2020
 '''
 
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamicMicro.connections.can_tmcl_interface import can_tmcl_interface
-from PyTrinamicMicro.connections.rs232_tmcl_interface import rs232_tmcl_interface
-from PyTrinamicMicro.connections.rs485_tmcl_interface import rs485_tmcl_interface
-from PyTrinamicMicro.connections.uart_tmcl_interface import uart_tmcl_interface
-from PyTrinamicMicro.connections.usb_vcp_tmcl_interface import usb_vcp_tmcl_interface
+from PyTrinamicMicro.platforms.motionpy.connections.can_tmcl_interface import can_tmcl_interface
+from PyTrinamicMicro.platforms.motionpy.connections.rs232_tmcl_interface import rs232_tmcl_interface
+from PyTrinamicMicro.platforms.motionpy.connections.rs485_tmcl_interface import rs485_tmcl_interface
+from PyTrinamicMicro.platforms.motionpy.connections.uart_tmcl_interface import uart_tmcl_interface
+from PyTrinamicMicro.platforms.motionpy.connections.usb_vcp_tmcl_interface import usb_vcp_tmcl_interface
 
 class ConnectionManagerMicro(ConnectionManager):
 

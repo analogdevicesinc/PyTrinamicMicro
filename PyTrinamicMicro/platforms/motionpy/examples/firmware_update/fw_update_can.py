@@ -6,7 +6,7 @@ Created on 19.10.2020
 @author: LK
 '''
 
-from PyTrinamicMicro.connections.can_tmcl_interface import can_tmcl_interface
+from PyTrinamicMicro.platforms.motionpy.connections.can_tmcl_interface import can_tmcl_interface
 from PyTrinamicMicro.tmcl_bootloader import *
 import logging
 import time

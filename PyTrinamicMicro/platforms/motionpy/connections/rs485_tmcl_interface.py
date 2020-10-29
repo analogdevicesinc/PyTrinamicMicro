@@ -5,7 +5,7 @@ Created on 05.10.2020
 '''
 
 
-from PyTrinamicMicro.connections.uart_tmcl_interface import uart_tmcl_interface
+from PyTrinamicMicro.platforms.motionpy.connections.uart_tmcl_interface import uart_tmcl_interface
 from pyb import UART
 from pyb import Pin
 

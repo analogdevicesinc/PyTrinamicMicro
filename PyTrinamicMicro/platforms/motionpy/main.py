@@ -8,10 +8,10 @@ Created on 12.10.2020
 '''
 
 # Imports
-from PyTrinamicMicro import PyTrinamicMicro as PTM
+from PyTrinamicMicro.platforms.motionpy.MotionPy import MotionPy as MP
 
 # Initialize main configuration
-PTM.init()
+MP.init()
 
 # Execute example script
-exec(PTM.script("null"))
+exec(MP.script("null"))

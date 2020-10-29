@@ -7,7 +7,7 @@ Created on 05.10.2020
 '''
 
 from PyTrinamic.modules.TMCM1161.TMCM_1161 import TMCM_1161
-from PyTrinamicMicro.connections.rs485_tmcl_interface import rs485_tmcl_interface
+from PyTrinamicMicro.platforms.motionpy.connections.rs485_tmcl_interface import rs485_tmcl_interface
 import time
 
 con = rs485_tmcl_interface()

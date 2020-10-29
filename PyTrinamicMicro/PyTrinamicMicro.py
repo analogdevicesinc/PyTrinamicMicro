@@ -21,28 +21,6 @@ class PyTrinamicMicro(object):
     logging_console_enabled = LOGGING_CONSOLE_ENABLED
     logging_file_enabled = LOGGING_FILE_ENABLED
 
-    # Private constants
-    __MAP_SCRIPT = {
-        "null": "PyTrinamicMicro/examples/null.py",
-        "blinky": "PyTrinamicMicro/examples/io/blinky.py",
-        "buttons_leds": "PyTrinamicMicro/examples/io/buttons_leds.py",
-        "tmcm1161_rs232_rotate": "PyTrinamicMicro/examples/modules/TMCM1161/TMCM1161_RS232_rotate.py",
-        "tmcm1161_rs485_rotate": "PyTrinamicMicro/examples/modules/TMCM1161/TMCM1161_RS485_rotate.py",
-        "tmcm1240_can_rotate": "PyTrinamicMicro/examples/modules/TMCM1240/TMCM1240_CAN_rotate.py",
-        "tmcm1240_rs485_rotate": "PyTrinamicMicro/examples/modules/TMCM1240/TMCM1240_RS485_rotate.py",
-        "tmcm1270_rotate": "PyTrinamicMicro/examples/modules/TMCM1270/TMCM1270_rotate.py",
-        "tmcl_bridge_uart_can": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_bridge_uart_can.py",
-        "tmcl_bridge_uart_rs232": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_bridge_uart_rs232.py",
-        "tmcl_bridge_uart_rs485": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_bridge_uart_rs485.py",
-        "tmcl_bridge_usb_can": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_bridge_usb_can.py",
-        "tmcl_bridge_usb_rs232": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_bridge_usb_rs232.py",
-        "tmcl_bridge_usb_rs485": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_bridge_usb_rs485.py",
-        "tmcl_bridge_usb_uart": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_bridge_usb_uart.py",
-        "tmcl_slave_uart": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_slave_uart.py",
-        "tmcl_slave_usb": "PyTrinamicMicro/examples/tmcl_bridge/tmcl_slave_usb.py",
-        "fw_update_can": "PyTrinamicMicro/examples/firmware_update/fw_update_can.py"
-    }
-
     # Private variables
     __logger = None
     __console_handler = None
@@ -55,8 +33,8 @@ class PyTrinamicMicro(object):
         PyTrinamicMicro.__logger.debug("PyTrinamicMicro initialized.")
 
     @staticmethod
-    def script(identifier):
-        return compile(open(PyTrinamicMicro.__MAP_SCRIPT.get(identifier.lower())).read(), "<string>", "exec")
+    def script(child, identifier):
+        return compile(open(child._MAP_SCRIPT.get(identifier.lower())).read(), "<string>", "exec")
 
     @staticmethod
     def set_logging_console_enabled(enabled):

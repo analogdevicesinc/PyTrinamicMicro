@@ -7,7 +7,7 @@ Created on 05.10.2020
 '''
 
 from PyTrinamic.modules.TMCM1270.TMCM_1270 import TMCM_1270
-from PyTrinamicMicro.connections.can_tmcl_interface import can_tmcl_interface
+from PyTrinamicMicro.platforms.motionpy.connections.can_tmcl_interface import can_tmcl_interface
 from pyb import Pin
 import time
 
