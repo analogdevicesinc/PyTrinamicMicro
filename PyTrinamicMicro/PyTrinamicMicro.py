@@ -37,6 +37,10 @@ class PyTrinamicMicro(object):
         return compile(open(child._MAP_SCRIPT.get(identifier.lower())).read(), "<string>", "exec")
 
     @staticmethod
+    def test(child, identifier):
+        return compile(open(child._MAP_TEST.get(identifier.lower())).read(), "<string>", "exec")
+
+    @staticmethod
     def set_logging_console_enabled(enabled):
         if(enabled and not(PyTrinamicMicro.logging_console_enabled)):
             PyTrinamicMicro.__logger.addHandler(PyTrinamicMicro.__console_handler)
