@@ -14,6 +14,7 @@ class MotionPy(PyTrinamicMicro):
         "null": "PyTrinamicMicro/platforms/motionpy/examples/null.py",
         "blinky": "PyTrinamicMicro/platforms/motionpy/examples/io/blinky.py",
         "buttons_leds": "PyTrinamicMicro/platforms/motionpy/examples/io/buttons_leds.py",
+        "hc_sr04_multi_log": "PyTrinamicMicro/platforms/motionpy/examples/modules/hc_sr04_multi/hc_sr04_multi_log.py",
         "tmcm1161_rs232_rotate": "PyTrinamicMicro/platforms/motionpy/examples/modules/TMCM1161/TMCM1161_RS232_rotate.py",
         "tmcm1161_rs485_rotate": "PyTrinamicMicro/platforms/motionpy/examples/modules/TMCM1161/TMCM1161_RS485_rotate.py",
         "tmcm1240_can_rotate": "PyTrinamicMicro/platforms/motionpy/examples/modules/TMCM1240/TMCM1240_CAN_rotate.py",
