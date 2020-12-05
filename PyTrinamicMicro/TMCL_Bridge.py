@@ -8,7 +8,7 @@ from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from PyTrinamicMicro.TMCL_Slave import TMCL_Slave_Bridge
 from PyTrinamic.TMCL import TMCL_Command, TMCL_Request, TMCL_Reply
 import logging
-
+import time
 
 class TMCL_Bridge(object):
     '''
@@ -21,9 +21,9 @@ class TMCL_Bridge(object):
         host_id: host ID to be used in control mode.
     '''
 
-    def __init__(self, host_connection, module_connection, module_id=3, host_id=2):
+    def __init__(self, host_connection, module_connections, module_id=3, host_id=2):
         self.__host = host_connection
-        self.__module = module_connection
+        self.__modules = module_connections
         self.__slave = TMCL_Slave_Bridge(module_id, host_id)
         self.__logger = logging.getLogger(self.__module__)
 
@@ -46,11 +46,20 @@ class TMCL_Bridge(object):
                 self.__logger.debug("Request is not a control request. Passing through.")
                 if(request_callback):
                     request = request_callback(request)
-                reply = self.send_request(request)
-                self.__logger.debug("Passthrough reply ({}).".format(str(reply)))
-                if(reply_callback):
-                    reply = reply_callback(reply)
-                self.send_reply(reply)
+                for module in self.__modules:
+                    try:
+                        module.send_request_only(request)
+                    except:
+                        continue
+                time.sleep(0.1)
+                for module in self.__modules:
+                    if(module.data_available()):
+                        reply = module.receive_reply()
+                        self.__logger.debug("Passthrough reply ({}).".format(str(reply)))
+                        if(reply_callback):
+                            reply = reply_callback(reply)
+                        self.send_reply(reply)
+                        break
         return self.__slave.get_status().stop
 
     def receive_request(self):

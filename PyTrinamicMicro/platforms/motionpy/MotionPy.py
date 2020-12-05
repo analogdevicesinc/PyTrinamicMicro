@@ -29,6 +29,8 @@ class MotionPy(PyTrinamicMicro):
         "tmcl_bridge_usb_rs232": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_usb_rs232.py",
         "tmcl_bridge_usb_rs485": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_usb_rs485.py",
         "tmcl_bridge_usb_uart": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_usb_uart.py",
+        "tmcl_bridge_usb_x": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_usb_x.py",
+        "tmcl_bridge_uart_x": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_uart_x.py",
         "tmcl_slave_uart": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_slave_uart.py",
         "tmcl_slave_usb": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_slave_usb.py",
         "fw_update_can": "PyTrinamicMicro/platforms/motionpy/examples/firmware_update/fw_update_can.py"

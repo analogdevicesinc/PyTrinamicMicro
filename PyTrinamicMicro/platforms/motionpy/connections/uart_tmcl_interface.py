@@ -30,7 +30,7 @@ class uart_tmcl_interface(tmcl_interface, tmcl_host_interface):
         self.__uart.deinit()
         return 0;
 
-    def data_available(self, hostID, moduleID):
+    def data_available(self, hostID=None, moduleID=None):
         del hostID, moduleID
         return self.__uart.any()
 
