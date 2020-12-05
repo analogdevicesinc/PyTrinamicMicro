@@ -12,6 +12,7 @@ class MotionPy(PyTrinamicMicro):
 
     _MAP_SCRIPT = {
         "null": "PyTrinamicMicro/platforms/motionpy/examples/null.py",
+        "linear_distance": "PyTrinamicMicro/platforms/motionpy/examples/linear_distance.py",
         "blinky": "PyTrinamicMicro/platforms/motionpy/examples/io/blinky.py",
         "buttons_leds": "PyTrinamicMicro/platforms/motionpy/examples/io/buttons_leds.py",
         "hc_sr04_multi_log": "PyTrinamicMicro/platforms/motionpy/examples/modules/hc_sr04_multi/hc_sr04_multi_log.py",
