@@ -156,12 +156,6 @@ class TMCL_Slave(TMCM_Python):
         return reply
 
 
-class TMCL_Slave_Main(TMCL_Slave):
-
-    def __init__(self, module_address=1, host_address=2, version_string="0960V100", build_version=0):
-        super().__init__(module_address, host_address, version_string, build_version)
-
-
 class TMCL_Slave_Bridge(TMCL_Slave):
 
     def __init__(self, module_address=3, host_address=2, version_string="0960V100", build_version=0):

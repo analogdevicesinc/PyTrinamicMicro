@@ -18,7 +18,7 @@ class uart_ic_interface(object):
             stm.mem32[stm.GPIOB + stm.GPIO_OTYPER] |= (1 << 10) # Set open drain
             stm.mem32[stm.GPIOB + stm.GPIO_PUPDR] &= ~(1 << 21)
             stm.mem32[stm.GPIOB + stm.GPIO_PUPDR] &= ~(1 << 20) # Set nopull
-            stm.mem32[stm.USART3 + stm.USART_CR3] |= 0b1000 # set HDSEL
+            #stm.mem32[stm.USART3 + stm.USART_CR3] |= 0b1000 # set HDSEL
             stm.mem32[stm.GPIOB + stm.GPIO_PUPDR] &= ~(1 << 23)
             stm.mem32[stm.GPIOB + stm.GPIO_PUPDR] |= (1 << 22) # Set pullup
 
