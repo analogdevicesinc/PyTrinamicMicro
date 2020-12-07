@@ -23,12 +23,12 @@ class uart_ic_interface(object):
             stm.mem32[stm.GPIOB + stm.GPIO_PUPDR] |= (1 << 22) # Set pullup
 
     def send(self, buf):
-        print("send: {}".format(buf))
+        #print("send: {}".format(buf))
         self.__uart.write(buf)
         if(self.__single_wire):
             self.__uart.read(len(buf))
 
     def recv(self, nbytes):
         buf = self.__uart.read(nbytes)
-        print("recv: {}".format(buf))
+        #print("recv: {}".format(buf))
         return buf

@@ -20,9 +20,17 @@ sensor = hc_sr04_multi()
 logger.debug("hc_sr04_multi initialized.")
 
 logger.debug("Writing default registers ...")
-mc.writeRegister(0x10, 0x00071703)
-mc.writeRegister(0x6C, 0x000101D5)
-mc.writeRegister(0x70, 0x000500C8)
+mc.writeRegister(mc.registers.IHOLD_IRUN, 0x00071703)
+mc.writeRegister(mc.registers.CHOPCONF, 0x000101D5)
+mc.writeRegister(mc.registers.PWMCONF, 0x000500C8)
+
+mc.writeRegister(mc.registers.VSTART, 1000)
+mc.writeRegister(mc.registers.V1, 1000)
+mc.writeRegister(mc.registers.VSTOP, 1000)
+mc.writeRegister(mc.registers.AMAX, 1000)
+mc.writeRegister(mc.registers.A1, 1000)
+mc.writeRegister(mc.registers.DMAX, 1000)
+mc.writeRegister(mc.registers.D1, 1000)
 
 while(True):
     distance = sensor.distance(1)

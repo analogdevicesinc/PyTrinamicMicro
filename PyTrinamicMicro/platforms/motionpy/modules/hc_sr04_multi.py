@@ -39,7 +39,7 @@ class hc_sr04_multi(object):
 
     def __timeout(self, t):
         t.deinit()
-        print("timeout")
+        #print("timeout")
         self.__counter = 16800000
 
     def select_sensor(self, sensor):

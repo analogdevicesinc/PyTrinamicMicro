@@ -1,3 +1,4 @@
+*.mpy
 # Created by https://www.toptal.com/developers/gitignore/api/python,windows,linux,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,windows,linux,macos
 
@@ -205,4 +206,3 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/python,windows,linux,macos
-

@@ -11,6 +11,8 @@ import os
 import shutil
 import logging
 
+MPY_CROSS = "mpy-cross"
+
 # Initialize install logger
 
 logger = logging.getLogger(__name__)
@@ -72,34 +74,55 @@ def clean_full(path):
     clean_lib(path)
     logger.info("Cleaned.")
 
-def install_pytrinamic(path, clean):
+def compile_recursive(path):
+    for dirpath, dirnames, filenames in os.walk(path):
+        for filename in [f for f in filenames if f.endswith(".py")]:
+            current = os.path.join(dirpath, filename)
+            logger.info("Compiling {}".format(current))
+            os.system("{} {}".format(MPY_CROSS, current))
+
+def install_pytrinamic(path, compile, clean):
     if(clean):
         clean_pytrinamic(path)
+    base = os.path.join("PyTrinamic", "PyTrinamic")
     logger.info("Installing PyTrinamic ...")
-    shutil.copytree(os.path.join("PyTrinamic", "PyTrinamic"), os.path.join(path, "PyTrinamic"))
+    if(compile):
+        logger.info("Compiling PyTrinamic ...")
+        compile_recursive(base)
+        logger.info("PyTrinamic compiled.")
+    logger.info("Copying PyTrinamic ...")
+    shutil.copytree(base, os.path.join(path, "PyTrinamic"), ignore=shutil.ignore_patterns("*.py" if compile else "*.mpy"))
+    logger.info("PyTrinamic copied.")
     logger.info("PyTrinamic installed.")
 
-def install_motionpy_boot(path, clean):
+def install_motionpy_boot(path, compile, clean):
     del clean
     logger.info("Installing MotionPy boot ...")
     shutil.copy(os.path.join("PyTrinamicMicro", "platforms", "motionpy", "boot.py"), path)
     logger.info("MotionPy boot installed.")
 
-def install_motionpy_main(path, clean):
+def install_motionpy_main(path, compile, clean):
     del clean
     logger.info("Installing MotionPy main ...")
     shutil.copy(os.path.join("PyTrinamicMicro", "platforms", "motionpy", "main.py"), path)
     logger.info("MotionPy main installed.")
 
-def install_motionpy(path, clean):
+def install_motionpy(path, compile, clean):
     if(clean):
         clean_motionpy(path)
+    base = os.path.join("PyTrinamicMicro", "platforms", "motionpy")
     logger.info("Installing platform MotionPy ...")
     os.makedirs(os.path.join(path, "PyTrinamicMicro", "platforms"), exist_ok=True)
-    shutil.copytree(os.path.join("PyTrinamicMicro", "platforms", "motionpy"), os.path.join(path, "PyTrinamicMicro", "platforms", "motionpy"))
+    if(compile):
+        logger.info("Compiling MotionPy ...")
+        compile_recursive(base)
+        logger.info("MotionPy compiled.")
+    logger.info("Copying MotionPy ...")
+    shutil.copytree(base, os.path.join(path, "PyTrinamicMicro", "platforms", "motionpy"), ignore=shutil.ignore_patterns("*.py" if compile else "*.mpy"))
+    logger.info("MotionPy copied.")
     logger.info("MotionPy installed.")
 
-def install_pytrinamicmicro_api(path, clean):
+def install_pytrinamicmicro_api(path, compile, clean):
     if(clean):
         clean_pytrinamicmicro_api(path)
     logger.info("Installing PyTrinamicMicro API ...")
@@ -111,30 +134,51 @@ def install_pytrinamicmicro_api(path, clean):
     shutil.copy(os.path.join("PyTrinamicMicro", "TMCL_Slave.py"), os.path.join(path, "PyTrinamicMicro"))
     logger.info("PyTrinamicMicro API installed.")
 
-def install_pytrinamicmicro(path, clean):
+def install_pytrinamicmicro(path, compile, clean):
     if(clean):
         clean_pytrinamicmicro(path)
+    base = "PyTrinamicMicro"
     logger.info("Installing PyTrinamicMicro ...")
-    shutil.copytree("PyTrinamicMicro", os.path.join(path, "PyTrinamicMicro"))
+    if(compile):
+        logger.info("Compiling PyTrinamicMicro ...")
+        compile_recursive(base)
+        logger.info("PyTrinamicMicro compiled.")
+    logger.info("Copying PyTrinamicMicro ...")
+    shutil.copytree(base, os.path.join(path, "PyTrinamicMicro"), ignore=shutil.ignore_patterns("*.py" if compile else "*.mpy"))
+    logger.info("PyTrinamicMicro copied.")
     logger.info("PyTrinamicMicro installed.")
 
-def install_lib(path, clean):
+def install_lib(path, compile, clean):
     if(clean):
         clean_lib(path)
 
     logger.info("Installing libraries ...")
 
     logger.info("Installing logging ...")
-    shutil.copytree(os.path.join("pycopy-lib", "logging", "logging"), os.path.join(path, "logging"))
+    base = os.path.join("pycopy-lib", "logging", "logging")
+    if(compile):
+        logger.info("Compiling logging ...")
+        compile_recursive(base)
+        logger.info("logging compiled.")
+    logger.info("Copying logging ...")
+    shutil.copytree(os.path.join("pycopy-lib", "logging", "logging"), os.path.join(path, "logging"), ignore=shutil.ignore_patterns("*.py" if compile else "*.mpy"))
+    logger.info("logging copied.")
     logger.info("logging installed.")
 
     logger.info("Installing argparse ...")
-    shutil.copytree(os.path.join("pycopy-lib", "argparse", "argparse"), os.path.join(path, "argparse"))
+    base = os.path.join("pycopy-lib", "argparse", "argparse")
+    if(compile):
+        logger.info("Compiling argparse ...")
+        compile_recursive(base)
+        logger.info("argparse compiled.")
+    logger.info("Copying argparse ...")
+    shutil.copytree(os.path.join("pycopy-lib", "argparse", "argparse"), os.path.join(path, "argparse"), ignore=shutil.ignore_patterns("*.py" if compile else "*.mpy"))
+    logger.info("argparse copied.")
     logger.info("argparse installed.")
 
     logger.info("Libraries installed.")
 
-def install_full(path, clean):
+def install_full(path, compile, clean):
     logger.info("Installing full ...")
     install_pytrinamic(path, clean)
     install_pytrinamicmicro(path, clean)
@@ -162,12 +206,13 @@ parser.add_argument('-s', "--selection", dest='selection', action='store', nargs
     choices=SELECTION_MAP.keys(),
     default=['full'], help='Install selection (default: %(default)s).')
 parser.add_argument('-c', "--clean", dest='clean', action='store_true', help='Clean module target directory before installing it there (default: %(default)s).')
+parser.add_argument("--compile", dest='compile', action='store_true', help='Compile every module (default: %(default)s).')
 
 args = parser.parse_args()
 
 os.makedirs(args.path[0], exist_ok=True)
 
 for s in args.selection:
-    SELECTION_MAP.get(s)(args.path[0], args.clean)
+    SELECTION_MAP.get(s)(args.path[0], args.compile, args.clean)
 
 logger.info("Done.")
