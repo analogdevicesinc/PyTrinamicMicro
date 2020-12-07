@@ -27,7 +27,7 @@ logger.info("TMCL Bridge from USB to RS485")
 logger.info("Initializing interfaces ...")
 host = usb_vcp_tmcl_interface()
 module = rs485_tmcl_interface()
-bridge = TMCL_Bridge(host, module)
+bridge = TMCL_Bridge(host, [{"module":module}])
 logger.info("Interfaces initialized.")
 
 while(not(bridge.process())):

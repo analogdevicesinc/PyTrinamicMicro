@@ -34,10 +34,10 @@ def reply_callback(reply):
 logger.info("Initializing interfaces ...")
 host = uart_tmcl_interface()
 module = can_tmcl_interface()
-bridge = TMCL_Bridge(host, module)
+bridge = TMCL_Bridge(host, [{"module":module, "request_callback":request_callback, "reply_callback":reply_callback}])
 logger.info("Interfaces initialized.")
 
-while(not(bridge.process(request_callback=request_callback, reply_callback=reply_callback))):
+while(not(bridge.process())):
     pass
 
 logger.info("Closing interfaces ...")

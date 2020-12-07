@@ -25,11 +25,27 @@ import logging
 # Prepare Logger
 PyTrinamicMicro.set_logging_console_enabled(False)
 logger = logging.getLogger(__name__)
-logger.info("TMCL Bridge from USB to UART")
+logger.info("TMCL Bridge from USB to X")
+
+request_command = 0
+
+def request_callback(request):
+    global request_command
+    request_command = request.command
+    return request
+
+def reply_callback(reply):
+    if(request_command != TMCL_Command.GET_FIRMWARE_VERSION):
+        reply.calculate_checksum()
+    return reply
 
 logger.info("Initializing interfaces ...")
 host = usb_vcp_tmcl_interface()
-modules = [uart_tmcl_interface(), can_tmcl_interface(), rs232_tmcl_interface(), rs485_tmcl_interface()]
+modules = [{"module":uart_tmcl_interface()}, {
+    "module": can_tmcl_interface(),
+    "request_callback": request_callback,
+    "reply_callback": reply_callback
+}, {"module":rs232_tmcl_interface()}, {"module":rs485_tmcl_interface()}]
 bridge = TMCL_Bridge(host, modules)
 logger.info("Interfaces initialized.")
 

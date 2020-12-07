@@ -23,11 +23,27 @@ import logging
 
 # Prepare Logger
 logger = logging.getLogger(__name__)
-logger.info("TMCL Bridge from USB to UART")
+logger.info("TMCL Bridge from UART to X")
+
+request_command = 0
+
+def request_callback(request):
+    global request_command
+    request_command = request.command
+    return request
+
+def reply_callback(reply):
+    if(request_command != TMCL_Command.GET_FIRMWARE_VERSION):
+        reply.calculate_checksum()
+    return reply
 
 logger.info("Initializing interfaces ...")
 host = uart_tmcl_interface()
-modules = [can_tmcl_interface(debug=True), rs232_tmcl_interface(debug=True), rs485_tmcl_interface(debug=True)]
+modules = [{
+    "module": can_tmcl_interface(debug=True),
+    "request_callback": request_callback,
+    "reply_callback": reply_callback
+}, {"module":rs232_tmcl_interface(debug=True)}, {"module":rs485_tmcl_interface(debug=True)}]
 bridge = TMCL_Bridge(host, modules)
 logger.info("Interfaces initialized.")
 

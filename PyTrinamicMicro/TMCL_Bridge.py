@@ -27,7 +27,7 @@ class TMCL_Bridge(object):
         self.__slave = TMCL_Slave_Bridge(module_id, host_id)
         self.__logger = logging.getLogger(self.__module__)
 
-    def process(self, request_callback=None, reply_callback=None):
+    def process(self):
         '''
         1. Receive request from host
         2. Send request to module
@@ -44,23 +44,23 @@ class TMCL_Bridge(object):
                 self.send_reply(reply)
             else: # Passthrough request
                 self.__logger.debug("Request is not a control request. Passing through.")
-                if(request_callback):
-                    request = request_callback(request)
                 for module in self.__modules:
+                    if(module.get("request_callback")):
+                        request = module["request_callback"](request)
                     try:
-                        module.send_request_only(request)
+                        module["module"].send_request_only(request)
                     except:
                         continue
                 time.sleep(0.1)
                 for module in self.__modules:
-                    if(module.data_available()):
-                        reply = module.receive_reply()
+                    if(module["module"].data_available()):
+                        reply = module["module"].receive_reply()
                         self.__logger.debug("Passthrough reply ({}).".format(str(reply)))
-                        if(reply_callback):
-                            reply = reply_callback(reply)
+                        if(module.get("reply_callback")):
+                            reply = module["reply_callback"](reply)
                         self.send_reply(reply)
                         break
-        return self.__slave.get_status().stop
+        return self.__slave.status.stop
 
     def receive_request(self):
         return self.__host.receive_request()

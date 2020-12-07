@@ -19,7 +19,7 @@ logger.info("TMCL Bridge from UART to RS232")
 logger.info("Initializing interfaces ...")
 host = uart_tmcl_interface()
 module = rs232_tmcl_interface()
-bridge = TMCL_Bridge(host, module)
+bridge = TMCL_Bridge(host, [{"module":module}])
 logger.info("Interfaces initialized.")
 
 while(not(bridge.process())):
