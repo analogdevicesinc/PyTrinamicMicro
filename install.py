@@ -180,9 +180,9 @@ def install_lib(path, compile, clean):
 
 def install_full(path, compile, clean):
     logger.info("Installing full ...")
-    install_pytrinamic(path, clean)
-    install_pytrinamicmicro(path, clean)
-    install_lib(path, clean)
+    install_pytrinamic(path, compile, clean)
+    install_pytrinamicmicro(path, compile, clean)
+    install_lib(path, compile, clean)
     logger.info("Fully installed.")
 
 SELECTION_MAP = {
