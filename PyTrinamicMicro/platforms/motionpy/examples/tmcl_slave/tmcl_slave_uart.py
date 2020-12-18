@@ -30,7 +30,7 @@ con = uart_tmcl_interface()
 slave = TMCL_Slave_Main(MODULE_ADDRESS, HOST_ADDRESS, VERSION_STRING, BUILD_VERSION)
 logger.info("Interface initialized.")
 
-while(not(slave.get_status().stop)):
+while(not(slave.status.stop)):
     if(con.request_available()):
         logger.debug("Request available.")
         request = con.receive_request()
