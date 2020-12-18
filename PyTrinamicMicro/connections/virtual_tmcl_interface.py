@@ -25,8 +25,7 @@ class virtual_tmcl_interface(tmcl_interface, tmcl_host_interface):
         self.close()
 
     def close(self):
-        self.__uart.deinit()
-        return 0;
+        return 0
 
     def data_available(self, hostID=None, moduleID=None):
         del hostID, moduleID
