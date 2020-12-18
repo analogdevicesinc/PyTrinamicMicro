@@ -39,14 +39,29 @@ class Scheduler(object):
         return True
 
     @staticmethod
-    def __add_dates(first, second):
+    def add_dates(first, second):
+        maxes = (3000, 12, 31, 23, 23, 59, 59, 299)
         first = list(first)
+        a = 0
         for i in range(0, len(second)):
-            first[i] = first[i] + second[i]
+            if(first[i] + second[i] > maxes[i]):
+                first[i] = 0
+                a = 1
+                reverse = list(range(0, i))
+                reverse.reverse()
+                for j in reverse:
+                    if(first[j] + a > maxes[j]):
+                        first[j] = 0
+                    else:
+                        first[j] = first[j] + a
+                        a = 0
+                        break
+            else:
+                first[i] = first[i] + second[i]
         return tuple(first)
 
     @staticmethod
-    def __due(config, current):
+    def due(config, current):
         for i in range(0, len(config)):
             if(current[i] < config[i]):
                 return False
@@ -57,13 +72,13 @@ class Scheduler(object):
     def __tick(self, arg):
         current = RTC().datetime()
         for task in self.__tasks:
-            if(self.__due(task["datetime"], current)):
+            if(self.due(task["datetime"], current)):
                 self.__logger.debug("Task {} is due. Executing ...".format(task["id"]))
                 task["function"](*task["args"], **task["kwargs"])
                 if(self.__is_zero(task["interval"])):
                     self.__tasks.remove(task)
                 else:
-                    task["datetime"] = self.__add_dates(current, task["interval"])
+                    task["datetime"] = self.add_dates(current, task["interval"])
 
     def start(self):
         RTC().wakeup(self.__interval, self.__tick)
