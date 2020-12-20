@@ -24,6 +24,9 @@ def timeout(t):
     t.deinit()
     tout = True
 
+def real(ticks, prescaler, freq):
+    return ((ticks * (prescaler + 1)) / freq)
+
 results = []
 timer = Timer(2)
 
@@ -47,10 +50,14 @@ while(len(results) < N_SAMPLES):
     tout = False
 
 logger.info("Calculating statistical values.")
-avg = sum(results) / len(results)
-std_dev = math.sqrt(sum([((i - avg)**2) for i in results]) / (len(results) - 1))
-avg_real = (avg * (timer.prescaler() + 1) * 1000) / (pyb.freq()[2] * 2) # ms
-std_dev_real = (std_dev * (timer.prescaler() + 1) * 1000) / (pyb.freq()[2] * 2) # ms
+min_ticks = min(results)
+max_ticks = max(results)
+avg_ticks = sum(results) / len(results)
+std_dev_ticks = math.sqrt(sum([((i - avg_ticks)**2) for i in results]) / (len(results) - 1))
+min_real = real(min_ticks, timer.prescaler(), pyb.freq()[2] * 2) * 1000 # ms
+max_real = real(max_ticks, timer.prescaler(), pyb.freq()[2] * 2) * 1000 # ms
+avg_real = real(avg_ticks, timer.prescaler(), pyb.freq()[2] * 2) * 1000 # ms
+std_dev_real = real(std_dev_ticks, timer.prescaler(), pyb.freq()[2] * 2) * 1000 # ms
 
-logger.info("Mean: {} ticks, Standard deviation: {} ticks".format(avg, std_dev))
-logger.info("Mean: {} ms, Standard deviation: {} ms".format(avg_real, std_dev_real))
+logger.info("Minimum: {} ticks, Maximum: {} ticks, Mean: {} ticks, Standard deviation: {} ticks".format(min_ticks, max_ticks, avg_ticks, std_dev_ticks))
+logger.info("Minimum: {} ms, Maximum: {} ms, Mean: {} ms, Standard deviation: {} ms".format(min_real, max_real, avg_real, std_dev_real))
