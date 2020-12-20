@@ -9,6 +9,7 @@ Created on 19.12.2020
 from PyTrinamicMicro.platforms.motionpy.connections.can_tmcl_interface import can_tmcl_interface
 from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply
 from pyb import Timer
+import pyb
 import logging
 import math
 
@@ -19,7 +20,7 @@ N_SAMPLES = 1000
 tout = False
 
 def timeout(t):
-    global counter
+    global tout
     t.deinit()
     tout = True
 
@@ -48,8 +49,8 @@ while(len(results) < N_SAMPLES):
 logger.info("Calculating statistical values.")
 avg = sum(results) / len(results)
 std_dev = math.sqrt(sum([((i - avg)**2) for i in results]) / (len(results) - 1))
-avg_real = (avg * 0.2) / 16800 # ms
-std_dev_real = (std_dev * 0.2) / 16800 # ms
+avg_real = (avg * (timer.prescaler() + 1) * 1000) / (pyb.freq()[2] * 2) # ms
+std_dev_real = (std_dev * (timer.prescaler() + 1) * 1000) / (pyb.freq()[2] * 2) # ms
 
 logger.info("Mean: {} ticks, Standard deviation: {} ticks".format(avg, std_dev))
 logger.info("Mean: {} ms, Standard deviation: {} ms".format(avg_real, std_dev_real))
