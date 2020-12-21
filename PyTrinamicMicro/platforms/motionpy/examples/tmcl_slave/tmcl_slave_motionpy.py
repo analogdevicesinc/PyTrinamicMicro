@@ -15,10 +15,10 @@ Created on 06.10.2020
 from PyTrinamicMicro.platforms.motionpy.connections.usb_vcp_tmcl_interface import usb_vcp_tmcl_interface
 from PyTrinamicMicro.platforms.motionpy.tmcl_slave_motionpy import tmcl_slave_motionpy
 from PyTrinamicMicro.platforms.motionpy.modules.linear_distance import linear_distance
-from PyTrinamic.ic.TMC5130.TMC5130 import TMC5130
+from PyTrinamic.modules.TMCM1240.TMCM_1240 import TMCM_1240
 from PyTrinamicMicro.platforms.motionpy.modules.hc_sr04_multi import hc_sr04_multi
 from PyTrinamicMicro.platforms.motionpy.modules.MCP23S08 import MCP23S08
-from PyTrinamicMicro.platforms.motionpy.connections.uart_ic_interface import uart_ic_interface
+from PyTrinamicMicro.platforms.motionpy.connections.rs485_tmcl_interface import rs485_tmcl_interface
 from PyTrinamicMicro import PyTrinamicMicro
 import struct
 import logging
@@ -33,10 +33,8 @@ lin = None
 logger.info("Initializing interface ...")
 con = usb_vcp_tmcl_interface()
 slave = tmcl_slave_motionpy()
-mc = TMC5130(connection=uart_ic_interface(single_wire=True), comm=TMC5130.COMM_UART)
-mc.writeRegister(0x10, 0x00071703)
-mc.writeRegister(0x6C, 0x000101D5)
-mc.writeRegister(0x70, 0x000500C8)
+module = TMCM_1240(rs485_tmcl_interface())
+module.setMaxAcceleration(0, 100000)
 logger.info("Interface initialized.")
 
 while(not(slave.status.stop)):
@@ -51,7 +49,7 @@ while(not(slave.status.stop)):
         con.send_reply(reply)
     # Handle flags
     if(slave.status.lin[0]):
-        lin = linear_distance(hc_sr04_multi(avg_window=100), 1, mc)
+        lin = linear_distance(hc_sr04_multi(avg_window=100), 1, module)
         slave.status.lin[0] = False
     if(slave.status.homing[0]):
         slave.ap[0][slave.APs.linear_homing_status] = lin.homing(
@@ -75,7 +73,7 @@ while(not(slave.status.stop)):
     if(lin):
         slave.ap[0][slave.APs.linear_position_step_actual] = lin.position_step()
         slave.ap[0][slave.APs.linear_position_absolute_actual] = int(lin.position_absolute() * 0xFFFF)
-        slave.ap[0][slave.APs.linear_velocity_actual] = lin.mc.readRegister(lin.mc.registers.VACTUAL)
+        slave.ap[0][slave.APs.linear_velocity_actual] = lin.module.getActualVelocity(0)
         if(slave.ap[0][slave.APs.linear_homing_status] == slave.ENUMs.HOMING_STATUS_DONE):
             slave.ap[0][slave.APs.linear_position_relative_actual] = int(lin.position_relative() * 0xFFFFFFFF)
             slave.ap[0][slave.APs.linear_bound_low_step] = lin.bounds[0][1]

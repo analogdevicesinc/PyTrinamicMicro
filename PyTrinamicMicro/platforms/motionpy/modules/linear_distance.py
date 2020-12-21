@@ -12,13 +12,13 @@ class linear_distance(object):
         self.__length = 1000
         self.bounds = []
 
-    def homing_direct(self, velocity=10000, margin=0.1, margin_hyst=0.5):
+    def homing_direct(self, velocity=10000, margin=0.2, margin_hyst=0.5):
         self.bounds = []
         self.module.rotate(0, velocity)
         distance = self.__sensor.distance(self.__sensor_index)
         while((margin * self.__length) < distance < ((1.0 - margin) * self.__length)):
             distance = self.__sensor.distance(self.__sensor_index)
-            #print(distance)
+            print(distance)
         self.module.stop(0)
         position = self.module.getActualPosition(0)
         self.bounds.append((distance, position))
@@ -26,15 +26,17 @@ class linear_distance(object):
         if(((margin - (margin * margin_hyst)) * self.__length) < distance < ((margin + (margin * margin_hyst)) * self.__length)): # lower
             while(distance < ((1.0 - margin) * self.__length)):
                 distance = self.__sensor.distance(self.__sensor_index)
+                print(distance)
         else: # higher
             while((margin * self.__length) < distance):
                 distance = self.__sensor.distance(self.__sensor_index)
+                print(distance)
         self.module.stop(0)
         position = self.module.getActualPosition(0)
         self.bounds.append((distance, position))
         self.bounds.sort(key=lambda x: x[0])
 
-    def homing(self, homing_status, length=1000, velocity=10000, acceleration=1000, margin=0.1, margin_hyst=0.5):
+    def homing(self, homing_status, length=1000, velocity=10000, acceleration=1000, margin=0.2, margin_hyst=0.5):
         if(homing_status == TMCM0960.ENUMs.HOMING_STATUS_INIT):
             self.bounds = []
             #print(velocity)
@@ -64,7 +66,7 @@ class linear_distance(object):
 
     def position_step(self, position=None, velocity=10000, acceleration=1000):
         if(position is None):
-            return self.mc.readRegister(self.mc.registers.XACTUAL, signed=True)
+            return self.module.getActualPosition(0)
         else:
             self.module.setMaxAcceleration(0, acceleration)
             self.module.setMaxVelocity(0, velocity)
