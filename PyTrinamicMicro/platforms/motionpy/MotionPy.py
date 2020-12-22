@@ -41,7 +41,7 @@ class MotionPy(PyTrinamicMicro):
         "can_version": "PyTrinamicMicro/platforms/motionpy/tests/interfaces/can_version.py",
         "rs232_version": "PyTrinamicMicro/platforms/motionpy/tests/interfaces/rs232_version.py",
         "rs485_version": "PyTrinamicMicro/platforms/motionpy/tests/interfaces/rs485_version.py",
-        "version": "PyTrinamicMicro/platforms/motionpy/tests/interfaces/version.py",
+        "version": "PyTrinamicMicro/platforms/motionpy/tests/interfaces/version.py"
     }
 
     @staticmethod
