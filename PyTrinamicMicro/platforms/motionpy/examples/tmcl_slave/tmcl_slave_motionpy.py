@@ -33,7 +33,7 @@ lin = None
 logger.info("Initializing interface ...")
 con = usb_vcp_tmcl_interface()
 slave = tmcl_slave_motionpy()
-module = TMCM_1240(rs485_tmcl_interface())
+module = TMCM_1240(rs485_tmcl_interface(data_rate=115200))
 module.setMaxAcceleration(0, 100000)
 logger.info("Interface initialized.")
 

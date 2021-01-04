@@ -76,7 +76,7 @@ class linear_distance(object):
         if(position is None):
             return self.__sensor.distance(self.__sensor_index)
         else:
-            self.position_step(int(self.bounds[0][0] + (((self.bounds[1][1] - self.bounds[0][1]) * (position - self.bounds[0][0])) / (self.bounds[1][0] - self.bounds[0][0]))),
+            self.position_step(int((((position - self.bounds[0][0]) * (self.bounds[1][1] - self.bounds[0][1])) / (self.bounds[1][0] - self.bounds[0][0])) + self.bounds[0][1]),
                 velocity, acceleration)
 
     def position_relative(self, position=None, velocity=None, acceleration=None):
