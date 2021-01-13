@@ -13,7 +13,8 @@ Created on 06.10.2020
 
 # Imports
 from PyTrinamicMicro.platforms.motionpy.connections.usb_vcp_tmcl_interface import usb_vcp_tmcl_interface
-from PyTrinamicMicro.TMCL_Slave import TMCL_Slave_Main
+from PyTrinamicMicro.TMCL_Slave import TMCL_Slave_Bridge
+from PyTrinamicMicro import PyTrinamicMicro
 import struct
 import logging
 
@@ -25,6 +26,7 @@ VERSION_STRING = MODULE_ID_STRING + "V100"
 BUILD_VERSION = 0
 
 # Prepare Logger
+PyTrinamicMicro.set_logging_console_enabled(False)
 logger = logging.getLogger(__name__)
 logger.info("TMCL Slave on USB_VCP interface")
 
@@ -32,10 +34,10 @@ logger.info("TMCL Slave on USB_VCP interface")
 
 logger.info("Initializing interface ...")
 con = usb_vcp_tmcl_interface()
-slave = TMCL_Slave_Main(MODULE_ADDRESS, HOST_ADDRESS, VERSION_STRING, BUILD_VERSION)
+slave = TMCL_Slave_Bridge(MODULE_ADDRESS, HOST_ADDRESS, VERSION_STRING, BUILD_VERSION)
 logger.info("Interface initialized.")
 
-while(not(slave.get_status().stop)):
+while(not(slave.status.stop)):
     if(con.request_available()):
         logger.debug("Request available.")
         request = con.receive_request()
