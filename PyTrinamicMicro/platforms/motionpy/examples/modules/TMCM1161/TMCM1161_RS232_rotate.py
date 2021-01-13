@@ -13,8 +13,8 @@ import time
 con = rs232_tmcl_interface()
 module = TMCM_1161(con)
 
-module.rotate(1000)
+module.rotate(0, 1000)
 time.sleep(5)
-module.stop()
+module.stop(0)
 
 con.close()
