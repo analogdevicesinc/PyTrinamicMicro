@@ -10,7 +10,7 @@ from PyTrinamicMicro.platforms.motionpy.connections.uart_tmcl_interface import u
 
 class rs232_tmcl_interface(uart_tmcl_interface):
 
-    def __init__(self, port=2, data_rate=9600, host_id=2, module_id=1, debug=False):
+    def __init__(self, port=2, data_rate=115200, host_id=2, module_id=1, debug=False):
         super().__init__(port, data_rate, host_id, module_id, debug)
 
     @staticmethod

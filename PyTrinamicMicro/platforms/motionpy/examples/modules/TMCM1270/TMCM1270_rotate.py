@@ -17,9 +17,9 @@ en = Pin(Pin.cpu.A4, Pin.OUT_PP)
 
 en.low()
 
-module.rotate(1000)
+module.rotate(0, 1000)
 time.sleep(5)
-module.stop()
+module.stop(0)
 
 en.high()
 

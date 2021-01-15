@@ -22,7 +22,7 @@ class tmcl_slave_motionpy(TMCL_Slave):
         super().__init__(module_address, host_address, version_string, build_version)
         self.status = tmcl_slave_motionpy_status()
         self.ap = [{
-            self.APs.linear_homing_margin: int(0.1 * 0xFFFFFFFF),
+            self.APs.linear_homing_margin: int(0.2 * 0xFFFFFFFF),
             self.APs.linear_homing_hyst: int(0.5 * 0xFFFFFFFF),
             self.APs.linear_homing_status: self.ENUMs.HOMING_STATUS_IDLE,
             self.APs.linear_bound_low_step: 0,
@@ -36,10 +36,10 @@ class tmcl_slave_motionpy(TMCL_Slave):
             self.APs.linear_position_absolute_actual: 0,
             self.APs.linear_position_relative_actual: 0,
             self.APs.linear_velocity_actual: 0,
-            self.APs.linear_velocity_position: 100000,
-            self.APs.linear_velocity_homing: 100000,
-            self.APs.linear_acceleration_position: 1000,
-            self.APs.linear_acceleration_homing: 1000,
+            self.APs.linear_velocity_position: 500000,
+            self.APs.linear_velocity_homing: 500000,
+            self.APs.linear_acceleration_position: 100000,
+            self.APs.linear_acceleration_homing: 1000000,
             self.APs.linear_length: int(1000 * 0xFFFF)
         }]
         self.__logger = logging.getLogger(self.__module__)
