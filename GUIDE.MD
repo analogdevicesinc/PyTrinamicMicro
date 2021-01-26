@@ -56,10 +56,10 @@ So make sure to use that whenever possible.
 
 ## Execute example scripts
 
-Example scripts can be executed from the Python shell directly using the `PTM` class, i.e.
+Example scripts can be executed from the Python shell directly using the `MP` class, i.e.
 
 ```Python
-exec(PTM.script("blinky"))
+exec(MP.script("blinky"))
 ```
 
 The script identifier (e.g. "blinky") is mapped internally to a corresponding script.
