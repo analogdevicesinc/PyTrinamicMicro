@@ -45,11 +45,11 @@ This might be `COMX` for Windows (determine *X* in the Device Manager), or `/dev
 (determine *X* in the mounted devices in `/dev`) for Linux.
 7. Now, being in the Python shell, any MicroPython compatible statement can be interpreted.
 The PyTrinamicMicro package can be used. 
-Examples can be executed by e.g. `exec(PTM.script("blinky"))`.
+Examples can be executed by e.g. `exec(MP.script("blinky"))`.
 
 ## Remarks
 
-In the default environment the class `PTM` (short for *PyTrinamicMicro*) is defined.  
+In the default environment the class `MP` (short for *PyTrinamicMicro*) is defined.  
 All of its members can be accessed statically and globally, especially from the Python shell.  
 All global configuration is intended to be done in this class and its methods.
 So make sure to use that whenever possible.
