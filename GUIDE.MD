@@ -38,12 +38,13 @@ It should already get detected as mass storage device, with the SD card mounted 
 assuming `python` is properly linked to your python binary and `D:\` is the installation directory.
 As installing incrementally is not supported atm, invoke `python install.py D:\ -c` if you have already an installation
 in that target directory.
-5. Soft-Reset MicroPython by restarting it, or, if it is a microcontroller, hard-reset the microcontroller
+5. Move the `main.py` and `boot.py` scripts for the desired platform manually out of `PyTrinamicMicro/platforms/x` to the platforms root.
+6. Soft-Reset MicroPython by restarting it, or, if it is a microcontroller, hard-reset the microcontroller
 with a `low` signal on the `NRST` pin, or power cycle.
-6. If the target system is a microcontroller, connect to the corresponding serial port via terminal.
+7. If the target system is a microcontroller, connect to the corresponding serial port via terminal.
 This might be `COMX` for Windows (determine *X* in the Device Manager), or `/dev/ttyACMX`
 (determine *X* in the mounted devices in `/dev`) for Linux.
-7. Now, being in the Python shell, any MicroPython compatible statement can be interpreted.
+8. Now, being in the Python shell, any MicroPython compatible statement can be interpreted.
 The PyTrinamicMicro package can be used. 
 Examples can be executed by e.g. `exec(MP.script("blinky"))`.
 
