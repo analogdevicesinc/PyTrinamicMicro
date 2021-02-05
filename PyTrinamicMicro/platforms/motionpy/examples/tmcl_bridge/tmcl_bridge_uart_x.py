@@ -18,7 +18,7 @@ from PyTrinamicMicro.platforms.motionpy.connections.can_tmcl_interface import ca
 from PyTrinamicMicro.platforms.motionpy.connections.rs232_tmcl_interface import rs232_tmcl_interface
 from PyTrinamicMicro.platforms.motionpy.connections.rs485_tmcl_interface import rs485_tmcl_interface
 from PyTrinamicMicro.TMCL_Bridge import TMCL_Bridge
-from PyTrinamic.TMCL import TMCL_Command
+from PyTrinamic.TMCL import TMCL
 import logging
 
 # Prepare Logger
@@ -33,7 +33,7 @@ def request_callback(request):
     return request
 
 def reply_callback(reply):
-    if(request_command != TMCL_Command.GET_FIRMWARE_VERSION):
+    if(request_command != TMCL.COMMANDS["GET_FIRMWARE_VERSION"]):
         reply.calculate_checksum()
     return reply
 

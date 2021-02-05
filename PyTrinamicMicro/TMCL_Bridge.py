@@ -6,7 +6,7 @@ Created on 07.10.2020
 
 from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from PyTrinamicMicro.TMCL_Slave import TMCL_Slave_Bridge
-from PyTrinamic.TMCL import TMCL_Command, TMCL_Request, TMCL_Reply
+from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply
 import logging
 import time
 

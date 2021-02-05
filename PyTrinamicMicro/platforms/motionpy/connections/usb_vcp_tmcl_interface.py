@@ -5,16 +5,16 @@ Created on 06.10.2020
 '''
 
 
-from PyTrinamic.connections.tmcl_interface import tmcl_interface
+from PyTrinamicMicro.connections.tmcl_module_interface import tmcl_module_interface
 from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from pyb import USB_VCP
 
 
-class usb_vcp_tmcl_interface(tmcl_interface, tmcl_host_interface):
+class usb_vcp_tmcl_interface(tmcl_module_interface, tmcl_host_interface):
 
     def __init__(self, port=0, data_rate=None, host_id=2, module_id=1, debug=False):
         del data_rate
-        tmcl_interface.__init__(self, host_id, module_id, debug)
+        tmcl_module_interface.__init__(self, host_id, module_id, debug)
         tmcl_host_interface.__init__(self, host_id, module_id, debug)
 
         self.__vcp = USB_VCP(port)

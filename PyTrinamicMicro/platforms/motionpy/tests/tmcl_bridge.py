@@ -9,7 +9,7 @@ Created on 18.12.2020
 from PyTrinamicMicro import PyTrinamicMicro
 from PyTrinamicMicro.connections.virtual_tmcl_interface import virtual_tmcl_interface
 from PyTrinamicMicro.TMCL_Bridge import TMCL_Bridge
-from PyTrinamic.TMCL import TMCL_Command, TMCL_Request, TMCL_Reply
+from PyTrinamic.TMCL import TMCL, TMCL_Request, TMCL_Reply
 import logging
 
 # Prepare Logger
@@ -25,7 +25,7 @@ logger.info("Interfaces initialized.")
 # Prepare requests
 host.send_request_only(TMCL_Request(1, 2, 3, 4, 5))
 host.send_request_only(TMCL_Request(3, 2, 3, 4, 5))
-host.send_request_only(TMCL_Request(3, TMCL_Command.TMCL_UF0, 0, 0, 0)) # stop
+host.send_request_only(TMCL_Request(3, TMCL.COMMANDS["TMCL_UF0"], 0, 0, 0)) # stop
 
 # Prepare replies
 modules[0]["module"].send_reply(TMCL_Reply(2, 1, 1, 2, 3))

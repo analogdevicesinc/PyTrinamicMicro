@@ -8,7 +8,7 @@ Created on 15.12.2020
 
 from PyTrinamicMicro.TMCL_Slave import TMCL_Slave
 from PyTrinamicMicro.connections.virtual_tmcl_interface import virtual_tmcl_interface
-from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply, TMCL_Command
+from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply, TMCL
 from PyTrinamic.modules.TMCM0960.TMCM0960 import TMCM0960
 import logging
 import re
@@ -25,10 +25,10 @@ host = virtual_tmcl_interface()
 res = virtual_tmcl_interface()
 
 # Add virtual commands to interface
-host.send_request_only(TMCL_Request(1, TMCL_Command.GET_FIRMWARE_VERSION, TMCM0960.ENUMs.VERSION_FORMAT_ASCII, 0, 0))
-host.send_request_only(TMCL_Request(1, TMCL_Command.GET_FIRMWARE_VERSION, TMCM0960.ENUMs.VERSION_FORMAT_BINARY, 0, 0))
-host.send_request_only(TMCL_Request(1, TMCL_Command.GET_FIRMWARE_VERSION, TMCM0960.ENUMs.VERSION_FORMAT_BUILD, 0, 0))
-host.send_request_only(TMCL_Request(1, TMCL_Command.TMCL_UF0, 0, 0, 0)) # stop
+host.send_request_only(TMCL_Request(1, TMCL.COMMANDS["GET_FIRMWARE_VERSION"], TMCM0960.ENUMs.VERSION_FORMAT_ASCII, 0, 0))
+host.send_request_only(TMCL_Request(1, TMCL.COMMANDS["GET_FIRMWARE_VERSION"], TMCM0960.ENUMs.VERSION_FORMAT_BINARY, 0, 0))
+host.send_request_only(TMCL_Request(1, TMCL.COMMANDS["GET_FIRMWARE_VERSION"], TMCM0960.ENUMs.VERSION_FORMAT_BUILD, 0, 0))
+host.send_request_only(TMCL_Request(1, TMCL.COMMANDS["TMCL_UF0"], 0, 0, 0)) # stop
 
 slave = TMCL_Slave()
 
