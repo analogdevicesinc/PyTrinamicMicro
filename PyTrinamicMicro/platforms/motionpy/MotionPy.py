@@ -58,3 +58,7 @@ class MotionPy(PyTrinamicMicro):
     @staticmethod
     def repl_uart():
         pyb.repl_uart(pyb.UART(3, 9600))
+
+    @staticmethod
+    def init_time(datetime):
+        pyb.RTC().datetime(datetime)
