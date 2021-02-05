@@ -50,7 +50,9 @@ Examples can be executed by e.g. `exec(MP.script("blinky"))`.
 
 ## Remarks
 
-In the default environment the class `MP` (short for *PyTrinamicMicro*) is defined.  
+In the default environment for the target platform a global configuration class
+is defined. This might be `PTM` (short for *PyTrinamicMicro*) in the general case.
+For TMCM-0960-MotionPy this configuration class is wrapped and accessible as `MP` (short for *MotionPy*).
 All of its members can be accessed statically and globally, especially from the Python shell.  
 All global configuration is intended to be done in this class and its methods.
 So make sure to use that whenever possible.
