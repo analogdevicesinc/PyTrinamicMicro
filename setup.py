@@ -12,6 +12,9 @@ setuptools.setup(
     description='PyTrinamicMicro package for TMCM-0960-MotionPy python master board.',
     long_description_content_type='text/markdown',
     url='https://github.com/trinamic/PyTrinamicMicro',
+    install_requires=[
+        "PyTrinamic>=0.1.27",
+    ],
     packages=[
         "PyTrinamicMicro"
     ],
