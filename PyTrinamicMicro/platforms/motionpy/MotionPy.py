@@ -37,7 +37,8 @@ class MotionPy(PyTrinamicMicro):
         "tmcl_slave_motionpy": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_slave/tmcl_slave_motionpy.py",
         "fw_update_can": "PyTrinamicMicro/platforms/motionpy/examples/firmware_update/fw_update_can.py",
         "can_logger": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_analyzer/can_logger.py",
-        "max14001pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max14001pmb.py"
+        "max14001pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max14001pmb.py",
+        "max14912pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max14912pmb.py"
     }
 
     _MAP_TEST = {
