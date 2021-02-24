@@ -1,11 +1,12 @@
 [submodule "PyTrinamic"]
 	path = PyTrinamic
 	url = git@github.com:trinamic/PyTrinamic.git
-        branch = master
+    branch = master
 [submodule "micropython"]
 	path = micropython
-	url = git@github.com:Lionheart1810/micropython.git
+	url = git@github.com:trinamic/micropython.git
 	branch = master
 [submodule "pycopy-lib"]
 	path = pycopy-lib
-	url = git@github.com:Lionheart1810/pycopy-lib.git
+	url = git@github.com:trinamic/pycopy-lib.git
+	branch = master
