@@ -2,7 +2,7 @@
 This file implements a basic class for using the MAX14912 in Command mode SPI. (CMND = HIGH && SRIAL = HIGH)
 For further details refer to the data sheet.
 
-Created on 15.02.2020
+Created on 15.02.2021
 
 @author: JH
 '''

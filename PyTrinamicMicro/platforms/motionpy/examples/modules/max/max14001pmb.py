@@ -1,7 +1,7 @@
 '''
 Example using the MAX14001PMB
 
-Created on 27.01.2020
+Created on 27.01.2021
 
 @author: JH
 '''

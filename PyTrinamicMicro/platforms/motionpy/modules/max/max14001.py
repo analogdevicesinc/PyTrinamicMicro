@@ -2,7 +2,7 @@
 This file implements a basic class for the MAX14001 ic as well as 
 a basic implementaion to use the module MAX14001PMB.
 
-Created on 27.01.2020
+Created on 27.01.2021
 
 @author: JH
 '''

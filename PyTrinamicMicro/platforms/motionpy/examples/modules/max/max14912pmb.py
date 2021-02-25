@@ -1,7 +1,7 @@
 '''
 Example using the MAX14912PMB.
 This script switches all the outputs to high and then back to low. 
-Created on 15.02.2020
+Created on 15.02.2021
 
 @author: JH
 '''
