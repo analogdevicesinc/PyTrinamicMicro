@@ -5,7 +5,7 @@ Created on 07.10.2020
 '''
 
 # Imports
-from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply, TMCL_Status, TMCL_Command
+from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply, TMCL_Status, TMCL
 from PyTrinamic.modules.TMCM0960.TMCM0960 import TMCM0960
 from PyTrinamicMicro import PyTrinamicMicro
 import struct
@@ -36,13 +36,13 @@ class TMCL_Slave(TMCM0960):
 
     def _get_command_dict(self):
         return {
-            TMCL_Command.GET_FIRMWARE_VERSION: self.get_version,
-            TMCL_Command.SGP: self.set_global_parameter,
-            TMCL_Command.GGP: self.get_global_parameter,
-            TMCL_Command.SAP: self.set_axis_parameter,
-            TMCL_Command.GAP: self.get_axis_parameter,
-            TMCL_Command.TMCL_UF0: self.stop,
-            TMCL_Command.TMCL_UF1: self.subscript
+            TMCL.COMMANDS["GET_FIRMWARE_VERSION"]: self.get_version,
+            TMCL.COMMANDS["SGP"]: self.set_global_parameter,
+            TMCL.COMMANDS["GGP"]: self.get_global_parameter,
+            TMCL.COMMANDS["SAP"]: self.set_axis_parameter,
+            TMCL.COMMANDS["GAP"]: self.get_axis_parameter,
+            TMCL.COMMANDS["TMCL_UF0"]: self.stop,
+            TMCL.COMMANDS["TMCL_UF1"]: self.subscript
         }
 
     def _get_command_func(self, command):

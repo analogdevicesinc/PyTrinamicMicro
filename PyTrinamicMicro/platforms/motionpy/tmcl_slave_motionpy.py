@@ -1,6 +1,6 @@
 from PyTrinamicMicro.TMCL_Slave import TMCL_Slave, TMCL_Slave_Status
 # Imports
-from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply, TMCL_Status, TMCL_Command
+from PyTrinamic.TMCL import TMCL_Request, TMCL_Reply, TMCL_Status, TMCL
 from PyTrinamic.modules.TMCM0960.TMCM0960 import TMCM0960
 from PyTrinamicMicro import PyTrinamicMicro
 import struct
@@ -47,7 +47,7 @@ class tmcl_slave_motionpy(TMCL_Slave):
     def _get_command_func(self):
         out = super()._get_command_func()
         out.update({
-            TMCL_Command.TMCL_UF2: self.linear_distance
+            TMCL.COMMANDS["TMCL_UF2"]: self.linear_distance
         })
         return out
 

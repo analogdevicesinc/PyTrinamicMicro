@@ -12,7 +12,7 @@ import struct
 import re
 import math
 import time
-from PyTrinamic.TMCL import TMCL_Command, TMCL_Request, TMCL_Reply
+from PyTrinamic.TMCL import TMCL, TMCL_Request, TMCL_Reply
 
 class ihex(object):
 
@@ -310,43 +310,43 @@ class tmcl_bootloader(object):
             self.start_application()
 
     def erase_firmware(self, delay=5.0):
-        self.__interface.send_request(TMCL_Request(self.__module_id, TMCL_Command.BOOT_ERASE_ALL, 0, 0, 0))
+        self.__interface.send_request(TMCL_Request(self.__module_id, TMCL.COMMANDS["BOOT_ERASE_ALL"], 0, 0, 0))
         time.sleep(delay)
 
     def get_page_size(self):
-        return self.__interface.send(TMCL_Command.BOOT_GET_INFO, 0, 0, 0).value
+        return self.__interface.send(TMCL.COMMANDS["BOOT_GET_INFO"], 0, 0, 0).value
 
     def get_start_address(self):
-        return self.__interface.send(TMCL_Command.BOOT_GET_INFO, 1, 0, 0).value
+        return self.__interface.send(TMCL.COMMANDS["BOOT_GET_INFO"], 1, 0, 0).value
 
     def get_memory_size(self):
-        return self.__interface.send(TMCL_Command.BOOT_GET_INFO, 2, 0, 0).value
+        return self.__interface.send(TMCL.COMMANDS["BOOT_GET_INFO"], 2, 0, 0).value
 
     def write_buffer(self, offset, data):
         if(not(type(offset) == type(data) == int)):
             raise ValueError("offset, data are expected to be integers.")
-        self.__interface.send(TMCL_Command.BOOT_WRITE_BUFFER, (offset >> 2) % 256, ((offset >> 2) >> 8) % 256, data)
+        self.__interface.send(TMCL.COMMANDS["BOOT_WRITE_BUFFER"], (offset >> 2) % 256, ((offset >> 2) >> 8) % 256, data)
 
     def write_page(self, page):
         if(not(type(page) == int)):
             raise ValueError("page is expected to be integer.")
-        self.__interface.send(TMCL_Command.BOOT_WRITE_PAGE, 0, 0, page)
+        self.__interface.send(TMCL.COMMANDS["BOOT_WRITE_PAGE"], 0, 0, page)
 
     def read_checksum(self, address):
         if(not(type(address) == int)):
             raise ValueError("address is expected to be integer.")
-        return self.__interface.send(TMCL_Command.BOOT_GET_CHECKSUM, 0, 0, address).value
+        return self.__interface.send(TMCL.COMMANDS["BOOT_GET_CHECKSUM"], 0, 0, address).value
 
     def write_length(self, length):
         if(not(type(length) == int)):
             raise ValueError("length is expected to be integer.")
-        self.__interface.send(TMCL_Command.BOOT_WRITE_LENGTH, 0, 0, length)
+        self.__interface.send(TMCL.COMMANDS["BOOT_WRITE_LENGTH"], 0, 0, length)
 
     def write_checksum(self, checksum):
         if(not(type(checksum) == int)):
             raise ValueError("checksum is expected to be integer.")
-        self.__interface.send(TMCL_Command.BOOT_WRITE_LENGTH, 1, 0, checksum)
+        self.__interface.send(TMCL.COMMANDS["BOOT_WRITE_LENGTH"], 1, 0, checksum)
 
     def start_application(self):
         # Request without reply
-        self.__interface.send_request(TMCL_Request(self.__module_id, TMCL_Command.BOOT_START_APPL, 0, 0, 0))
+        self.__interface.send_request(TMCL_Request(self.__module_id, TMCL.COMMANDS["BOOT_START_APPL"], 0, 0, 0))

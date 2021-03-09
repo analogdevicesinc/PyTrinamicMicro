@@ -5,7 +5,7 @@ Created on 05.10.2020
 '''
 
 
-from PyTrinamic.connections.tmcl_interface import tmcl_interface
+from PyTrinamicMicro.connections.tmcl_module_interface import tmcl_module_interface
 from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from pyb import CAN
 from pyb import Pin
@@ -23,27 +23,39 @@ class CanModeOff(CanMode):
     pass
 
 
-class can_tmcl_interface(tmcl_interface, tmcl_host_interface):
+class can_tmcl_interface(tmcl_module_interface, tmcl_host_interface):
 
     def __init__(self, port=2, data_rate=None, host_id=2, module_id=1, debug=False, can_mode=CanModeNormal()):
         del data_rate
-        tmcl_interface.__init__(self, host_id, module_id, debug)
+        tmcl_module_interface.__init__(self, host_id, module_id, debug)
         tmcl_host_interface.__init__(self, host_id, module_id, debug)
 
         self.__silent = Pin(Pin.cpu.B14, Pin.OUT_PP)
         self.__mode = can_mode
         self.__flag_recv = False
-
-        self.__set_mode()
-
+        self.__can = None
+        
         CAN.initfilterbanks(14)
 
-        self.__can = CAN(port, CAN.NORMAL)
         # PCLK1 = 42 MHz, Module_Bitrate = 1000 kBit/s
         # With prescaler = 3, bs1 = 11, bs2 = 2
         # Sample point at 85.7 %, accuracy = 100 %
-        self.__can.init(CAN.NORMAL, prescaler=3, bs1=11, bs2=2, auto_restart=True)
-        self.__can.setfilter(0, CAN.LIST16, 0, (host_id, host_id, host_id, host_id))
+
+        if(isinstance(self.__mode, CanModeNormal)):
+            print("normal")
+            self.__silent.low()
+            self.__can = CAN(port, CAN.NORMAL)
+            self.__can.init(CAN.NORMAL, prescaler=3, bs1=11, bs2=2, auto_restart=True)
+            self.__can.setfilter(0, CAN.LIST16, 0, (host_id, host_id, host_id, host_id))
+        elif(isinstance(self.__mode, CanModeSilent)):
+            print("silent")
+            self.__silent.high()
+            self.__can = CAN(port, CAN.SILENT)
+            self.__can.init(CAN.SILENT, prescaler=3, bs1=11, bs2=2, auto_restart=True)
+            self.__can.setfilter(0, CAN.LIST16, 0, (module_id, host_id, module_id, host_id))
+        elif(isinstance(self.__mode, CanModeOff)):
+            raise ValueError() # Not supported by TJA1051T/3
+
         self.__can.rxcallback(0, self.__callback_recv)
 
     def __enter__(self):
@@ -87,20 +99,8 @@ class can_tmcl_interface(tmcl_interface, tmcl_host_interface):
     def enableDebug(self, enable):
         self._debug = enable
 
-    def set_mode(self, mode):
-        self.__mode = mode
-        self.__set_mode()
-
     def get_mode(self):
         return self.__mode
-
-    def __set_mode(self):
-        if(isinstance(self.__mode, CanModeNormal)):
-            self.__silent.low()
-        elif(isinstance(self.__mode, CanModeSilent)):
-            self.__silent.high()
-        elif(isinstance(self.__mode, CanModeOff)):
-            pass # Not supported by TJA1051T/3
 
     def get_can(self):
         return self.__can

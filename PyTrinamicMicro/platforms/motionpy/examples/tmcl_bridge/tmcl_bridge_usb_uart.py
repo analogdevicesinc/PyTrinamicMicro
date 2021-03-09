@@ -16,7 +16,6 @@ from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from PyTrinamicMicro.platforms.motionpy.connections.uart_tmcl_interface import uart_tmcl_interface
 from PyTrinamicMicro.platforms.motionpy.connections.usb_vcp_tmcl_interface import usb_vcp_tmcl_interface
 from PyTrinamicMicro.TMCL_Bridge import TMCL_Bridge
-from PyTrinamic.TMCL import TMCL_Command
 import logging
 
 # Prepare Logger

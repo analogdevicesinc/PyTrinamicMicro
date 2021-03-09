@@ -3,6 +3,7 @@ Created on 05.10.2020
 
 @author: LK
 '''
+from pyb import Pin, SPI
 
 class spi_ic_interface(object):
 

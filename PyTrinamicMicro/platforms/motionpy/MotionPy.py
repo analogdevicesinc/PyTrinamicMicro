@@ -7,6 +7,7 @@ Created on 29.10.2020
 '''
 
 from PyTrinamicMicro import PyTrinamicMicro
+import pyb
 
 class MotionPy(PyTrinamicMicro):
 
@@ -34,7 +35,11 @@ class MotionPy(PyTrinamicMicro):
         "tmcl_slave_uart": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_slave_uart.py",
         "tmcl_slave_usb": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_slave_usb.py",
         "tmcl_slave_motionpy": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_slave/tmcl_slave_motionpy.py",
-        "fw_update_can": "PyTrinamicMicro/platforms/motionpy/examples/firmware_update/fw_update_can.py"
+        "fw_update_can": "PyTrinamicMicro/platforms/motionpy/examples/firmware_update/fw_update_can.py",
+        "can_logger": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_analyzer/can_logger.py",
+        "max14001pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max14001pmb.py",
+        "max14912pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max14912pmb.py",
+        "max22190pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max22190pmb.py"
     }
 
     _MAP_TEST = {
@@ -51,3 +56,11 @@ class MotionPy(PyTrinamicMicro):
     @staticmethod
     def test(identifier):
         return PyTrinamicMicro.test(MotionPy, identifier)
+
+    @staticmethod
+    def repl_uart():
+        pyb.repl_uart(pyb.UART(3, 9600))
+
+    @staticmethod
+    def init_time(datetime):
+        pyb.RTC().datetime(datetime)
