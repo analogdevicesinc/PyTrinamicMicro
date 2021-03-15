@@ -14,15 +14,26 @@ import logging
 # Prepare Logger
 logger = logging.getLogger(__name__)
 logger.info("Reading ADC values")
-csVoltage = Pin.cpu.C0
-csCurrent = Pin.cpu.A4
 
-max14001pmb = MAX14001PMB(csVoltage , csCurrent)
-filtered = True
+pins = dict({
+    "pin_cs_volt"   : Pin.cpu.C0,
+    "pin_cs_curr"   : Pin.cpu.A4, 
+    "pin_cout_volt" : Pin.cpu.A14,
+    "pin_cout_curr" : Pin.cpu.A13,
+    "pin_fault"     : Pin.cpu.C1
+    })
+
+max14001pmb = MAX14001PMB(**pins)
+filtered = False
+
 
 while(True):
-    currU = max14001pmb.getVoltage(filtered)
-    currI = max14001pmb.getCurrent(filtered)
-    logger.info("U=" +str(currU)+"V"+" I:" +str(currI)+"A")
-    time.sleep(0.5)
-
+    for cursor in '|/-\\':
+        currV = max14001pmb.getVoltage(filtered)
+        currI = max14001pmb.getCurrent(filtered)
+        coutV = max14001pmb.get_cout_volt()
+        coutI  = max14001pmb.get_cout_curr()
+        fault = max14001pmb.get_fault()
+        text =  cursor+" U:" +  "{:10.4f}".format(currV) + "V; I: " + "{:10.4f}".format(currI)+ "A; comp. U: " + str(coutV)+ "; comp. I " + str(coutI) + "; fault: " + str(fault)
+        print(text, end='\r')
+        time.sleep(0.2)
