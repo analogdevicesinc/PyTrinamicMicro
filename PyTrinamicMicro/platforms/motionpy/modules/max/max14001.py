@@ -65,15 +65,19 @@ class  MAX14001(object):
 
     def read(self, addr):
         """sending read request and returns 10bits 0/1 string"""
-        buf = self.build_byte_array(addr,0)
-        self.__SPI.send_recv(buf,buf)
-        return self.data_from_recv(buf)
+        buf_send = self.build_byte_array(addr,0)
+        buf_recv = buf_send
+        self.__SPI.send_recv(buf_send,buf_recv)
+        self.__SPI.send_recv(buf_send,buf_recv)
+        return self.data_from_recv(buf_recv)
 
     def read_full_response(self, addr):
         """sending read request and returns 10bits 0/1 string"""
-        buf = self.build_byte_array(addr,0)
-        self.__SPI.send_recv(buf,buf)
-        return self.bin_from_recv(buf)
+        buf_send = self.build_byte_array(addr,0)
+        buf_recv = buf_send
+        self.__SPI.send_recv(buf_send,buf_recv)
+        self.__SPI.send_recv(buf_send,buf_recv)
+        return self.bin_from_recv(buf_recv)
        
     def write(self, addr, data = "0000000000"):
         """writing data provided as 0/1 string to addr. returns full receive as string"""
@@ -96,41 +100,69 @@ class  MAX14001(object):
         except AttributeError:
             return  "Not assigned"  
     
+    def write_verification(self):
+        """Write the values back to their appropriate verification registers to clear the MV Fault"""
+        reg_FLTEN = self.read(self.MAX14001_FLTEN_adr)
+        reg_THL = self.read(self.MAX14001_THL_adr)    
+        reg_THU = self.read(self.MAX14001_THU_adr)      
+        reg_INRR = self.read(self.MAX14001_INRR_adr)    
+        reg_INRT = self.read(self.MAX14001_INRT_adr)    
+        reg_INRP = self.read(self.MAX14001_INRP_adr)    
+        reg_CFG = self.read(self.MAX14001_CFG_adr)   
+        reg_ENBL = self.read(self.MAX14001_ENBL_adr)   
 
+        self.enable_write(1)
 
+        self.write(self.MAX14001_FLTV_adr, reg_FLTEN)
+        self.write(self.MAX14001_THLV_adr, reg_THL)
+        self.write(self.MAX14001_THUV_adr, reg_THU)
+        self.write(self.MAX14001_INRRV_adr, reg_INRR)
+        self.write(self.MAX14001_INRTV_adr, reg_INRT)
+        self.write(self.MAX14001_INRPV_adr, reg_INRP)
+        self.write(self.MAX14001_CFGV_adr, reg_CFG)
+        self.write(self.MAX14001_ENBLV_adr, reg_ENBL)
+
+        self.enable_write(0)
+        
 class  MAX14001PMB(object):
     '''This class provides basic functions to use the MAX14001PMB, for further details refer to the data sheet.'''
     VOLT_FACTOR = 0.666
-    VOLT_OFFSET = 2.664
-    CURRENT_FACTOR = -0.0115 
-    CURRENT_OFFSET = 0.13
+    VOLT_OFFSET = 0
+    CURRENT_FACTOR = -0.012
+    CURRENT_OFFSET = 0.34
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
         if  "pin_cs_volt" in kwargs: 
             if "pin_cout_volt" in kwargs:
                 self.voltADC = MAX14001(kwargs["pin_cs_volt"], kwargs["pin_cout_volt"],)
             else:
                 self.voltADC = MAX14001(kwargs["pin_cs_volt"])
+            self.voltADC.enable_write(1)
+            self.voltADC.write(self.voltADC.MAX14001_CFG_adr, "0110110011")
+            self.voltADC.write(self.voltADC.MAX14001_INRR_adr,"1111111111")
+            self.voltADC.enable_write(0)
+            self.voltADC.write_verification()
 
         if  "pin_cs_curr" in kwargs: 
             if "pin_cout_curr" in kwargs:
                 self.currentADC = MAX14001(kwargs["pin_cs_curr"], kwargs["pin_cout_curr"],)
             else:
                 self.currentADC = MAX14001(kwargs["pin_cs_curr"])
-
+            self.currentADC.enable_write(1)
+            self.currentADC.write(self.voltADC.MAX14001_CFG_adr, "0110110011")
+            self.currentADC.write(self.voltADC.MAX14001_INRR_adr,"1111111111")
+            self.currentADC.enable_write(0)
+            self.currentADC.write_verification()
         if  "pin_fault" in kwargs:
             self.__Fault =  Pin(kwargs["pin_fault"], Pin.IN)
-
-        #self.voltADC = MAX14001(Pin.cpu.C0)
-        #self.currentADC = MAX14001(Pin.cpu.A4)
 
     def getVoltage(self, filtered = True):
         """returns voltage"""
         try:
             if filtered == True:
-                return self.VOLT_FACTOR*(int(self.voltADC.read(self.voltADC.MAX14001_FADC_adr),2)-512)-self.VOLT_OFFSET
+                return self.VOLT_FACTOR*(int(self.voltADC.read(self.voltADC.MAX14001_FADC_adr),2)-511)-self.VOLT_OFFSET
             else:
-                return self.VOLT_FACTOR*(int(self.voltADC.read(self.voltADC.MAX14001_ADC_adr),2)-512)-self.VOLT_OFFSET
+                return self.VOLT_FACTOR*(int(self.voltADC.read(self.voltADC.MAX14001_ADC_adr),2)-511)-self.VOLT_OFFSET
         except AttributeError:
             return "Not assigned" 
 
@@ -138,24 +170,43 @@ class  MAX14001PMB(object):
         """returns current"""
         try:
             if filtered == True:
-                return self.CURRENT_FACTOR*(int(self.currentADC.read(self.currentADC.MAX14001_FADC_adr),2)-512)-self.CURRENT_OFFSET
+                return self.CURRENT_FACTOR*(int(self.currentADC.read(self.currentADC.MAX14001_FADC_adr),2)-511)-self.CURRENT_OFFSET
             else:
-                return self.CURRENT_FACTOR*(int(self.currentADC.read(self.currentADC.MAX14001_ADC_adr),2)-512)-self.CURRENT_OFFSET
-        except AttributeError:
-            return "Not assigned" 
-            
-    def get_fault(self):
-        """returns status of fault pin if assigned """
-        try: 
-            return self.__Fault.value()
+                return self.CURRENT_FACTOR*(int(self.currentADC.read(self.currentADC.MAX14001_ADC_adr),2)-511)-self.CURRENT_OFFSET
         except AttributeError:
             return "Not assigned" 
 
+    def get_fault(self):
+        """returns status of fault pin if assigned """
+        try: 
+            return not self.__Fault.value()
+        except AttributeError:
+            return "Not assigned" 
+
+    def set_cout_volt(self,lower_value, upper_value):
+        '''set the threshold for voltage comparator'''
+        lower_value_scaled = (lower_value+self.VOLT_OFFSET)/self.VOLT_FACTOR + 511
+        upper_value_scaled = (upper_value+self.VOLT_OFFSET)/self.VOLT_FACTOR + 511
+        self.voltADC.enable_write(1)
+        self.voltADC.write(self.voltADC.MAX14001_THL_adr, "{:010b}".format(round(lower_value_scaled))[:10])
+        self.voltADC.write(self.voltADC.MAX14001_THU_adr, "{:010b}".format(round(upper_value_scaled))[:10])
+        self.voltADC.write_verification()
+        self.voltADC.enable_write(0)
+
+    def set_cout_curr(self,lower_value, upper_value):
+        '''set the threshold for current comparator'''
+        upper_value_scaled = (lower_value+self.CURRENT_OFFSET)/self.CURRENT_FACTOR + 511
+        lower_value_scaled = (upper_value+self.CURRENT_OFFSET)/self.CURRENT_FACTOR + 511 
+        self.currentADC.enable_write(1)
+        self.currentADC.write(self.currentADC.MAX14001_THL_adr, "{:010b}".format(round(lower_value_scaled))[:10])
+        self.currentADC.write(self.currentADC.MAX14001_THU_adr, "{:010b}".format(round(upper_value_scaled))[:10])
+        self.currentADC.write_verification()
+        self.currentADC.enable_write(0)
     def get_cout_volt(self):
         """returns value of specified pin for voltage comparator (if assigned)"""
-        return self.voltADC.get_cout()
+        return bool(self.voltADC.get_cout())
     def get_cout_curr(self):
         """returns value of specified pin for current comparator (if assigned)"""
-        return self.currentADC.get_cout()
+        return not bool(self.currentADC.get_cout())
  
     
