@@ -132,6 +132,7 @@ class  MAX14001PMB(object):
     CURRENT_OFFSET = 0.34
 
     def __init__(self, **kwargs):
+        time.sleep(0.2)
         if  "pin_cs_volt" in kwargs: 
             if "pin_cout_volt" in kwargs:
                 self.voltADC = MAX14001(kwargs["pin_cs_volt"], kwargs["pin_cout_volt"],)
@@ -156,7 +157,7 @@ class  MAX14001PMB(object):
         if  "pin_fault" in kwargs:
             self.__Fault =  Pin(kwargs["pin_fault"], Pin.IN)
 
-    def getVoltage(self, filtered = True):
+    def get_voltage(self, filtered = True):
         """returns voltage"""
         try:
             if filtered == True:
@@ -166,7 +167,7 @@ class  MAX14001PMB(object):
         except AttributeError:
             return "Not assigned" 
 
-    def getCurrent(self, filtered = True):
+    def get_current(self, filtered = True):
         """returns current"""
         try:
             if filtered == True:

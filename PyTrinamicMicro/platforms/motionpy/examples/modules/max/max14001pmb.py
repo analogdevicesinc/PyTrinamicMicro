@@ -30,8 +30,8 @@ max14001pmb.set_cout_curr(0.4,0.5)
 print("Readout of MAX14001:")
 while(True):
     for cursor in '|/-\\':
-        currV = max14001pmb.getVoltage(filtered)
-        currI = max14001pmb.getCurrent(filtered)
+        currV = max14001pmb.get_voltage(filtered)
+        currI = max14001pmb.get_current(filtered)
         coutV = max14001pmb.get_cout_volt()
         coutI  = max14001pmb.get_cout_curr()
         fault = max14001pmb.get_fault()
