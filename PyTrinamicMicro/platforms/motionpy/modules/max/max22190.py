@@ -9,6 +9,7 @@ Created on 25.02.2021
 from pyb import Pin, SPI
 from PyTrinamicMicro.platforms.motionpy.connections.spi_ic_interface import spi_ic_interface
 import struct
+import time
 import logging
 logger = logging.getLogger(__name__)
 
@@ -37,12 +38,18 @@ class MAX22190:
     MAX22190_FAULT_1_ENABLES    = 0x24
     MAX22190_NO_OP              = 0x26
 
-    def __init__(self, cs = Pin.cpu.C0):
-        self.__SPI = spi_ic_interface(spi=SPI(1, SPI.MASTER, baudrate=5000, polarity=0, phase=0), cs=Pin.cpu.C0)
+    def __init__(self, cs = Pin.cpu.C0, spi = 1, fault_pin =  Pin.cpu.C1, ready_pin =  Pin.cpu.A13, latch_pin= Pin.cpu.A14):
+        self.__SPI = spi_ic_interface(spi=SPI(spi, SPI.MASTER, baudrate=1000, polarity=0, phase=0), cs=cs)
+        self.READY  =   Pin(ready_pin, Pin.IN)
+        self.FAULT  =   Pin(fault_pin, Pin.IN)
+        self.LATCH  =   Pin(latch_pin, Pin.OUT_PP)
+        while(self.READY.value() == 1):
+            time.sleep(0.1)
+        self.set_latch_pin(1)    
 
-    def build_byte_array(self, reg, data = "00000000", rw = 0):
+    def build_byte_array(self, reg, data = 0x00, rw = 0):
         """returns bytearray with addr, read/write and data, ready to send"""
-        bits = str(rw)+ "{:08b}".format((reg)<<1,8)[:7]+data
+        bits = str(rw)+ "{:08b}".format((reg)<<1,8)[:7]+"{:08b}".format(data)
         return bytearray(struct.pack("BB",int(bits[:8],2),int(bits[8:],2)))
 
     def bin_from_recv(self, buf):
@@ -55,18 +62,18 @@ class MAX22190:
         self.__SPI.send_recv(buf_send, buf_recv)
         return buf_recv
 
-    def read_write_register(self, register, rw = 0 , data = "00000000"):
+    def read_write_register(self, register, rw = 0 , data = 0x00):
         """read/write data provided as 0/1 string returns received bytearray """
         buf = self.build_byte_array(register, data , rw)
         buf_recv = self.read_write(buf)
-        return buf_recv[0]
+        return buf_recv[1]
 
     def get_digital_input_states(self):
         """ returns list of input states """
         buf = self.build_byte_array(self.MAX22190_DIGITAL_INPUT)
         buf_recv = self.read_write(buf)
         io = list()
-        io = [int(x) for x in '{:08b}'.format(buf_recv[0])]
+        io = [int(x) for x in '{:08b}'.format(buf_recv[1])]
         return io
 
     def get_wire_break_states(self):
@@ -74,7 +81,17 @@ class MAX22190:
         buf = self.build_byte_array(self.MAX22190_WIRE_BREAK)
         buf_recv = self.read_write(buf)
         io = list()
-        io = [int(x) for x in '{:08b}'.format(buf_recv[0])]
+        io = [int(x) for x in '{:08b}'.format(buf_recv[1])]
         return io
 
+    def get_fault_pin(self):
+        return not self.FAULT.value()
 
+    def get_ready_pin(self):
+        return not self.READY.value()
+
+    def get_latch_pin(self):
+         return not self.LATCH.value()
+
+    def set_latch_pin(self,value):
+        return self.LATCH.value(value)

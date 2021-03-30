@@ -1,6 +1,6 @@
 '''
-Example using the MAX14914PMB.
-This scripts toggles output of MAX14914.
+Example using the MAX22191PMB.
+This scripts toggles output of MAX22191PMB.
 Created on 9.03.2021
 
 @author: JH
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 logger.info("MAX22191PMB example running")
 
 DI1     =   Pin(Pin.cpu.C1,Pin.OUT_PP)
-DI2      =   Pin(Pin.cpu.A7, Pin.OUT_PP)
+DI2     =  Pin(Pin.cpu.A7, Pin.OUT_PP)
 
 while(True):
     for cursor in '|/-\\':

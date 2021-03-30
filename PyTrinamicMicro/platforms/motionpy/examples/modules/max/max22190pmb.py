@@ -17,7 +17,17 @@ import logging
 logger = logging.getLogger(__name__)
 logger.info("MAX22190PMB example running")
 
-module = MAX22190()
+
+pins = dict({
+    "pin_cs"    :   Pin.cpu.C0,
+    "spi"       :   1,
+    "fault_pin" :   Pin.cpu.C1,
+    "ready_pin" :   Pin.cpu.A13, 
+    "latch_pin" :   Pin.cpu.A14,
+    })
+
+module = MAX22190(pins["pin_cs"],pins["spi"],pins["fault_pin"],pins["ready_pin"],pins["latch_pin"])
+
 description = """\nThis scripts displays the digital channel inputs as well as the wire break detection states.
 Channel input       => 0: Channel is driven low;            1: Channel is driven high.
 Wire break detection=> 0: wire break condition detected;    1: no wire break condition detected.\n """
@@ -28,7 +38,10 @@ while(True):
     for cursor in '|/-\\':
         input_states = module.get_digital_input_states()
         wire_breaks  = module.get_wire_break_states()
-        text =  cursor+" IO states: " + ''.join(str(e) for e in input_states)+ "; Wire Break states: " + ''.join(str(e) for e in wire_breaks) 
+        fault_pin =  module.get_fault_pin()
+        ready_pin = module.get_ready_pin()
+        latched   = module.get_latch_pin()
+        text =  cursor+" IO states: " + ''.join(str(e) for e in input_states)+ "; Wire Break states: " + ''.join(str(e) for e in wire_breaks)  +" ready:"+ str(ready_pin)+" fault:"+  str(fault_pin) +" latched:"+ str(latched)
         print(text, end='\r')
-        time.sleep(0.1)
+        time.sleep(0.25)
 
