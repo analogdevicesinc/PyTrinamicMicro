@@ -9,16 +9,15 @@ DI_ENA is set. If the MAX14914 is configured as a digital output, DO_PP selects 
 DO_SET is used when the MAX14914 is configured as a DO; when DO_SET is 0 the output pin DOI is either high impedance (in high-side mode) or 0V (in push-pull mode).
         When DO_SET is 1, the output pin DOI is turned on (24V) in high-side mode or in push-pull mode.
 '''
-
 class MAX14914:
-    def __init__(self):
-        self.DO_SET     =   Pin(Pin.cpu.A5,Pin.OUT_PP)
-        self.DO_PP      =   Pin(Pin.cpu.A6, Pin.OUT_PP)
-        self.DI_ENA     =   Pin(Pin.cpu.A7, Pin.OUT_PP)
+    def __init__(self, do_set_pin = Pin.cpu.A5, do_pp_pin = Pin.cpu.A6, di_ena_pin = Pin.cpu.A7, dido_lvl_pin = Pin.cpu.C0, fault_pin = Pin.cpu.C1, ov_vdd_pin = Pin.cpu.A4):
+        self.DO_SET     =   Pin(do_set_pin,Pin.OUT_PP)
+        self.DO_PP      =   Pin(do_pp_pin, Pin.OUT_PP)
+        self.DI_ENA     =   Pin(di_ena_pin, Pin.OUT_PP)
 
-        self.DIDO_LVL   =   Pin(Pin.cpu.C0 , Pin.IN)
-        self.FAULT      =   Pin(Pin.cpu.C1, Pin.IN)
-        self.OV_VDD     =   Pin(Pin.cpu.A4, Pin.IN)
+        self.DIDO_LVL   =   Pin(dido_lvl_pin , Pin.IN)
+        self.FAULT      =   Pin(fault_pin, Pin.IN)
+        self.OV_VDD     =   Pin(ov_vdd_pin, Pin.IN)
 
     def setIOMode(self,mode):
         ''' set input mode D0 = 0 or DI = 1'''
@@ -31,9 +30,9 @@ class MAX14914:
     def setPPMode(self,mode):
         ''' set input mode D0 or DI'''
         if(mode == 0):
-                self.DO_PP.low()
+            self.DO_PP.low()
         elif(mode == 1):
-                self.DO_PP.high()   
+            self.DO_PP.high()   
     def setDO(self,state): 
         '''set Digital Out'''
         self.DO_SET.value(state)                       
