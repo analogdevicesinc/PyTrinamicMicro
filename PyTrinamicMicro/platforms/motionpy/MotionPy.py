@@ -38,7 +38,13 @@ class MotionPy(PyTrinamicMicro):
         "fw_update_can": "PyTrinamicMicro/platforms/motionpy/examples/firmware_update/fw_update_can.py",
         "can_logger": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_analyzer/can_logger.py",
         "max14001pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max14001pmb.py",
-        "max14912pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max14912pmb.py"
+        "max14912pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max14912pmb.py",
+        "max22190pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max22190pmb.py",
+        "max14914pmb_input" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max14914pmb_input.py",
+        "max14914pmb_output" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max14914pmb_output.py",
+        "max22191pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max22191pmb.py"
+
+
     }
 
     _MAP_TEST = {

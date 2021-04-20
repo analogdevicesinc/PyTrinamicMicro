@@ -34,7 +34,7 @@ class TMCL_Slave(TMCM0960):
     def filter(self, request):
         return (request.moduleAddress == self.__module_address)
 
-    def _get_command_func(self):
+    def _get_command_dict(self):
         return {
             TMCL.COMMANDS["GET_FIRMWARE_VERSION"]: self.get_version,
             TMCL.COMMANDS["SGP"]: self.set_global_parameter,
@@ -45,10 +45,13 @@ class TMCL_Slave(TMCM0960):
             TMCL.COMMANDS["TMCL_UF1"]: self.subscript
         }
 
+    def _get_command_func(self, command):
+        return self._get_command_dict.get(command)
+
     def handle_request(self, request):
         reply = TMCL_Reply(reply_address=self.__host_address, module_address=self.__module_address, status=TMCL_Status.SUCCESS, value=0, command=request.command)
 
-        command_func = self._get_command_func().get(request.command)
+        command_func = self._get_command_func(request.command)
         if(command_func):
             reply = command_func(request, reply)
         else:

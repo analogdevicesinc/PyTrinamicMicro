@@ -2,7 +2,7 @@
 This file implements a basic class for using the MAX14912 in Command mode SPI. (CMND = HIGH && SRIAL = HIGH)
 For further details refer to the data sheet.
 
-Created on 15.02.2020
+Created on 15.02.2021
 
 @author: JH
 '''
@@ -35,8 +35,13 @@ class MAX14912:
     MAX14912_GLOBAL_FAULTS                      = 0x06
     MAX14912_OUT_OVERVOLT_DETECT_OR_SLOW_MODE   = 0x07
 
-    def __init__(self, cs = Pin.cpu.C0):
-        self.__SPI = spi_ic_interface(spi=SPI(1, SPI.MASTER, baudrate=5000, polarity=0, phase=0), cs=Pin.cpu.C0)
+    def __init__(self, pin_cs = Pin.cpu.C0, spi = 1,  pin_fltr = Pin.cpu.A13, pin_cmd =Pin.cpu.C1):
+        FLTR  = Pin(pin_fltr, Pin.OUT_PP)
+        CMND  = Pin(pin_cmd, Pin.OUT_PP)
+        FLTR.high()   
+        CMND.high()
+        self.__SPI = spi_ic_interface(spi=SPI(spi, SPI.MASTER, baudrate=5000, polarity=0, phase=0), cs=pin_cs)
+
         self.outputs = 0x00
         buf = self.build_byte_array(self.MAX14912_SET_OUT_STATE_CMD,"00000000")
         self.__SPI.send_recv(buf,buf)
@@ -65,12 +70,18 @@ class MAX14912:
         buf = self.build_byte_array(self.MAX14912_SET_OUT_STATE_CMD, str('{:08b}'.format(self.outputs)))
         self.write(buf)
 
+    def write_register(self,reg,value):
+        buf = self.build_byte_array(self.MAX14912_SET_OUT_STATE_CMD, str('{:08b}'.format(self.outputs)))
+        self.write(buf)
+        '{:08b}'.format(buf[0])
+        return 
+    
     def read_register(self,register, cl_fault_regs = 0):
         """Reads out register and returns received bytearray"""
         buf = self.build_byte_array(self.MAX14912_READ_REGISTER_CMD,'{:08b}'.format(register) ,cl_fault_regs)
         self.write(buf)
         buf_recv = self.write(buf)
-        return buf_recv
+        return '{:08b}'.format(buf_recv[0])
 
     def read_status(self, cl_fault_regs = 0):
         """Reads out status and returns received bytearray"""
