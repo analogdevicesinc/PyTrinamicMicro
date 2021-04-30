@@ -16,7 +16,7 @@ class tmcl_slave_motionpy_status(TMCL_Slave_Status):
         self.position_absolute = [False]
         self.position_relative = [False]
 
-class tmcl_slave_motionpy(TMCL_Slave):
+class tmcl_slave_motionpy(TMCL_Slave, TMCM0960):
 
     def __init__(self, module_address=1, host_address=2, version_string="0960V100", build_version=0):
         super().__init__(module_address, host_address, version_string, build_version)
@@ -44,8 +44,8 @@ class tmcl_slave_motionpy(TMCL_Slave):
         }]
         self.__logger = logging.getLogger(self.__module__)
 
-    def _get_command_func(self):
-        out = super()._get_command_func()
+    def _get_command_dict(self):
+        out = super()._get_command_dict()
         out.update({
             TMCL.COMMANDS["TMCL_UF2"]: self.linear_distance
         })

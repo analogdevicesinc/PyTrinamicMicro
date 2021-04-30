@@ -13,10 +13,13 @@ Created on 06.10.2020
 
 # Imports
 from PyTrinamicMicro.platforms.motionpy.connections.usb_vcp_tmcl_interface import usb_vcp_tmcl_interface
-from PyTrinamicMicro.platforms.motionpy.tmcl_slave_dummy import tmcl_slave_dummy
+from PyTrinamicMicro.platforms.motionpy.tmcl_slave_demo import tmcl_slave_demo
+from PyTrinamic.modules.TMCM1270.TMCM_1270 import TMCM_1270
+from PyTrinamicMicro.platforms.motionpy.connections.can_tmcl_interface import can_tmcl_interface
 from PyTrinamicMicro import PyTrinamicMicro
 import struct
 import logging
+import time
 
 # Prepare Logger
 PyTrinamicMicro.set_logging_console_enabled(False)
@@ -27,8 +30,12 @@ logger.info("TMCL Slave on USB_VCP interface")
 lin = None
 logger.info("Initializing interface ...")
 con = usb_vcp_tmcl_interface()
-slave = tmcl_slave_dummy()
+slave = tmcl_slave_demo()
+module = TMCM_1270(can_tmcl_interface())
+module.setMaxAcceleration(0, 100000)
 logger.info("Interface initialized.")
+
+t = 0
 
 while(not(slave.status.stop)):
     # Handle connection
@@ -40,6 +47,15 @@ while(not(slave.status.stop)):
         logger.debug("Request for this slave detected.")
         reply = slave.handle_request(request)
         con.send_reply(reply)
+    # Handle flags
+    if(slave.status.demo[0]):
+        if(t == 0):
+            t = time.time()
+            module.rotate(0, 100000)
+        if(time.time() - t > 3):
+            module.stop(0)
+            t = 0
+            slave.status.demo[0] = False
 
 logger.info("Closing interface ...")
 con.close()

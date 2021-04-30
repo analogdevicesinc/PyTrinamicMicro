@@ -12,39 +12,7 @@ import pyb
 class MotionPy(PyTrinamicMicro):
 
     _MAP_SCRIPT = {
-        "null": "PyTrinamicMicro/platforms/motionpy/examples/null.py",
-        "linear_distance": "PyTrinamicMicro/platforms/motionpy/examples/linear_distance/linear_distance.py",
-        "linear_distance_bounds": "PyTrinamicMicro/platforms/motionpy/examples/linear_distance/linear_distance_bounds.py",
-        "blinky": "PyTrinamicMicro/platforms/motionpy/examples/io/blinky.py",
-        "buttons_leds": "PyTrinamicMicro/platforms/motionpy/examples/io/buttons_leds.py",
-        "hc_sr04_multi_log": "PyTrinamicMicro/platforms/motionpy/examples/modules/hc_sr04_multi/hc_sr04_multi_log.py",
-        "tmcm1161_rs232_rotate": "PyTrinamicMicro/platforms/motionpy/examples/modules/TMCM1161/TMCM1161_RS232_rotate.py",
-        "tmcm1161_rs485_rotate": "PyTrinamicMicro/platforms/motionpy/examples/modules/TMCM1161/TMCM1161_RS485_rotate.py",
-        "tmcm1240_can_rotate": "PyTrinamicMicro/platforms/motionpy/examples/modules/TMCM1240/TMCM1240_CAN_rotate.py",
-        "tmcm1240_rs485_rotate": "PyTrinamicMicro/platforms/motionpy/examples/modules/TMCM1240/TMCM1240_RS485_rotate.py",
-        "tmcm1270_rotate": "PyTrinamicMicro/platforms/motionpy/examples/modules/TMCM1270/TMCM1270_rotate.py",
-        "tmcl_bridge_uart_can": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_uart_can.py",
-        "tmcl_bridge_uart_rs232": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_uart_rs232.py",
-        "tmcl_bridge_uart_rs485": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_uart_rs485.py",
-        "tmcl_bridge_usb_can": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_usb_can.py",
-        "tmcl_bridge_usb_rs232": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_usb_rs232.py",
-        "tmcl_bridge_usb_rs485": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_usb_rs485.py",
-        "tmcl_bridge_usb_uart": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_usb_uart.py",
-        "tmcl_bridge_usb_x": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_usb_x.py",
-        "tmcl_bridge_uart_x": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_uart_x.py",
-        "tmcl_slave_uart": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_slave_uart.py",
-        "tmcl_slave_usb": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_slave_usb.py",
-        "tmcl_slave_motionpy": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_slave/tmcl_slave_motionpy.py",
-        "fw_update_can": "PyTrinamicMicro/platforms/motionpy/examples/firmware_update/fw_update_can.py",
-        "can_logger": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_analyzer/can_logger.py",
-        "max14001pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max14001pmb.py",
-        "max14912pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max14912pmb.py",
-        "max22190pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max22190pmb.py",
-        "max14914pmb_input" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max14914pmb_input.py",
-        "max14914pmb_output" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max14914pmb_output.py",
-        "max22191pmb" : "PyTrinamicMicro/platforms/motionpy/examples/modules/max/max22191pmb.py"
-
-
+        "tmcl_slave_demo": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_slave/tmcl_slave_demo.py"
     }
 
     _MAP_TEST = {

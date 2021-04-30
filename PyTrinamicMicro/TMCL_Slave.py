@@ -18,7 +18,7 @@ class TMCL_Slave_Status(object):
         self.stop = False
 
 
-class TMCL_Slave(TMCM0960):
+class TMCL_Slave(object):
 
     def __init__(self, module_address=1, host_address=2, version_string="0960V100", build_version=0):
         self.__module_address = module_address
@@ -46,7 +46,7 @@ class TMCL_Slave(TMCM0960):
         }
 
     def _get_command_func(self, command):
-        return self._get_command_dict.get(command)
+        return self._get_command_dict().get(command)
 
     def handle_request(self, request):
         reply = TMCL_Reply(reply_address=self.__host_address, module_address=self.__module_address, status=TMCL_Status.SUCCESS, value=0, command=request.command)

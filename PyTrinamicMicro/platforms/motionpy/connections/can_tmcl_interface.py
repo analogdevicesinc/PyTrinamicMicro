@@ -34,7 +34,7 @@ class can_tmcl_interface(tmcl_module_interface, tmcl_host_interface):
         self.__mode = can_mode
         self.__flag_recv = False
         self.__can = None
-        
+
         CAN.initfilterbanks(14)
 
         # PCLK1 = 42 MHz, Module_Bitrate = 1000 kBit/s
@@ -42,13 +42,11 @@ class can_tmcl_interface(tmcl_module_interface, tmcl_host_interface):
         # Sample point at 85.7 %, accuracy = 100 %
 
         if(isinstance(self.__mode, CanModeNormal)):
-            print("normal")
             self.__silent.low()
             self.__can = CAN(port, CAN.NORMAL)
             self.__can.init(CAN.NORMAL, prescaler=3, bs1=11, bs2=2, auto_restart=True)
             self.__can.setfilter(0, CAN.LIST16, 0, (host_id, host_id, host_id, host_id))
         elif(isinstance(self.__mode, CanModeSilent)):
-            print("silent")
             self.__silent.high()
             self.__can = CAN(port, CAN.SILENT)
             self.__can.init(CAN.SILENT, prescaler=3, bs1=11, bs2=2, auto_restart=True)
