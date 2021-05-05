@@ -12,7 +12,7 @@ from pyb import UART
 
 class uart_tmcl_interface(tmcl_module_interface, tmcl_host_interface):
 
-    def __init__(self, port=3, data_rate=9600, host_id=2, module_id=1, debug=False):
+    def __init__(self, port=1, data_rate=9600, host_id=2, module_id=1, debug=False):
         tmcl_module_interface.__init__(self, host_id, module_id, debug)
         tmcl_host_interface.__init__(self, host_id, module_id, debug)
 
