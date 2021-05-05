@@ -40,12 +40,15 @@ def reply_callback(reply):
 
 logger.info("Initializing interfaces ...")
 host = usb_vcp_tmcl_interface()
-module = can_tmcl_interface()
-bridge = TMCL_Bridge(host, [{"module":module, "request_callback":request_callback, "reply_callback":reply_callback}])
+modules = [{
+    "module": can_tmcl_interface(),
+    "request_callback": request_callback,
+    "reply_callback": reply_callback
+}]
+bridge = TMCL_Bridge(host, modules)
 logger.info("Interfaces initialized.")
 
-while(not(bridge.process(request_callback=request_callback, reply_callback=reply_callback))):
-    #logger.debug("Processed request.")
+while(not(bridge.process())):
     pass
 
 logger.info("Closing interfaces ...")

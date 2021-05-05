@@ -25,12 +25,12 @@ class CanModeOff(CanMode):
 
 class can_tmcl_interface(tmcl_module_interface, tmcl_host_interface):
 
-    def __init__(self, port=2, data_rate=None, host_id=2, module_id=1, debug=False, can_mode=CanModeNormal()):
+    def __init__(self, port=1, data_rate=None, host_id=2, module_id=1, debug=False, can_mode=CanModeNormal()):
         del data_rate
         tmcl_module_interface.__init__(self, host_id, module_id, debug)
         tmcl_host_interface.__init__(self, host_id, module_id, debug)
 
-        self.__silent = Pin(Pin.cpu.B14, Pin.OUT_PP)
+        self.__silent = Pin(Pin.cpu.B10, Pin.OUT_PP)
         self.__mode = can_mode
         self.__flag_recv = False
         self.__can = None
