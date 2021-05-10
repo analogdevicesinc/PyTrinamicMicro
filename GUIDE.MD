@@ -35,7 +35,7 @@ Refer to the MicroPython docs on how to do this.
 3. If the target platform is a microcontroller, plug in the MicroPython board to the PC.
 It should already get detected as mass storage device, with the SD card mounted directly to the root. 
 4. Invoke the installation script `install.py`. For full installation, run the command `python install.py D:\`,
-assuming `python` is properly linked to your python binary and `D:\` is the installation directory.
+assuming `python` is properly linked to your python binary and `D:\` is the installation directory for the target platform.
 As installing incrementally is not supported atm, invoke `python install.py D:\ -c` if you have already an installation
 in that target directory.
 5. Move the `main.py` and `boot.py` scripts for the desired platform manually out of `PyTrinamicMicro/platforms/x` to the platforms root.
