@@ -8,7 +8,7 @@ Created on 06.10.2020
 from PyTrinamicMicro.connections.tmcl_module_interface import tmcl_module_interface
 from PyTrinamicMicro.connections.tmcl_host_interface import tmcl_host_interface
 from pyb import USB_VCP
-
+import micropython
 
 class usb_vcp_tmcl_interface(tmcl_module_interface, tmcl_host_interface):
 
@@ -20,6 +20,7 @@ class usb_vcp_tmcl_interface(tmcl_module_interface, tmcl_host_interface):
         self.__vcp = USB_VCP(port)
         self.__vcp.init()
         self.__vcp.setinterrupt(-1)
+        micropython.kbd_intr(-1)
 
     def __enter__(self):
         return self
@@ -30,6 +31,7 @@ class usb_vcp_tmcl_interface(tmcl_module_interface, tmcl_host_interface):
 
     def close(self):
         self.__vcp.setinterrupt(3)
+        micropython.kbd_intr(3)
         self.__vcp.close()
         return 0
 
