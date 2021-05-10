@@ -33,7 +33,7 @@ Make sure to also install the Serial Port Drivers for USB communication to work.
 In that case, some kind of memory (i.e. SD card) needs to be provided and properly mounted.
 Refer to the MicroPython docs on how to do this.
 3. If the target platform is a microcontroller, plug in the MicroPython board to the PC.
-It should already get detected as mass storage device, with the SD card mounted directly to the root. 
+It should already get detected as mass storage device, with the SD card mounted directly to the root.
 4. Invoke the installation script `install.py`. For full installation, run the command `python install.py D:\`,
 assuming `python` is properly linked to your python binary and `D:\` is the installation directory for the target platform.
 As installing incrementally is not supported atm, invoke `python install.py D:\ -c` if you have already an installation
@@ -45,7 +45,7 @@ with a `low` signal on the `NRST` pin, or power cycle.
 This might be `COMX` for Windows (determine *X* in the Device Manager), or `/dev/ttyACMX`
 (determine *X* in the mounted devices in `/dev`) for Linux.
 8. Now, being in the Python shell, any MicroPython compatible statement can be interpreted.
-The PyTrinamicMicro package can be used. 
+The PyTrinamicMicro package can be used.
 Examples can be executed by e.g. `exec(MP.script("blinky"))`.
 
 ## Remarks
@@ -59,7 +59,14 @@ So make sure to use that whenever possible.
 
 ## Execute example scripts
 
-Example scripts can be executed from the Python shell directly using the `MP` class, i.e.
+By default, all example scripts can be executed via standard commands, i.e.
+
+```Python
+exec(open("PyTrinamicMicro/platforms/motionpy/examples/io/blinky.py").read())
+```
+
+Example scripts can also be linked manually by the user in the `MP` configuration class, and
+executed via shortcut, i.e.
 
 ```Python
 exec(MP.script("blinky"))

@@ -14,7 +14,8 @@ class MotionPy(PyTrinamicMicro):
     _MAP_SCRIPT = {
         "tmcl_slave_demo": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_slave/tmcl_slave_demo.py",
         "tmcl_bridge_usb_can": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_usb_can.py",
-        "can_logger": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_analyzer/can_logger.py"
+        "can_logger": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_analyzer/can_logger.py",
+        "blinky": "PyTrinamicMicro/platforms/motionpy/examples/io/blinky.py"
     }
 
     _MAP_TEST = {
