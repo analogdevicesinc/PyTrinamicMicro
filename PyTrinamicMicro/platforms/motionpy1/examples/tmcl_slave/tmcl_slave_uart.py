@@ -7,8 +7,9 @@ Created on 06.10.2020
 '''
 
 # Imports
-from PyTrinamicMicro.platforms.motionpy1.connections.uart_tmcl_interface import uart_tmcl_interface
-from PyTrinamicMicro.TMCL_Slave import TMCL_Slave_Main
+from PyTrinamicMicro.platforms.motionpy1.connections.usb_vcp_tmcl_interface import usb_vcp_tmcl_interface
+from PyTrinamicMicro.TMCL_Slave import TMCL_Slave
+from PyTrinamicMicro import PyTrinamicMicro
 import struct
 import logging
 
@@ -20,14 +21,15 @@ VERSION_STRING = MODULE_ID_STRING + "V100"
 BUILD_VERSION = 0
 
 # Prepare Logger
+PyTrinamicMicro.set_logging_console_enabled(False)
 logger = logging.getLogger(__name__)
-logger.info("TMCL Slave on UART interface")
+logger.info("TMCL Slave on USB_VCP interface")
 
 # Main program
 
 logger.info("Initializing interface ...")
-con = uart_tmcl_interface()
-slave = TMCL_Slave_Main(MODULE_ADDRESS, HOST_ADDRESS, VERSION_STRING, BUILD_VERSION)
+con = usb_vcp_tmcl_interface()
+slave = TMCL_Slave(MODULE_ADDRESS, HOST_ADDRESS, VERSION_STRING, BUILD_VERSION)
 logger.info("Interface initialized.")
 
 while(not(slave.status.stop)):
