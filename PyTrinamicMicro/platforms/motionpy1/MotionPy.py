@@ -12,17 +12,17 @@ import pyb
 class MotionPy(PyTrinamicMicro):
 
     _MAP_SCRIPT = {
-        "tmcl_slave_demo": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_slave/tmcl_slave_demo.py",
-        "tmcl_bridge_usb_can": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_bridge/tmcl_bridge_usb_can.py",
-        "can_logger": "PyTrinamicMicro/platforms/motionpy/examples/tmcl_analyzer/can_logger.py",
-        "blinky": "PyTrinamicMicro/platforms/motionpy/examples/io/blinky.py"
+        "tmcl_slave_demo": "PyTrinamicMicro/platforms/motionpy1/examples/tmcl_slave/tmcl_slave_demo.py",
+        "tmcl_bridge_usb_can": "PyTrinamicMicro/platforms/motionpy1/examples/tmcl_bridge/tmcl_bridge_usb_can.py",
+        "can_logger": "PyTrinamicMicro/platforms/motionpy1/examples/tmcl_analyzer/can_logger.py",
+        "blinky": "PyTrinamicMicro/platforms/motionpy1/examples/io/blinky.py"
     }
 
     _MAP_TEST = {
-        "can_version": "PyTrinamicMicro/platforms/motionpy/tests/interfaces/can_version.py",
-        "rs232_version": "PyTrinamicMicro/platforms/motionpy/tests/interfaces/rs232_version.py",
-        "rs485_version": "PyTrinamicMicro/platforms/motionpy/tests/interfaces/rs485_version.py",
-        "version": "PyTrinamicMicro/platforms/motionpy/tests/interfaces/version.py"
+        "can_version": "PyTrinamicMicro/platforms/motionpy1/tests/interfaces/can_version.py",
+        "rs232_version": "PyTrinamicMicro/platforms/motionpy1/tests/interfaces/rs232_version.py",
+        "rs485_version": "PyTrinamicMicro/platforms/motionpy1/tests/interfaces/rs485_version.py",
+        "version": "PyTrinamicMicro/platforms/motionpy1/tests/interfaces/version.py"
     }
 
     @staticmethod
