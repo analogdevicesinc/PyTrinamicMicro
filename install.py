@@ -30,7 +30,7 @@ def clean_pytrinamic(path):
 
 def clean_motionpy(path):
     logger.info("Cleaning MotionPy ...")
-    shutil.rmtree(os.path.join(path, "PyTrinamicMicro", "platforms", "motionpy"), ignore_errors=True)
+    shutil.rmtree(os.path.join(path, "PyTrinamicMicro", "platforms", "motionpy1"), ignore_errors=True)
     logger.info("MotionPy cleaned.")
 
 def clean_pytrinamicmicro_api(path):
@@ -95,32 +95,59 @@ def install_pytrinamic(path, compile, clean):
     logger.info("PyTrinamic copied.")
     logger.info("PyTrinamic installed.")
 
-def install_motionpy_boot(path, compile, clean):
+def install_motionpy1_boot(path, compile, clean):
     del clean
-    logger.info("Installing MotionPy boot ...")
-    shutil.copy(os.path.join("PyTrinamicMicro", "platforms", "motionpy", "boot.py"), path)
-    logger.info("MotionPy boot installed.")
+    logger.info("Installing MotionPy v1 boot ...")
+    shutil.copy(os.path.join("PyTrinamicMicro", "platforms", "motionpy1", "boot.py"), path)
+    logger.info("MotionPy v1 boot installed.")
 
-def install_motionpy_main(path, compile, clean):
+def install_motionpy1_main(path, compile, clean):
     del clean
-    logger.info("Installing MotionPy main ...")
-    shutil.copy(os.path.join("PyTrinamicMicro", "platforms", "motionpy", "main.py"), path)
-    logger.info("MotionPy main installed.")
+    logger.info("Installing MotionPy v1 main ...")
+    shutil.copy(os.path.join("PyTrinamicMicro", "platforms", "motionpy1", "main.py"), path)
+    logger.info("MotionPy v1 main installed.")
 
-def install_motionpy(path, compile, clean):
+def install_motionpy1(path, compile, clean):
     if(clean):
         clean_motionpy(path)
-    base = os.path.join("PyTrinamicMicro", "platforms", "motionpy")
-    logger.info("Installing platform MotionPy ...")
+    base = os.path.join("PyTrinamicMicro", "platforms", "motionpy1")
+    logger.info("Installing platform MotionPy v1 ...")
     os.makedirs(os.path.join(path, "PyTrinamicMicro", "platforms"), exist_ok=True)
     if(compile):
-        logger.info("Compiling MotionPy ...")
+        logger.info("Compiling MotionPy v1 ...")
         compile_recursive(base)
-        logger.info("MotionPy compiled.")
-    logger.info("Copying MotionPy ...")
-    shutil.copytree(base, os.path.join(path, "PyTrinamicMicro", "platforms", "motionpy"), ignore=shutil.ignore_patterns("*.py" if compile else "*.mpy"))
-    logger.info("MotionPy copied.")
-    logger.info("MotionPy installed.")
+        logger.info("MotionPy v1 compiled.")
+    logger.info("Copying MotionPy v1 ...")
+    shutil.copytree(base, os.path.join(path, "PyTrinamicMicro", "platforms", "motionpy1"), ignore=shutil.ignore_patterns("*.py" if compile else "*.mpy"))
+    logger.info("MotionPy v1 copied.")
+    logger.info("MotionPy v1 installed.")
+
+def install_motionpy2_boot(path, compile, clean):
+    del clean
+    logger.info("Installing MotionPy v2 boot ...")
+    shutil.copy(os.path.join("PyTrinamicMicro", "platforms", "motionpy2", "boot.py"), path)
+    logger.info("MotionPy v2 boot installed.")
+
+def install_motionpy2_main(path, compile, clean):
+    del clean
+    logger.info("Installing MotionPy v2 main ...")
+    shutil.copy(os.path.join("PyTrinamicMicro", "platforms", "motionpy2", "main.py"), path)
+    logger.info("MotionPy v2 main installed.")
+
+def install_motionpy2(path, compile, clean):
+    if(clean):
+        clean_motionpy(path)
+    base = os.path.join("PyTrinamicMicro", "platforms", "motionpy2")
+    logger.info("Installing platform MotionPy v2 ...")
+    os.makedirs(os.path.join(path, "PyTrinamicMicro", "platforms"), exist_ok=True)
+    if(compile):
+        logger.info("Compiling MotionPy v2 ...")
+        compile_recursive(base)
+        logger.info("MotionPy v2 compiled.")
+    logger.info("Copying MotionPy v2 ...")
+    shutil.copytree(base, os.path.join(path, "PyTrinamicMicro", "platforms", "motionpy2"), ignore=shutil.ignore_patterns("*.py" if compile else "*.mpy"))
+    logger.info("MotionPy v2 copied.")
+    logger.info("MotionPy v2 installed.")
 
 def install_pytrinamicmicro_api(path, compile, clean):
     if(clean):
@@ -191,9 +218,12 @@ SELECTION_MAP = {
     "pytrinamicmicro": install_pytrinamicmicro,
     "pytrinamicmicro-full": install_pytrinamicmicro,
     "pytrinamicmicro-api": install_pytrinamicmicro_api,
-    "motionpy": install_motionpy,
-    "motionpy-boot": install_motionpy_boot,
-    "motionpy-main": install_motionpy_main,
+    "motionpy1": install_motionpy1,
+    "motionpy1-boot": install_motionpy1_boot,
+    "motionpy1-main": install_motionpy1_main,
+    "motionpy2": install_motionpy2,
+    "motionpy2-boot": install_motionpy2_boot,
+    "motionpy2-main": install_motionpy2_main,
     "lib": install_lib
 }
 
