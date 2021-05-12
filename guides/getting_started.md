@@ -1,11 +1,9 @@
-# Operational Guide
+# Getting Started
 
 This is a guide on how to use the PyTrinamicMicro specific modules.  
 For a MicroPython specific guide, please refer to [docs.micropython.org](https://docs.micropython.org).
 
-## Getting started
-
-### TMCM-0960-MotionPy preparation
+## TMCM-0960-MotionPy preparation
 
 This is on how to prepare the TMCM-0960-MotionPy reference board.  
 If you are not using this, refer to the preparation guide of your target system and skip the
@@ -24,7 +22,7 @@ If you are developing on windows:
 Install the Serial Port Drivers `pybcdc.inf` from the root of the attached storage to your system.
 6. Insert the SD card in the board and reattach it.
 
-### General
+## General
 
 1. Prepare the target system to run MicroPython. If there is already a MicroPython port available for the
 target system, there might be a guide for that in the official MicroPython docs.

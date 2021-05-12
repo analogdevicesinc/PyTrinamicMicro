@@ -11,9 +11,13 @@ To clone this repository along with all of its submodules, use the command:
 git clone https://github.com/trinamic/PyTrinamicMicro.git --recurse-submodules
 ```
 
+## Guides
+
+For operational guides on various applications, see [guides](guides).
+
 ## Getting Started
 
-For an operational guide on how to get started with the basics with code snippets, see [GUIDE.MD](GUIDE.MD).
+For a guide on how to get started with the basics with code snippets, see [guides/getting_started.md](Getting Started).
 
 ## Documentation
 
