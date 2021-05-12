@@ -14,4 +14,4 @@ from PyTrinamicMicro.platforms.motionpy1.MotionPy import MotionPy as MP
 MP.init()
 
 # Execute example script
-exec(MP.script("null"))
+#exec(MP.script("null"))
