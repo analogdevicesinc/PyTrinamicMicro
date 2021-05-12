@@ -17,7 +17,7 @@ For operational guides on various applications, see [guides](guides).
 
 ## Getting Started
 
-For a guide on how to get started with the basics with code snippets, see [guides/getting_started.md](Getting Started).
+For a guide on how to get started with the basics with code snippets, see [Getting Started](guides/getting_started.md).
 
 ## Documentation
 
