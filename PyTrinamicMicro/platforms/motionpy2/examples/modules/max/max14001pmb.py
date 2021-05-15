@@ -15,15 +15,28 @@ import logging
 logger = logging.getLogger(__name__)
 logger.info("Reading ADC values")
 
-pins = dict({
-    "pin_cs_volt"   : Pin.cpu.C0,
-    "pin_cs_curr"   : Pin.cpu.A4,
-    "pin_cout_volt" : Pin.cpu.A13,
-    "pin_cout_curr" : Pin.cpu.A14,
-    "pin_fault"     : Pin.cpu.C1
+pmod0 = dict({
+    "pin_cs_volt"   : Pin.cpu.C6,
+    "pin_cs_curr"   : Pin.cpu.A4, 
+    "pin_cout_volt" : Pin.cpu.B0,
+    "pin_cout_curr" : Pin.cpu.C13,
+    "pin_fault"     : Pin.cpu.C5,
+    "spi" : 1
     })
 
-max14001pmb = MAX14001PMB(**pins)
+pmod1 = dict({
+    "pin_cs_volt"   : Pin.cpu.C2,
+    "pin_cs_curr"   : Pin.cpu.B12, 
+    "pin_cout_volt" : Pin.cpu.C4,
+    "pin_cout_curr" : Pin.cpu.C7,
+    "pin_fault"     : Pin.cpu.C3,
+    "spi" : 2
+    })
+
+'''Change pmod connector here'''
+connector = pmod0
+
+max14001pmb = MAX14001PMB(**connector)
 filtered = True
 max14001pmb.set_cout_volt(18,20)
 max14001pmb.set_cout_curr(0.4,0.5)

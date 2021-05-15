@@ -13,16 +13,27 @@ import logging
 logger = logging.getLogger(__name__)
 logger.info("MAX14914PMB Output example running")
 
-pins = dict({
+pmod0 = dict({
     "do_set_pin"    :   Pin.cpu.A5,
     "do_pp_pin"     :   Pin.cpu.A6,
     "di_ena_pin"    :   Pin.cpu.A7,
-    "dido_lvl_pin"  :   Pin.cpu.C0,
-    "fault_pin"     :   Pin.cpu.C1,
-    "ov_vdd_pin"    :   Pin.cpu.A4
+    "dido_lvl_pin"  :   Pin.cpu.A4, 
+    "fault_pin"     :   Pin.cpu.C6,
+    "ov_vdd_pin"    :   Pin.cpu.B0
     })
 
-module = MAX14914(pins["do_set_pin"], pins["do_pp_pin"], pins["di_ena_pin"], pins["dido_lvl_pin"], pins["fault_pin"], pins["ov_vdd_pin"])
+pmod1 = dict({
+    "do_set_pin"    :   Pin.cpu.B13,
+    "do_pp_pin"     :   Pin.cpu.B14,
+    "di_ena_pin"    :   Pin.cpu.B15,
+    "dido_lvl_pin"  :   Pin.cpu.B12, 
+    "fault_pin"     :   Pin.cpu.C2,
+    "ov_vdd_pin"    :   Pin.cpu.C4
+    })
+
+'''Change pmod connector here'''
+connector = pmod0
+module = MAX14914(connector["do_set_pin"], connector["do_pp_pin"], connector["di_ena_pin"], connector["dido_lvl_pin"], connector["fault_pin"], connector["ov_vdd_pin"])
 
 module.setIOMode(0)
 
@@ -35,7 +46,7 @@ while(True):
         OV_VDD = module.getOV_VDD()
         for cursor in '|/-\\':
                 text =  cursor+" Output state: " +  str(state) + ";Fault state: " + str(faults) +"; OV_VDD: " + str(OV_VDD)
-                print(text, end='\r')
+                print(text, end='\r')        
                 time.sleep(0.2)
         state = 1
         module.setDO(state)
@@ -45,3 +56,4 @@ while(True):
                 text =  cursor+" Output state: " +  str(state) + ";Fault state: " + str(faults) +"; OV_VDD: " + str(OV_VDD)
                 print(text, end='\r')
                 time.sleep(0.2)
+        

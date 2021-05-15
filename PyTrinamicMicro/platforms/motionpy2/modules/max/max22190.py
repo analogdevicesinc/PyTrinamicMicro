@@ -1,5 +1,5 @@
 '''
-This file implements a basic class for using the MAX22190 in SPI Mode 1.
+This file implements a basic class for using the MAX22190 in SPI Mode 1. 
 For further details refer to the data sheet.
 Created on 25.02.2021
 
@@ -45,7 +45,7 @@ class MAX22190:
         self.LATCH  =   Pin(latch_pin, Pin.OUT_PP)
         while(self.READY.value() == 1):
             time.sleep(0.1)
-        self.set_latch_pin(1)
+        self.set_latch_pin(1)    
 
     def build_byte_array(self, reg, data = 0x00, rw = 0):
         """returns bytearray with addr, read/write and data, ready to send"""

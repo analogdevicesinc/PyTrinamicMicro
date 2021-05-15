@@ -1,5 +1,5 @@
 '''
-This file implements a basic class for the MAX14001 ic as well as
+This file implements a basic class for the MAX14001 ic as well as 
 a basic implementaion to use the module MAX14001PMB.
 
 Created on 27.01.2021
@@ -14,35 +14,35 @@ import struct
 
 class  MAX14001(object):
     '''This class provides basic functions to use the MAX14001, for further details refer to the data sheet.'''
-    MAX14001_ADC_adr=0x00       #ADC R
-    MAX14001_FADC_adr=0x01      #Filtered ADC R
-    MAX14001_FLAGS_adr= 0x02    #Error Flags R
+    MAX14001_ADC_adr=0x00       #ADC R 
+    MAX14001_FADC_adr=0x01      #Filtered ADC R 
+    MAX14001_FLAGS_adr= 0x02    #Error Flags R 
     MAX14001_FLTEN_adr=0x03     #FAULT Enable R&W
-    MAX14001_THL_adr=0x04       #Lower Threshold R&W
-    MAX14001_THU_adr=0x05       #Upper Threshold R&W
-    MAX14001_INRR_adr=0x06      #Inrush Reset R&W
-    MAX14001_INRT_adr=0x07      #Inrush Trigger R&W
+    MAX14001_THL_adr=0x04       #Lower Threshold R&W 
+    MAX14001_THU_adr=0x05       #Upper Threshold R&W 
+    MAX14001_INRR_adr=0x06      #Inrush Reset R&W 
+    MAX14001_INRT_adr=0x07      #Inrush Trigger R&W 
     MAX14001_INRP_adr=0x08      #Inrush Pulse R&W
-    MAX14001_CFG_adr=0x09       #Configuration R&W
-    MAX14001_ENBL_adr=0x0a      #Enable R&W
+    MAX14001_CFG_adr=0x09       #Configuration R&W 
+    MAX14001_ENBL_adr=0x0a      #Enable R&W 
     MAX14001_ACT_adr=0x0B       #Immediate action register W&C
-    MAX14001_WVR_adr=0x0c       #SPI Write Enable R&W
+    MAX14001_WVR_adr=0x0c       #SPI Write Enable R&W 
     #verification registers
-    MAX14001_FLTV_adr=0x13      # FAULT Enable verification R&W
-    MAX14001_THLV_adr=0x14      #Lower Threshold verification R&W
+    MAX14001_FLTV_adr=0x13      # FAULT Enable verification R&W 
+    MAX14001_THLV_adr=0x14      #Lower Threshold verification R&W 
     MAX14001_THUV_adr=0x15      #Upper Threshold verification R&W
-    MAX14001_INRRV_adr=0x16     #Inrush Reset verification R&W
-    MAX14001_INRTV_adr=0x17     #Inrush Trigger verification R&W
+    MAX14001_INRRV_adr=0x16     #Inrush Reset verification R&W 
+    MAX14001_INRTV_adr=0x17     #Inrush Trigger verification R&W 
     MAX14001_INRPV_adr=0x18     #Inrush Pulse verification R&W
     MAX14001_CFGV_adr=0x19      #Configuration verification R&W
-    MAX14001_ENBLV_adr=0x1a     #Enable verification R&W
+    MAX14001_ENBLV_adr=0x1a     #Enable verification R&W 
 
-    def __init__(self, cs = Pin.cpu.A4, cout = None):
-        self.__SPI = spi_ic_interface(spi=SPI(1, SPI.MASTER, baudrate=10000, polarity=0, phase=0), cs=cs)
+    def __init__(self, cs = Pin.cpu.A4, spi= 1, cout = None):
+        self.__SPI = spi_ic_interface(spi=SPI(spi, SPI.MASTER, baudrate=10000, polarity=0, phase=0), cs=cs)
         if cout:
             self.__COUT = Pin(cout, Pin.IN)
     def rev(self, s):
-        """returns inverse of string s"""
+        """returns inverse of string s"""       
         return "" if not(s) else self.rev(s[1::])+s[0]
 
     def build_byte_array(self,addr, rw, data = "0000000000"):
@@ -78,7 +78,7 @@ class  MAX14001(object):
         self.__SPI.send_recv(buf_send,buf_recv)
         self.__SPI.send_recv(buf_send,buf_recv)
         return self.bin_from_recv(buf_recv)
-
+       
     def write(self, addr, data = "0000000000"):
         """writing data provided as 0/1 string to addr. returns full receive as string"""
         buf = self.build_byte_array(addr,1, data)
@@ -95,21 +95,21 @@ class  MAX14001(object):
 
     def get_cout(self):
         """returns value of specified pin for comparator (if assigned)"""
-        try:
+        try: 
             return self.__COUT.value()
         except AttributeError:
-            return  "Not assigned"
-
+            return  "Not assigned"  
+    
     def write_verification(self):
         """Write the values back to their appropriate verification registers to clear the MV Fault"""
         reg_FLTEN = self.read(self.MAX14001_FLTEN_adr)
-        reg_THL = self.read(self.MAX14001_THL_adr)
-        reg_THU = self.read(self.MAX14001_THU_adr)
-        reg_INRR = self.read(self.MAX14001_INRR_adr)
-        reg_INRT = self.read(self.MAX14001_INRT_adr)
-        reg_INRP = self.read(self.MAX14001_INRP_adr)
-        reg_CFG = self.read(self.MAX14001_CFG_adr)
-        reg_ENBL = self.read(self.MAX14001_ENBL_adr)
+        reg_THL = self.read(self.MAX14001_THL_adr)    
+        reg_THU = self.read(self.MAX14001_THU_adr)      
+        reg_INRR = self.read(self.MAX14001_INRR_adr)    
+        reg_INRT = self.read(self.MAX14001_INRT_adr)    
+        reg_INRP = self.read(self.MAX14001_INRP_adr)    
+        reg_CFG = self.read(self.MAX14001_CFG_adr)   
+        reg_ENBL = self.read(self.MAX14001_ENBL_adr)   
 
         self.enable_write(1)
 
@@ -123,32 +123,35 @@ class  MAX14001(object):
         self.write(self.MAX14001_ENBLV_adr, reg_ENBL)
 
         self.enable_write(0)
-
+        
 class  MAX14001PMB(object):
     '''This class provides basic functions to use the MAX14001PMB, for further details refer to the data sheet.'''
     VOLT_FACTOR = 0.666
     VOLT_OFFSET = 0
     CURRENT_FACTOR = -0.012
     CURRENT_OFFSET = 0.34
-
+    spi=1
     def __init__(self, **kwargs):
         time.sleep(0.2)
-        if  "pin_cs_volt" in kwargs:
+        if "spi" in kwargs:
+            spi = kwargs["spi"] 
+
+        if  "pin_cs_volt" in kwargs: 
             if "pin_cout_volt" in kwargs:
-                self.voltADC = MAX14001(kwargs["pin_cs_volt"], kwargs["pin_cout_volt"],)
+                self.voltADC = MAX14001(kwargs["pin_cs_volt"],spi, kwargs["pin_cout_volt"])
             else:
-                self.voltADC = MAX14001(kwargs["pin_cs_volt"])
+                self.voltADC = MAX14001(kwargs["pin_cs_volt"],spi)
             self.voltADC.enable_write(1)
             self.voltADC.write(self.voltADC.MAX14001_CFG_adr, "0110110011")
             self.voltADC.write(self.voltADC.MAX14001_INRR_adr,"1111111111")
             self.voltADC.enable_write(0)
             self.voltADC.write_verification()
 
-        if  "pin_cs_curr" in kwargs:
+        if  "pin_cs_curr" in kwargs: 
             if "pin_cout_curr" in kwargs:
-                self.currentADC = MAX14001(kwargs["pin_cs_curr"], kwargs["pin_cout_curr"],)
+                self.currentADC = MAX14001(kwargs["pin_cs_curr"],spi, kwargs["pin_cout_curr"])
             else:
-                self.currentADC = MAX14001(kwargs["pin_cs_curr"])
+                self.currentADC = MAX14001(kwargs["pin_cs_curr"],spi)
             self.currentADC.enable_write(1)
             self.currentADC.write(self.voltADC.MAX14001_CFG_adr, "0110110011")
             self.currentADC.write(self.voltADC.MAX14001_INRR_adr,"1111111111")
@@ -165,7 +168,7 @@ class  MAX14001PMB(object):
             else:
                 return self.VOLT_FACTOR*(int(self.voltADC.read(self.voltADC.MAX14001_ADC_adr),2)-511)-self.VOLT_OFFSET
         except AttributeError:
-            return "Not assigned"
+            return "Not assigned" 
 
     def get_current(self, filtered = True):
         """returns current"""
@@ -175,14 +178,14 @@ class  MAX14001PMB(object):
             else:
                 return self.CURRENT_FACTOR*(int(self.currentADC.read(self.currentADC.MAX14001_ADC_adr),2)-511)-self.CURRENT_OFFSET
         except AttributeError:
-            return "Not assigned"
+            return "Not assigned" 
 
     def get_fault(self):
         """returns status of fault pin if assigned """
-        try:
+        try: 
             return not self.__Fault.value()
         except AttributeError:
-            return "Not assigned"
+            return "Not assigned" 
 
     def set_cout_volt(self,lower_value, upper_value):
         '''set the threshold for voltage comparator'''
@@ -197,7 +200,7 @@ class  MAX14001PMB(object):
     def set_cout_curr(self,lower_value, upper_value):
         '''set the threshold for current comparator'''
         upper_value_scaled = (lower_value+self.CURRENT_OFFSET)/self.CURRENT_FACTOR + 511
-        lower_value_scaled = (upper_value+self.CURRENT_OFFSET)/self.CURRENT_FACTOR + 511
+        lower_value_scaled = (upper_value+self.CURRENT_OFFSET)/self.CURRENT_FACTOR + 511 
         self.currentADC.enable_write(1)
         self.currentADC.write(self.currentADC.MAX14001_THL_adr, "{:010b}".format(round(lower_value_scaled))[:10])
         self.currentADC.write(self.currentADC.MAX14001_THU_adr, "{:010b}".format(round(upper_value_scaled))[:10])
@@ -209,3 +212,5 @@ class  MAX14001PMB(object):
     def get_cout_curr(self):
         """returns value of specified pin for current comparator (if assigned)"""
         return not bool(self.currentADC.get_cout())
+ 
+    

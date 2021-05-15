@@ -12,6 +12,23 @@ import logging
 logger = logging.getLogger(__name__)
 logger.info("MAX22191PMB example running")
 
+
+pmod0 = dict({
+    "DI1"     :   Pin.cpu.A4,
+    "DI2"     :   Pin.cpu.A7,
+    })
+
+pmod1 = dict({
+    "DI1"     :   Pin.cpu.B12,
+    "DI2"     :   Pin.cpu.B15,
+    })
+
+'''Change pmod connector here'''
+connector = pmod0
+
+
+
+
 DI1     =   Pin(Pin.cpu.C1,Pin.OUT_PP)
 DI2     =  Pin(Pin.cpu.A7, Pin.OUT_PP)
 
