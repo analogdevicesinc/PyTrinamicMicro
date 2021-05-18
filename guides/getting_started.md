@@ -9,7 +9,7 @@ This is on how to prepare the TMCM-0960-MotionPy reference board.
 If you are not using this, refer to the preparation guide of your target system and skip the
 following steps.
 
-1. Build the PYBv11 STM32 firmware. For that, refer to the [build guide](https://github.com/Lionheart1810/micropython/blob/master/ports/stm32/README.md).  
+1. Build the PYBv11 STM32 firmware. For that, refer to the [build guide](https://github.com/trinamic/micropython/blob/master/ports/stm32/README.md).  
 *TL;DR*: `cd micropython && make -C mpy-cross PYTHON=python && cd ports/stm32 && make submodules PYTHON=python && make BOARD=PYBV11 PYTHON=python`,
 assuming `python` is the linked Python binary.
 2. Flash the `micropython/ports/stm32/build/firmware.hex` file using your favorite SWD interface.
