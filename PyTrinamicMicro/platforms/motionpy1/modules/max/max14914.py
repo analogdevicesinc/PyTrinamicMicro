@@ -1,3 +1,10 @@
+'''
+This file implements some functions for MAX14914.
+
+Created on 25.02.2021
+
+@author: JH
+'''
 from pyb import Pin 
 import time
 
@@ -26,9 +33,13 @@ class MAX14914:
         elif(mode == "1"):
                 self.DI_ENA.high()   
 
-    #DI_ENA = HIGH
     def setPPMode(self,mode):
-        ''' set input mode D0 or DI'''
+        ''' set PP mode.
+            In DO mode, set PP high (1) to
+            enable push-pull mode operation of the DO driver. In DI mode, set
+            PP low(0) for IEC Type 1/3 input characteristics and set high for
+            Type 2 input characteristics.
+            '''
         if(mode == 0):
             self.DO_PP.low()
         elif(mode == 1):

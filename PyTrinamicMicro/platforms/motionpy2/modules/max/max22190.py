@@ -85,13 +85,17 @@ class MAX22190:
         return io
 
     def get_fault_pin(self):
+        """ returns state of fault pin """
         return not self.FAULT.value()
 
-    def get_ready_pin(self):
+    def get_ready_pin(self):        
+        """ returns state of ready pin """
         return not self.READY.value()
 
     def get_latch_pin(self):
+        """ returns state of latch pin """
          return not self.LATCH.value()
 
     def set_latch_pin(self,value):
+        """ set state of latch pin """
         return self.LATCH.value(value)

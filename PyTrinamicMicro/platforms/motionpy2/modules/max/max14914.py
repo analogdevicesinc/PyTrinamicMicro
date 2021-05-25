@@ -1,13 +1,20 @@
+'''
+This file implements some functions for MAX14914.
+
+Created on 25.02.2021
+
+@author: JH
+'''
 from pyb import Pin 
 import time
 
 '''
 DI_ENA defines the DOI as a digital output (set to 0) or as a digital input (set to 1).
-DO_PP defines the mode of DOI, depending upon how
-DI_ENA is set. If the MAX14914 is configured as a digital output, DO_PP selects high-side mode (set to 0) or pushpull mode (set to 1). 
-        If the MAX14914 is configured as a digital input, DO_PP selects type 1/3 mode (set to 0) or type 2 mode (set to 1).
+DO_PP defines the mode of DOI, depending upon how DI_ENA is set. 
+If the MAX14914 is configured as a digital output, DO_PP selects high-side mode (set to 0) or pushpull mode (set to 1). 
+If the MAX14914 is configured as a digital input, DO_PP selects type 1/3 mode (set to 0) or type 2 mode (set to 1).
 DO_SET is used when the MAX14914 is configured as a DO; when DO_SET is 0 the output pin DOI is either high impedance (in high-side mode) or 0V (in push-pull mode).
-        When DO_SET is 1, the output pin DOI is turned on (24V) in high-side mode or in push-pull mode.
+When DO_SET is 1, the output pin DOI is turned on (24V) in high-side mode or in push-pull mode.
 '''
 class MAX14914:
     def __init__(self, do_set_pin = Pin.cpu.A5, do_pp_pin = Pin.cpu.A6, di_ena_pin = Pin.cpu.A7, dido_lvl_pin = Pin.cpu.C0, fault_pin = Pin.cpu.C1, ov_vdd_pin = Pin.cpu.A4):
@@ -26,9 +33,13 @@ class MAX14914:
         elif(mode == "1"):
                 self.DI_ENA.high()   
 
-    #DI_ENA = HIGH
     def setPPMode(self,mode):
-        ''' set input mode D0 or DI'''
+        ''' set PP mode.
+            In DO mode, set PP high (1) to
+            enable push-pull mode operation of the DO driver. In DI mode, set
+            PP low(0) for IEC Type 1/3 input characteristics and set high for
+            Type 2 input characteristics.
+            '''
         if(mode == 0):
             self.DO_PP.low()
         elif(mode == 1):
