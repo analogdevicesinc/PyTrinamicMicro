@@ -20,6 +20,12 @@ Since the MotionPy is a general purpose platform, all of these modes have to be 
 them to the `main.py` script. For all of these modes, there are several examples for
 all kinds of configurations. Please take them for reference.
 
+Note that after starting a TMCL-Slave or TMCL-Bridge on one interface (e.g. USB),
+any characters transmitted to that interface will be interpreted as part of the TMCL-Command.
+So when using a TMCL-Master application (e.g. TMCL-IDE) and the terminal over the same interface,
+make sure to close the terminal after starting the corresponsing script on the MotionPy without sending extra characters.
+This way, commands from the TMCL application will be interpreted correctly.
+
 ## TMCL-Master
 
 The TMCL-Master functionality is already given by the `PyTrinamic` library
