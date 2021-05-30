@@ -8,7 +8,7 @@ It utilizes the PyTrinamic library.
 
 To clone this repository along with all of its submodules, use the command:
 ```
-git clone https://github.com/trinamic/PyTrinamicMicro.git --recurse-submodules
+git clone git@github.com:trinamic/PyTrinamicMicro.git --recurse-submodules
 ```
 
 ## Guides
