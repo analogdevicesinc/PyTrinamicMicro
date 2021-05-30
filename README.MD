@@ -6,10 +6,14 @@ It utilizes the PyTrinamic library.
 
 ## Cloning
 
-To clone this repository along with all of its submodules, use the command:
+To clone this repository along with all of its submodules, clone it recursively with SSH using the command:
 ```
 git clone git@github.com:trinamic/PyTrinamicMicro.git --recurse-submodules
 ```
+
+For this to work, the SSH-Key has to be added to the GitHub Account.
+
+Cloning with HTTP is possible aswell, but as all submodules are linked via SSH, they have to be cloned individually.
 
 ## Guides
 
