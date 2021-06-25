@@ -18,10 +18,11 @@ logger = logging.getLogger(__name__)
 logger.info("Test GET_FIRMWARE_VERSION for CAN, RS232 and RS485 interfaces.")
 
 logger.info("Initializing interfaces.")
-interfaces = set()
-interfaces.add(can_tmcl_interface())
-interfaces.add(rs232_tmcl_interface())
-interfaces.add(rs485_tmcl_interface())
+interfaces = [
+    can_tmcl_interface(),
+    rs232_tmcl_interface(),
+    rs485_tmcl_interface()
+]
 
 for interface in interfaces:
     logger.info("Issuing GET_FIRMWARE_VERSION on interface {}.".format(interface))
