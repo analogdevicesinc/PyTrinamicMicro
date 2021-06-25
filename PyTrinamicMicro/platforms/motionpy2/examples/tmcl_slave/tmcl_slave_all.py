@@ -31,7 +31,12 @@ logger.info("TMCL Slave on all interfaces")
 # Main program
 
 logger.info("Initializing interfaces ...")
-cons = [usb_vcp_tmcl_interface(), rs232_tmcl_interface(), rs485_tmcl_interface(), can_tmcl_interface()]
+cons = [
+    #usb_vcp_tmcl_interface(),
+    rs232_tmcl_interface(),
+    rs485_tmcl_interface(),
+    can_tmcl_interface()
+]
 slave = TMCL_Slave_Bridge(MODULE_ADDRESS, HOST_ADDRESS, VERSION_STRING, BUILD_VERSION)
 logger.info("Interfaces initialized.")
 

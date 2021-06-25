@@ -14,7 +14,7 @@ from PyTrinamicMicro.platforms.motionpy2.MotionPy import MotionPy as MP
 MP.init()
 
 def test_master():
-    exec(open("PyTrinamicMicro/platforms/motionpy2/tests/version.py").read())
+    exec(open("PyTrinamicMicro/platforms/motionpy2/tests/interfaces/version.py").read())
 
 def test_slave():
     exec(open("PyTrinamicMicro/platforms/motionpy2/examples/tmcl_slave/tmcl_slave_all.py").read())
