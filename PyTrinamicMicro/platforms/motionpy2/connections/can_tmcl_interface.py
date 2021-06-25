@@ -45,12 +45,12 @@ class can_tmcl_interface(tmcl_module_interface, tmcl_host_interface):
             self.__silent.low()
             self.__can = CAN(port, CAN.NORMAL)
             self.__can.init(CAN.NORMAL, prescaler=3, bs1=11, bs2=2, auto_restart=True)
-            self.__can.setfilter(0, CAN.LIST16, 0, (host_id, host_id, host_id, host_id))
+            self.__can.setfilter(0, CAN.LIST16, 0, (host_id, host_id, module_id, module_id))
         elif(isinstance(self.__mode, CanModeSilent)):
             self.__silent.high()
             self.__can = CAN(port, CAN.SILENT)
             self.__can.init(CAN.SILENT, prescaler=3, bs1=11, bs2=2, auto_restart=True)
-            self.__can.setfilter(0, CAN.LIST16, 0, (module_id, host_id, module_id, host_id))
+            self.__can.setfilter(0, CAN.LIST16, 0, (host_id, host_id, module_id, module_id))
         elif(isinstance(self.__mode, CanModeOff)):
             raise ValueError() # Not supported by TJA1051T/3
 

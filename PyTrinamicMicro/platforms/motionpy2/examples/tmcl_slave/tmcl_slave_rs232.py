@@ -1,5 +1,5 @@
 '''
-Act as TMCL slave over CAN.
+Act as TMCL slave over RS232.
 
 Created on 06.10.2020
 
@@ -7,7 +7,7 @@ Created on 06.10.2020
 '''
 
 # Imports
-from PyTrinamicMicro.platforms.motionpy2.connections.can_tmcl_interface import can_tmcl_interface
+from PyTrinamicMicro.platforms.motionpy2.connections.rs232_tmcl_interface import rs232_tmcl_interface
 from PyTrinamicMicro.TMCL_Slave import TMCL_Slave_Bridge
 from PyTrinamicMicro import PyTrinamicMicro
 import struct
@@ -22,12 +22,12 @@ BUILD_VERSION = 0
 
 # Prepare Logger
 logger = logging.getLogger(__name__)
-logger.info("TMCL Slave on CAN interface")
+logger.info("TMCL Slave on RS232 interface")
 
 # Main program
 
 logger.info("Initializing interface ...")
-con = can_tmcl_interface()
+con = rs232_tmcl_interface()
 slave = TMCL_Slave_Bridge(MODULE_ADDRESS, HOST_ADDRESS, VERSION_STRING, BUILD_VERSION)
 logger.info("Interface initialized.")
 
