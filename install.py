@@ -134,6 +134,13 @@ def install_motionpy2_main(path, compile, clean):
     shutil.copy(os.path.join("PyTrinamicMicro", "platforms", "motionpy2", "main.py"), path)
     logger.info("MotionPy v2 main installed.")
 
+def install_motionpy2_test(path, compile, clean):
+    del clean
+    logger.info("Installing MotionPy v2 test ...")
+    shutil.copy(os.path.join("PyTrinamicMicro", "platforms", "motionpy2", "main_test.py"), path)
+    shutil.move(os.path.join(path, "main_test.py"), os.path.join(path, "main.py"))
+    logger.info("MotionPy v2 test installed.")
+
 def install_motionpy2(path, compile, clean):
     if(clean):
         clean_motionpy(path)
@@ -224,6 +231,7 @@ SELECTION_MAP = {
     "motionpy2": install_motionpy2,
     "motionpy2-boot": install_motionpy2_boot,
     "motionpy2-main": install_motionpy2_main,
+    "motionpy2-test": install_motionpy2_test,
     "lib": install_lib
 }
 
