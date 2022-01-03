@@ -1,5 +1,5 @@
 '''
-Example using the MAX22005PMB
+Example using the MAX22007PMB
 
 Created on 13.10.2021
 

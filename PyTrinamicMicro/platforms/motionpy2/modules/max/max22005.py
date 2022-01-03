@@ -252,6 +252,7 @@ class  MAX22005PMB(object):
             print("ERR: Invalid Switch. Select: 0, 1, 2, 3 ")
             return 
         else: 
+		    
             old_data = self.ADC.read(self.ADC.MAX22005_GEN_GPIOCTRL_adr)[8:32]
             new_data = self.ADC.data_generator(old_data, str(bit), [23-SW])
             self.ADC.write(self.ADC.MAX22005_GEN_GPIOCTRL_adr, new_data)
@@ -318,7 +319,7 @@ class  MAX22005PMB(object):
                 self.control_SW(0, self.ADC.MAX22005_GPIO_mode[mode])
                 data = "10011"
             elif analog_inputs == "1-2": 
-                self.control_SW(1, self.ADC.MAX22005_GPIO_mode[mode])
+                self.control_SW(0, self.ADC.MAX22005_GPIO_mode[mode])
                 data = "10010"
             elif analog_inputs == "4-5": 
                 self.control_SW(1, self.ADC.MAX22005_GPIO_mode[mode])
@@ -327,13 +328,13 @@ class  MAX22005PMB(object):
                 self.control_SW(1, self.ADC.MAX22005_GPIO_mode[mode])
                 data = "10101"
             elif analog_inputs == "7-8": 
-                self.control_SW(1, self.ADC.MAX22005_GPIO_mode[mode])
+                self.control_SW(2, self.ADC.MAX22005_GPIO_mode[mode])
                 data = "10110"
             elif analog_inputs == "7-9": 
                 self.control_SW(2, self.ADC.MAX22005_GPIO_mode[mode])
                 data = "10111"
             elif analog_inputs == "10-11": 
-                self.control_SW(1, self.ADC.MAX22005_GPIO_mode[mode])
+                self.control_SW(3, self.ADC.MAX22005_GPIO_mode[mode])
                 data = "11000"
             elif analog_inputs == "10-12": 
                 self.control_SW(3, self.ADC.MAX22005_GPIO_mode[mode])
@@ -371,6 +372,9 @@ class  MAX22005PMB(object):
         
     def read_ADC(self):
         """Read ADC and returns decimal form"""
+		#wait for next reading
+		d
+		
         data = self.ADC.read(self.ADC.MAX22005_DCHNL_DATA_adr)[8:32] #two's compliment form
         #print("Read ADC = ", data)
         #convert data to int
@@ -380,5 +384,5 @@ class  MAX22005PMB(object):
         else: 
             V = data_int #return as is
     
-        V = 0.00000149*V + 0.000975557
+        V = 0.000002980232594*V #+ 0.000975557
         return V

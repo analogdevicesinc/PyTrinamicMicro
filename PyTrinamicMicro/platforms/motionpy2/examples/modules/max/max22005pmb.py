@@ -4,8 +4,8 @@ Example using the MAX22005PMB
 Created on 13.10.2021
 
 @author: KA
-'''
 #Paste into terminal to run: exec(open("PyTrinamicMicro/platforms/motionpy2/examples/modules/max/max22005pmb.py").read())
+'''
 
 from PyTrinamicMicro.platforms.motionpy2.modules.max.max22005 import MAX22005, MAX22005PMB
 from pyb import Pin
@@ -51,26 +51,55 @@ max22005pmb.control_CRC("enable") #enable crc
 #max22005pmb.diff("3-4", "voltage") #measure differential voltage 
 
 #multifunctual differential measurements
-#max22005pmb.multi_diff("1-3", "current") #measure multifunctual differential current 
-max22005pmb.multi_diff("1-3", "voltage") #measure multifunctual differential voltage
+#valid channels:    voltage     /      current
+#                     1-3               1-2
+#                     4-6               4-5
+#                     7-9               7-8
+#                    10-12             10-11
+
+channel="1-3"
+mode="voltage"
+
+# select channel + mode:
+max22005pmb.multi_diff(channel,   mode) #measure multifunctual differential current 
+
+#max22005pmb.multi_diff("1-3",   "voltage") #measure multifunctual differential voltage
+#max22005pmb.multi_diff("1-2",   "current") #measure multifunctual differential current 
+#max22005pmb.multi_diff("4-6",   "voltage") #measure multifunctual differential voltage
+#max22005pmb.multi_diff("4-5",   "current") #measure multifunctual differential current 
+#max22005pmb.multi_diff("7-9",   "voltage") #measure multifunctual differential voltage
+#max22005pmb.multi_diff("7-8",   "current") #measure multifunctual differential current 
+#max22005pmb.multi_diff("10-12", "voltage") #measure multifunctual differential voltage
+#max22005pmb.multi_diff("10-11", "current") #measure multifunctual differential current 
+
+
+
 
 #configure ADC conversion
 max22005pmb.set_conversion("continuous")
 max22005pmb.start_conversion()
 
+# wait for conversions to start
+while(max22005pmb.__ReadyB.value() == 0):
+   pass
+
+
 while(True): 
     for cursor in '|/-\\':
-        #wait until sample ready 
+
+		# wait for result to be available
         while(max22005pmb.__ReadyB.value() == 1):
-
-        voltage = max22005pmb.read_ADC() 
-        #current = (voltage/49.9)*2000 #current in mA
-
-        print(cursor + " V = ", voltage, end='\r')
-
-
-
-
-
+           pass
+			
+        voltage = max22005pmb.read_ADC()
+		
+        if (mode == "current"):
+           current = (voltage/49.9)*1000 #current in mA
+           print(cursor + "I = " , current, end='mA\r')
+			
+        if (mode == "voltage"):
+           print(cursor + "V = " , voltage, end='V\r')
+ 
+ 
 
 
