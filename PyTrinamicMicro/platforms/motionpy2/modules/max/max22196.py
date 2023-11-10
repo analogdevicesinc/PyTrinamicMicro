@@ -1,3 +1,11 @@
+################################################################################
+# Copyright Â© 2019 TRINAMIC Motion Control GmbH & Co. KG
+# (now owned by Analog Devices Inc.),
+#
+# Copyright Â© 2023 Analog Devices Inc. All Rights Reserved. This software is
+# proprietary & confidential to Analog Devices, Inc. and its licensors.
+################################################################################
+
 '''
 This file implements a basic class for using the max22196 in Command mode SPI. (CMND = HIGH && SRIAL = HIGH)
 For further details refer to the data sheet.
@@ -352,7 +360,7 @@ class MAX22196PMB(object):
 
     def cnfg_filter(self, channel, delay):
         # see datasheet to understand how the filter counter function works in the MAX22196
-        # the Delay value is stored in the CNFG_ register and can be 0x00 to 0x07 rperesenting predefined values ranging from 50µs to 20ms
+        # the Delay value is stored in the CNFG_ register and can be 0x00 to 0x07 rperesenting predefined values ranging from 50Âµs to 20ms
         if channel not in self.max22196PMB_CHANNELS:
             print("Error: Please select a valid channel (1-8)")
             return
@@ -419,9 +427,9 @@ class MAX22196PMB(object):
         if int(fault1[5]) == 1:
             print("The voltage at V24 source is below 7V, try using an exteral supply")
         if int(fault1[4]) == 1:
-            print("The die temperature is exceeding the maximum operating temperature 115°C")
+            print("The die temperature is exceeding the maximum operating temperature 115Â°C")
         if int(fault1[3]) == 1:
-            print("Thermal Shutdown threshold (150°C, typ) has been exceeded. All input channels, input sink or source currents")
+            print("Thermal Shutdown threshold (150Â°C, typ) has been exceeded. All input channels, input sink or source currents")
             print("and LED matrix are turned off to reduce power dissipation. GPO drivers, SPI interface and internal regulator remain active")        
         if int(fault1[1]) == 1:
             print("A POR event was detected, all registers have been returned to their POR state")
@@ -440,7 +448,7 @@ class MAX22196PMB(object):
             if int(fault2[6]) == 1:
                 print("Open-circuit detected on REFDI. this could indicate a thermal shutdown")
             if int(fault2[5]) == 1:
-                print("System Thermal Shutdown threshold (165°C, typ) has been exceeded. All input channels, input sink or ")
+                print("System Thermal Shutdown threshold (165Â°C, typ) has been exceeded. All input channels, input sink or ")
                 print("source currents, LED matrix, GPO drivers, SPI interface and internal regulator are turned off to reduce power dissipation")
             if int(fault2[4]) == 1:
                 print("Irregular number of SPI clk cycles detected")

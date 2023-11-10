@@ -1,3 +1,11 @@
+################################################################################
+# Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
+# (now owned by Analog Devices Inc.),
+#
+# Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
+# proprietary & confidential to Analog Devices, Inc. and its licensors.
+################################################################################
+
 '''
 Example using the MAX14916PMB.
 This script turns on all the switches, and then enables the open-wire fault detection for cahnnels

@@ -1,3 +1,11 @@
+################################################################################
+# Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
+# (now owned by Analog Devices Inc.),
+#
+# Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
+# proprietary & confidential to Analog Devices, Inc. and its licensors.
+################################################################################
+
 from PyTrinamicMicro.platforms.motionpy1.modules.linear_distance import linear_distance
 from PyTrinamic.modules.TMCM1240.TMCM_1240 import TMCM_1240
 from PyTrinamicMicro.platforms.motionpy1.modules.hc_sr04_multi import hc_sr04_multi
